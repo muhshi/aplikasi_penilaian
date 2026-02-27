@@ -22,6 +22,17 @@ COPY . /app
 # Composer (buat install deps dari dalam container)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Install Node.js 20.x untuk build Vite assets
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP & JS dependencies, lalu build Vite assets
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && npm install \
+    && npm run build \
+    && rm -rf node_modules
+
 # Copy konfigurasi Caddy/FrankenPHP
 COPY Caddyfile /etc/caddy/Caddyfile
 
