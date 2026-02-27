@@ -18,7 +18,4 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })
-    ->booted(function () {
-        URL::forceScheme('https');
-    })
     ->create();
