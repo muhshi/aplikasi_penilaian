@@ -1,59 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Aplikasi Penilaian CKP KIPAPP — BPS Kabupaten Demak
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem informasi berbasis web untuk mengelola proses **pengiriman**, **monitoring**, dan **penilaian** Capaian Kinerja Pegawai (CKP) berbasis KIPAPP di lingkungan BPS Kabupaten Demak.
 
-## About Laravel
+## 🚀 Tech Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Layer | Teknologi |
+|-------|-----------|
+| **Framework** | Laravel 12 |
+| **Admin Panel** | Filament 5 |
+| **Database** | MySQL / SQLite |
+| **Auth & Roles** | Filament Shield (Spatie Permission) |
+| **Export** | Maatwebsite Excel |
+| **PDF Viewer** | Filament PDF Viewer |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Dashboard
+- Filter berdasarkan **Tahun** dan **Bulan**
+- Tahun default mengikuti pengaturan Periode Tahun Aktif
 
-## Learning Laravel
+### 2. Monitoring CKP KIPAPP
+- Matriks monitoring status pengiriman CKP per pegawai
+- 12 periode bulanan + 3 periode tahunan (Penetapan, Penilaian, Dokumen Evaluasi)
+- Filter tahun secara dinamis
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 3. Kirim CKP KIPAPP
+- Upload dokumen CKP dalam format PDF
+- Preview dokumen langsung di dalam aplikasi
+- CRUD data CKP per pegawai per periode
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Nilai KIPAPP
+- Input dan pengelolaan nilai KIPAPP per pegawai
 
-## Laravel Sponsors
+### 5. Nilai Pegawai
+- Rekapitulasi nilai pegawai secara keseluruhan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 6. Manajemen Pegawai
+- Kelola data pegawai (NIP, nama, jabatan)
+- Relasi dengan akun user
 
-### Premium Partners
+### 7. Manajemen User
+- Kelola akun pengguna
+- Sistem role & permission (admin, pegawai)
+- Fitur paksa ganti password saat login pertama
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 8. Pengaturan Sistem
+- Manajemen Periode Tahun
+- Satu tahun aktif sebagai default di seluruh aplikasi
+- Dropdown tahun pada Dashboard, CKP, dan Nilai otomatis mengambil dari tabel ini
 
-## Contributing
+## ⚙️ Instalasi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Prasyarat
+- PHP ≥ 8.2
+- Composer
+- Node.js & NPM
+- MySQL / SQLite
 
-## Code of Conduct
+### Langkah-langkah
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# 1. Clone repository
+git clone https://github.com/muhshi/aplikasi_penilaian.git
+cd aplikasi_penilaian
 
-## Security Vulnerabilities
+# 2. Install dependencies
+composer install
+npm install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 3. Setup environment
+cp .env.example .env
+php artisan key:generate
 
-## License
+# 4. Konfigurasi database di file .env
+# Sesuaikan DB_DATABASE, DB_USERNAME, DB_PASSWORD
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 5. Jalankan migrasi & seed
+php artisan migrate --seed
+
+# 6. Setup storage link
+php artisan storage:link
+
+# 7. Build assets
+npm run build
+
+# 8. Jalankan server
+php artisan serve
+```
+
+Atau gunakan shortcut:
+```bash
+composer setup   # Install, migrate, build sekaligus
+composer dev     # Jalankan server + queue + pail + vite secara bersamaan
+```
+
+## 📁 Struktur Utama
+
+```
+app/
+├── Filament/
+│   ├── Pages/
+│   │   ├── Dashboard.php              # Halaman utama dengan filter tahun & bulan
+│   │   └── MonitoringCkpKipapp.php    # Monitoring matriks CKP
+│   └── Resources/
+│       ├── CkpKipapps/                # CRUD CKP KIPAPP
+│       ├── NilaiKipapps/              # CRUD Nilai KIPAPP
+│       ├── NilaiPegawais/             # Rekap Nilai Pegawai
+│       ├── Pegawais/                  # CRUD Data Pegawai
+│       ├── PeriodeTahuns/             # Pengaturan Periode Tahun
+│       └── Users/                     # Manajemen User
+├── Exports/                           # Export Excel
+└── Models/
+    ├── CkpKipapp.php
+    ├── NilaiKipapp.php
+    ├── NilaiPegawai.php
+    ├── Pegawai.php
+    ├── PeriodeTahun.php
+    └── User.php
+```
+
+## 🔐 Role & Permission
+
+Aplikasi ini menggunakan **Filament Shield** untuk manajemen role dan permission:
+- **Super Admin** — Akses penuh ke seluruh fitur
+- **Pegawai** — Akses terbatas untuk mengirim CKP dan melihat nilai
+
+## 📄 Lisensi
+
+Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
