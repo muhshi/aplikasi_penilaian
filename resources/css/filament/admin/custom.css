@@ -1,0 +1,253 @@
+/* ============================================================
+   CKP BPS Demak - Custom Admin Panel Styles
+   Clean, Structured, Strong Override Version
+   ============================================================ */
+
+
+/* ============================================================
+   BASE LAYOUT
+   ============================================================ */
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #E8EDF2 !important;
+}
+
+
+/* ============================================================
+   SIDEBAR - DARK NAVY
+   ============================================================ */
+
+/* Sidebar container */
+.fi-sidebar {
+    background-color: #1a365d !important;
+    border-right: none !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Sidebar header (logo area) */
+.fi-sidebar-header {
+    background-color: #1a365d !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    min-height: 4rem !important;
+}
+
+/* Default sidebar text - semua link & teks di sidebar */
+.fi-sidebar-item-btn,
+.fi-sidebar-item-btn span,
+.fi-sidebar-item-btn svg,
+.fi-sidebar-item-label,
+.fi-sidebar-item-icon,
+.fi-sidebar-nav a,
+.fi-sidebar-nav span {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500 !important;
+}
+
+/* Sidebar group labels */
+.fi-sidebar-group-label,
+.fi-sidebar-group-btn {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.08em !important;
+}
+
+
+/* ============================================================
+   SIDEBAR HOVER
+   ============================================================ */
+
+.fi-sidebar-item:not(.fi-active)>.fi-sidebar-item-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.6rem !important;
+}
+
+.fi-sidebar-item:not(.fi-active)>.fi-sidebar-item-btn:hover span,
+.fi-sidebar-item:not(.fi-active)>.fi-sidebar-item-btn:hover svg {
+    color: #ffffff !important;
+}
+
+
+/* ============================================================
+   SIDEBAR ACTIVE (Filament v4 fix)
+   fi-active ada di <li>, tombol pakai fi-sidebar-item-btn
+   ============================================================ */
+
+/* Active button background - override bg-gray-100 bawaan Filament */
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn:hover,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn:focus-visible {
+    background-color: #0A2540 !important;
+    border-radius: 0.6rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Active text + icon - putih dan tebal */
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn span,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn svg,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn .fi-sidebar-item-label,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn .fi-sidebar-item-icon,
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn .fi-icon {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Accent bar di sisi kiri menu aktif */
+.fi-sidebar .fi-sidebar-item.fi-active>.fi-sidebar-item-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 4px;
+    border-radius: 4px;
+    background: #38BDF8;
+}
+
+
+/* ============================================================
+   TOPBAR - DARK NAVY
+   ============================================================ */
+
+.fi-topbar,
+.fi-topbar nav {
+    background-color: #1a365d !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.fi-topbar button,
+.fi-topbar a,
+.fi-topbar .fi-btn,
+.fi-topbar .fi-dropdown-trigger,
+.fi-topbar .fi-user-menu-trigger {
+    color: #ffffff !important;
+}
+
+.fi-topbar svg {
+    color: #ffffff !important;
+}
+
+
+/* ============================================================
+   DROPDOWN FIX
+   ============================================================ */
+
+.fi-dropdown-panel {
+    color: inherit !important;
+}
+
+.fi-dropdown-panel a,
+.fi-dropdown-panel button,
+.fi-dropdown-panel svg,
+.fi-dropdown-panel .fi-dropdown-list-item-label {
+    color: #1e293b !important;
+}
+
+.dark .fi-dropdown-panel a,
+.dark .fi-dropdown-panel button,
+.dark .fi-dropdown-panel svg,
+.dark .fi-dropdown-panel .fi-dropdown-list-item-label {
+    color: #f8fafc !important;
+}
+
+
+/* ============================================================
+   DASHBOARD LAYOUT
+   ============================================================ */
+
+/* Stats row spacing */
+.fi-wi-stats-overview {
+    gap: 1rem !important;
+}
+
+/* Stats cards */
+.fi-wi-stats-overview-stat-ctn {
+    background-color: #ffffff !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    color: #0A2540 !important;
+    font-weight: 700 !important;
+}
+
+.fi-wi-stats-overview-stat-label {
+    color: #64748b !important;
+}
+
+
+/* Widgets */
+.fi-wi-widget-ctn {
+    gap: 1.5rem !important;
+}
+
+.fi-section {
+    background-color: #ffffff !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 16px rgba(10, 37, 64, 0.08) !important;
+}
+
+/* Section header */
+.fi-section-header {
+    border-bottom: 1px solid #F1F5F9 !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.fi-section-header-heading,
+.fi-header-heading {
+    color: #0A2540 !important;
+    font-weight: 800 !important;
+    font-size: 1rem !important;
+}
+
+
+/* Chart */
+.fi-wi-chart canvas {
+    max-height: 280px !important;
+}
+
+
+/* Table */
+.fi-ta-header-cell {
+    background-color: #F8FAFC !important;
+    color: #0A2540 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em !important;
+}
+
+.fi-ta-cell {
+    color: #334155 !important;
+}
+
+
+/* ============================================================
+   DARK MODE
+   ============================================================ */
+
+.dark .fi-sidebar {
+    background-color: #0F172A !important;
+    border-right: 1px solid #1E293B !important;
+}
+
+.dark .fi-sidebar-header {
+    background-color: #0F172A !important;
+}
+
+.dark .fi-sidebar-item.fi-active>.fi-sidebar-item-btn {
+    background-color: #0A2540 !important;
+}
+
+.dark .fi-section,
+.dark .fi-wi-stats-overview-stat-ctn {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}

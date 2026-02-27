@@ -1,0 +1,245 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@theme {
+    --color-primary-50: #f0f7ff;
+    --color-primary-100: #e0effe;
+    --color-primary-200: #bae0fd;
+    --color-primary-300: #7cc8fb;
+    --color-primary-400: #38a9f8;
+    --color-primary-500: #0e8ce9;
+    --color-primary-600: #026dc3;
+    --color-primary-700: #03579e;
+    --color-primary-800: #064b83;
+    --color-primary-900: #0a3f6d;
+    --color-primary-950: #0a2540;
+}
+
+/* --- GOVERNMENT STYLE DESIGN SYSTEM --- */
+
+/* 1. GLOBAL LAYOUT & TYPOGRAPHY */
+body {
+    @apply antialiased transition-colors duration-300;
+    background-color: #F4F7FA !important;
+    /* Soft Gray Background */
+    color: #1F2937;
+    /* Dark Gray Text */
+    font-family: 'Inter', sans-serif;
+}
+
+.dark body {
+    background-color: #0F172A !important;
+}
+
+/* 2. SIDEBAR (Navy Professional) */
+html body .fi-sidebar {
+    background-color: #0F2A3F !important;
+    /* Navy #0F2A3F */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Sidebar Branding Area */
+html body .fi-sidebar-header {
+    background-color: #0F2A3F !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Menu Items - Default (Inactive) */
+html body .fi-sidebar-item-button:not(.fi-active) .fi-sidebar-item-label,
+html body .fi-sidebar-item-button:not(.fi-active) svg {
+    color: #E2E8F0 !important;
+    /* Soft White */
+    font-weight: 500 !important;
+}
+
+html body .fi-sidebar-item-button:not(.fi-active):hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #FFFFFF !important;
+}
+
+/* Menu Items - Active (Highlight) */
+html body .fi-sidebar-item-button.fi-active {
+    background-color: #1F4E79 !important;
+    /* Primary Blue Highlight */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+html body .fi-sidebar-item-button.fi-active .fi-sidebar-item-label,
+html body .fi-sidebar-item-button.fi-active svg {
+    color: #FFFFFF !important;
+    /* White Text on Blue */
+    font-weight: 700 !important;
+}
+
+/* Group Labels */
+html body .fi-sidebar-group-label span {
+    color: #94A3B8 !important;
+    /* Muted Slate */
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 3. CARD STYLING (The "Government Clean" Look) */
+/* Target Widgets, Tables, and Forms containers */
+.fi-section,
+.fi-wi-widget .fi-section,
+.fi-ta-ctn {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E9EEF3 !important;
+    /* Subtle Border */
+    border-radius: 16px !important;
+    /* Modern Rounded */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02) !important;
+    /* Soft Shadow */
+    padding: 0 !important;
+    /* Reset padding, handle internally */
+    margin-bottom: 1.5rem !important;
+    /* Spacing 24px-32px approx */
+}
+
+/* Internal content padding */
+.fi-section-content,
+.fi-ta-content {
+    padding: 1.5rem !important;
+    /* 24px Padding */
+}
+
+/* Wrapper Spacing (Gap antar widget) */
+.fi-wi-widget-ctn {
+    gap: 2rem !important;
+    /* 32px Spacing */
+}
+
+/* 4. KPI CARDS (Stats Overview) */
+/* Top Accent Line & Layout */
+.fi-wi-stats-overview-stat-ctn {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E9EEF3 !important;
+    border-radius: 16px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Aksen Warna-Warni Top Border (Simulasi dengan ::before atau border-top normal) */
+/* Kita gunakan border-top langsung pada cardnya jika memungkinkan, 
+   tapi karena Filament me-render banyak card sekaligus, kita target genericnya dulu */
+.fi-wi-stats-overview-stat-ctn {
+    border-top: 4px solid #1F4E79 !important;
+    /* Default Primary */
+}
+
+/* KPI Typography */
+.fi-wi-stats-overview-stat-value {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    color: #1F2937 !important;
+    margin-bottom: 0.5rem;
+}
+
+.fi-wi-stats-overview-stat-label {
+    color: #64748B !important;
+    /* Slate 500 */
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+}
+
+.fi-wi-stats-overview-stat-description {
+    font-size: 0.875rem !important;
+    color: #64748B !important;
+}
+
+
+/* 5. TABLES (Resources: Pegawai, Nilai, dll) */
+.fi-ta-header-ctn {
+    background-color: #F1F5F9 !important;
+    /* Soft Header Bg */
+    border-bottom: 1px solid #E9EEF3 !important;
+    padding: 1rem 1.5rem !important;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.fi-ta-header-cell {
+    background-color: #F8FAFC !important;
+    color: #475569 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em;
+    padding: 1rem !important;
+}
+
+.fi-ta-cell {
+    padding: 1rem !important;
+    color: #334155 !important;
+}
+
+/* 6. BUTTONS */
+.fi-btn-primary {
+    background-color: #1F4E79 !important;
+    /* Primary Blue */
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+.fi-btn-primary:hover {
+    background-color: #163A5E !important;
+}
+
+.fi-btn-color-success {
+    background-color: #16A34A !important;
+    color: white !important;
+}
+
+/* 7. FORM INPUTS */
+.fi-input {
+    border-color: #CBD5E1 !important;
+    border-radius: 8px !important;
+}
+
+.fi-input:focus {
+    border-color: #1F4E79 !important;
+    ring: 2px solid #1F4E79 !important;
+}
+
+/* 8. WIDGET LOGO & HEADER FIXES from previous task */
+html body .fi-sidebar-header {
+    height: auto !important;
+    min-height: 4rem !important;
+    overflow: hidden !important;
+}
+
+html body .fi-sidebar-header .fi-logo {
+    height: 100% !important;
+    max-height: 3.5rem !important;
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+/* 9. WIDGET HEIGHT LOCK (Legacy Support) */
+/* Tetap support inline style PHP */
+.fi-wi-widget[style*="height"] .fi-section,
+.fi-wi-table .fi-section,
+.fi-wi-chart .fi-section {
+    height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Bar Chart Canvas Fit */
+.fi-wi-chart canvas {
+    max-height: 300px !important;
+    width: 100% !important;
+}
+
+/* 10. Dashboard Header Title */
+.fi-header-heading {
+    color: #1F2937 !important;
+    font-weight: 800 !important;
+    font-size: 1.5rem !important;
+}
