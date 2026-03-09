@@ -69,13 +69,13 @@ class CkpKipappResource extends Resource
                         TextEntry::make('nama_file')
                             ->label('Buka File Langsung')
                             ->formatStateUsing(fn() => 'Klik untuk Membuka PDF')
-                            ->url(fn($record) => asset('storage/' . $record->nama_file), true)
+                            ->url(fn($record) => route('file.preview', ['path' => $record->nama_file]), true)
                             ->color('primary')
                             ->icon('heroicon-m-arrow-top-right-on-square'),
                         PdfViewerEntry::make('nama_file')
                             ->label('Dokumen Terlampir')
                             ->minHeight('1000px')
-                            ->fileUrl(fn($record) => '/storage/' . $record->nama_file),
+                            ->fileUrl(fn($record) => route('file.preview', ['path' => $record->nama_file])),
                     ]),
             ]);
     }

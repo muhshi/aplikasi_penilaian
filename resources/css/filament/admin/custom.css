@@ -5,6 +5,97 @@
 
 
 /* ============================================================
+   LOGIN PAGE - Dark Navy Theme (matches landing page)
+   ============================================================ */
+
+.fi-simple-layout {
+    background: linear-gradient(160deg, #0A2540 0%, #1a365d 40%, #1e3a5f 70%, #0f2847 100%) !important;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Subtle radial glow effect on the background */
+.fi-simple-layout::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.fi-simple-layout::after {
+    content: "";
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Login form card - glassmorphism on dark */
+.fi-simple-main-ctn {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 1.25rem !important;
+}
+
+/* Login page heading text */
+.fi-simple-layout .fi-simple-header-heading {
+    color: #0A2540 !important;
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+}
+
+/* Input fields subtle styling */
+.fi-simple-layout .fi-input {
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 0.5rem !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.fi-simple-layout .fi-input:focus {
+    border-color: #1a365d !important;
+    box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.15) !important;
+}
+
+/* Submit button */
+.fi-simple-layout .fi-btn-primary {
+    background: linear-gradient(135deg, #1a365d 0%, #0A2540 100%) !important;
+    border: none !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(10, 37, 64, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+.fi-simple-layout .fi-btn-primary:hover {
+    background: linear-gradient(135deg, #234876 0%, #163354 100%) !important;
+    box-shadow: 0 6px 20px rgba(10, 37, 64, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Footer text on login page */
+.fi-simple-layout footer,
+.fi-simple-layout .fi-simple-footer {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.fi-simple-layout footer a,
+.fi-simple-layout .fi-simple-footer a {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+/* ============================================================
    BASE LAYOUT
    ============================================================ */
 
