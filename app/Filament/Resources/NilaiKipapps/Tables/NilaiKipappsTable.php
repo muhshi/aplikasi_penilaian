@@ -62,13 +62,17 @@ class NilaiKipappsTable
             ->filters([
                 //
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(
+                auth()->user()?->hasRole('pegawai') ? [] : [
+                    EditAction::make(),
+                ]
+            )
+            ->toolbarActions(
+                auth()->user()?->hasRole('pegawai') ? [] : [
+                    BulkActionGroup::make([
+                        DeleteBulkAction::make(),
+                    ]),
+                ]
+            );
     }
 }

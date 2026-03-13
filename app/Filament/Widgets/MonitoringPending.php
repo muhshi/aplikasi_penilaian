@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\User;
 use App\Models\NilaiPegawai;
 use App\Models\CkpKipapp;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Actions\Action;
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
 class MonitoringPending extends BaseWidget
 {
     use InteractsWithPageFilters;
+    use HasWidgetShield;
 
     protected static ?int $sort = 4;
 

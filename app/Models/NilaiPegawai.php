@@ -10,6 +10,7 @@ class NilaiPegawai extends Model
 
     protected $fillable = [
         'user_id',
+        'penilai_id',
         'bulan',
         'tahun',
         'kualitas',
@@ -29,6 +30,11 @@ class NilaiPegawai extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function penilai()
+    {
+        return $this->belongsTo(User::class, 'penilai_id');
     }
 }

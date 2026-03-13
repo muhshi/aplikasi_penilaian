@@ -17,6 +17,11 @@ class ListNilaiKipapps extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        // Pegawai hanya bisa melihat, tidak bisa import/export/create
+        if (auth()->user()?->hasRole('pegawai')) {
+            return [];
+        }
+
         return [
             /**
              * Action untuk import data Nilai KIPAPP dari file Excel
@@ -35,20 +40,23 @@ class ListNilaiKipapps extends ListRecords
                 ->form([
                     FileUpload::make('file')
                         ->label('File Excel')
-                        ->disk('local') // Simpan file upload ke disk 'local'
+                        ->disk('local')
+                        ->directory('imports')
                         // Hanya terima file Excel (.xlsx, .xls) dan CSV
                         ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
                         ->required(),
                 ])
                 ->action(function (array $data) {
+                    $disk = \Illuminate\Support\Facades\Storage::disk('local');
+                    $filePath = $disk->path($data['file']);
+
                     try {
                         // Tambah batas waktu eksekusi untuk file Excel besar (5 menit)
                         set_time_limit(300);
 
                         // Import file Excel menggunakan NilaiKipappImport
                         // Tahun sekarang dibaca langsung dari kolom "Tahun" di Excel
-                        $path = storage_path('app/private/' . $data['file']);
-                        Excel::import(new NilaiKipappImport(), $path);
+                        Excel::import(new NilaiKipappImport(), $filePath);
 
                         // Tampilkan notifikasi sukses
                         Notification::make()
@@ -62,6 +70,9 @@ class ListNilaiKipapps extends ListRecords
                             ->body($e->getMessage())
                             ->danger()
                             ->send();
+                    } finally {
+                        // Hapus file temporary setelah import
+                        $disk->delete($data['file']);
                     }
                 }),
             Action::make('export')

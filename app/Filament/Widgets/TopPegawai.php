@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\NilaiPegawai;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -12,6 +13,7 @@ use Illuminate\Support\Carbon;
 class TopPegawai extends BaseWidget
 {
     use InteractsWithPageFilters;
+    use HasWidgetShield;
 
     protected static ?int $sort = 2;
 

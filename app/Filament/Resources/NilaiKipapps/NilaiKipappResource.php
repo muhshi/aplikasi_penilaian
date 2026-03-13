@@ -8,11 +8,13 @@ use App\Filament\Resources\NilaiKipapps\Pages\ListNilaiKipapps;
 use App\Filament\Resources\NilaiKipapps\Schemas\NilaiKipappForm;
 use App\Filament\Resources\NilaiKipapps\Tables\NilaiKipappsTable;
 use App\Models\NilaiKipapp;
+use App\Models\Pegawai;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class NilaiKipappResource extends Resource
 {
@@ -37,6 +39,24 @@ class NilaiKipappResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Pegawai hanya bisa melihat nilai KIPAPP milik mereka sendiri
+        if (auth()->user()?->hasRole('pegawai')) {
+            $pegawai = Pegawai::where('user_id', auth()->id())->first();
+            if ($pegawai) {
+                $query->where('nip_lama', $pegawai->nip_lama);
+            } else {
+                // Jika pegawai tidak ditemukan, jangan tampilkan data apapun
+                $query->whereRaw('1 = 0');
+            }
+        }
+
+        return $query;
     }
 
     public static function getPages(): array

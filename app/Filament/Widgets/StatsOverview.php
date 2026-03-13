@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Pegawai;
 use App\Models\NilaiPegawai;
 use App\Models\CkpKipapp;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -13,6 +14,7 @@ use Illuminate\Support\Carbon;
 class StatsOverview extends BaseWidget
 {
     use InteractsWithPageFilters;
+    use HasWidgetShield;
 
     protected static ?int $sort = 1;
 

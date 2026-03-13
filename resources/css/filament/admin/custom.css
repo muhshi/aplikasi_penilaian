@@ -324,6 +324,13 @@ body {
    DARK MODE
    ============================================================ */
 
+/* --- Body background --- */
+.dark body,
+.dark.body {
+    background-color: #0F172A !important;
+}
+
+/* --- Sidebar --- */
 .dark .fi-sidebar {
     background-color: #0F172A !important;
     border-right: 1px solid #1E293B !important;
@@ -337,8 +344,68 @@ body {
     background-color: #0A2540 !important;
 }
 
+/* --- Topbar --- */
+.dark .fi-topbar,
+.dark .fi-topbar nav {
+    background-color: #0F172A !important;
+    border-bottom: 1px solid #1E293B !important;
+}
+
+/* --- Sections & Stat cards --- */
 .dark .fi-section,
 .dark .fi-wi-stats-overview-stat-ctn {
-    background-color: #1e293b !important;
+    background-color: #1E293B !important;
     border-color: #334155 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --- Section header --- */
+.dark .fi-section-header {
+    border-bottom-color: #334155 !important;
+}
+
+.dark .fi-section-header-heading,
+.dark .fi-header-heading {
+    color: #F1F5F9 !important;
+}
+
+/* --- Stats text --- */
+.dark .fi-wi-stats-overview-stat-value {
+    color: #F1F5F9 !important;
+}
+
+.dark .fi-wi-stats-overview-stat-label {
+    color: #94A3B8 !important;
+}
+
+/* --- Table header --- */
+.dark .fi-ta-header-cell {
+    background-color: #1E293B !important;
+    color: #CBD5E1 !important;
+}
+
+/* --- Table cells --- */
+.dark .fi-ta-cell {
+    color: #CBD5E1 !important;
+}
+
+/* --- Login page - keep dark on dark mode too --- */
+.dark .fi-simple-main-ctn {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .fi-simple-layout .fi-simple-header-heading {
+    color: #F1F5F9 !important;
+}
+
+.dark .fi-simple-layout .fi-input {
+    border-color: #475569 !important;
+    background-color: #0F172A !important;
+    color: #F1F5F9 !important;
+}
+
+.dark .fi-simple-layout .fi-input:focus {
+    border-color: #38BDF8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
 }

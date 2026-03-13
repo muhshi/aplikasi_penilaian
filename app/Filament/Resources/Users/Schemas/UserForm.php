@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,13 @@ class UserForm
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                     ->maxLength(255),
+                Select::make('roles')
+                    ->label('Peran')
+                    ->relationship('roles', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->required(),
             ]);
     }
 }
+

@@ -17,15 +17,13 @@ class Dashboard extends BaseDashboard
     public function filtersForm(Schema $schema): Schema
     {
         return $schema
-            ->columns(1) // Root schema 1 kolom
+            ->columns(['lg' => 1]) // Root schema 1 kolom
             ->schema([
                 Grid::make(2) // Grid internal 2 kolom untuk rasio 1:1
                     ->schema([
                         Select::make('tahun')
                             ->label('Tahun')
-                            ->options(function () {
-                                return \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray();
-                            })
+                            ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
                             ->default(function () {
                                 $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
                                 return $active ? $active->tahun : Carbon::now()->year;
@@ -52,7 +50,7 @@ class Dashboard extends BaseDashboard
                             ->default(Carbon::now()->month)
                             ->extraInputAttributes(['class' => '!rounded-lg !bg-gray-50 !border-gray-200 !shadow-sm !text-center !p-2.5 focus:!ring-1 focus:!ring-primary-500']),
                     ])
-                    ->columnSpan('full') // Paksa grid mengisi seluruh lebar
+                    ->columnSpanFull() // Paksa grid mengisi seluruh lebar
                     ->extraAttributes([
                         'style' => 'width: 100% !important; max-width: none !important;',
                     ]),

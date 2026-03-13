@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\NilaiPegawais\Schemas;
 
 use App\Models\NilaiPegawai;
+use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
@@ -19,20 +20,22 @@ class NilaiPegawaiForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
+            ->columns(['lg' => 1])
             ->components([
+                // Hidden input untuk menyimpan ID penilai (ketua tim yang login)
+                Hidden::make('penilai_id')
+                    ->default(fn() => auth()->id()),
+
                 // Container Utama: Compact & Professional (max-w-4xl)
                 Group::make()
-                    ->columnSpan('full')
+                    ->columnSpanFull()
                     ->schema([
                         // Baris 1: Tahun & Bulan (Grid 2 Kolom)
                         Grid::make(2)
                             ->schema([
                                 Select::make('tahun')
                                     ->label('Tahun')
-                                    ->options(function () {
-                                        return \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray();
-                                    })
+                                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
                                     ->default(function () {
                                         $session = session('last_nilai_pegawai_tahun');
                                         if ($session)
@@ -69,15 +72,20 @@ class NilaiPegawaiForm
                             ])
                             ->extraAttributes(['class' => 'gap-4 mb-4']),
 
-                        // Baris 2: Nama Pegawai 
+                        // Baris 2: Nama Pegawai
+                        // Query: pegawai yang BELUM dinilai oleh penilai yang login di bulan/tahun yg dipilih
                         Select::make('user_id')
                             ->label('Nama Pegawai')
-                            ->options(function (Get $get) {
+                            // Trick Intelephense dengan variabel bertipe array
+                            ->options(/** @var array $dynamicOptions */ $dynamicOptions = function (Get $get) {
                                 $bulan = $get('bulan');
                                 $tahun = $get('tahun');
-                                return \App\Models\User::whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun) {
+                                $penilaiId = auth()->id();
+                                return \App\Models\User::whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun, $penilaiId) {
                                     if ($bulan && $tahun) {
-                                        $q->where('bulan', $bulan)->where('tahun', $tahun);
+                                        $q->where('bulan', $bulan)
+                                            ->where('tahun', $tahun)
+                                            ->where('penilai_id', $penilaiId);
                                     } else {
                                         $q->whereRaw('1 = 0');
                                     }
@@ -96,8 +104,8 @@ class NilaiPegawaiForm
                                     ->label('Kualitas')
                                     ->integer()
                                     ->required()
-                                    ->minValue(0)
-                                    ->maxValue(100)
+                                    ->rule('min:0')
+                                    ->rule('max:100')
                                     ->regex('/^(0|[1-9][0-9]?|100)$/')
                                     ->validationMessages([
                                         'integer' => 'Harus berupa angka bulat.',
@@ -110,6 +118,8 @@ class NilaiPegawaiForm
                                     ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get))
                                     ->extraInputAttributes([
                                         'class' => '!rounded-md !bg-white !border !border-gray-200 !shadow-sm !text-center !p-2 focus:!ring-1 focus:!ring-primary-500',
+                                        'min' => '0',
+                                        'max' => '100',
                                         'oninput' => "if(this.value.length > 1 && this.value[0] === '0') this.value = this.value.replace(/^0+/, ''); if(this.value > 100) this.value = 100;",
                                     ]),
 
@@ -117,8 +127,8 @@ class NilaiPegawaiForm
                                     ->label('Kuantitas')
                                     ->integer()
                                     ->required()
-                                    ->minValue(0)
-                                    ->maxValue(100)
+                                    ->rule('min:0')
+                                    ->rule('max:100')
                                     ->regex('/^(0|[1-9][0-9]?|100)$/')
                                     ->validationMessages([
                                         'integer' => 'Harus berupa angka bulat.',
@@ -131,6 +141,8 @@ class NilaiPegawaiForm
                                     ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get))
                                     ->extraInputAttributes([
                                         'class' => '!rounded-md !bg-white !border !border-gray-200 !shadow-sm !text-center !p-2 focus:!ring-1 focus:!ring-primary-500',
+                                        'min' => '0',
+                                        'max' => '100',
                                         'oninput' => "if(this.value.length > 1 && this.value[0] === '0') this.value = this.value.replace(/^0+/, ''); if(this.value > 100) this.value = 100;",
                                     ]),
 
@@ -138,8 +150,8 @@ class NilaiPegawaiForm
                                     ->label('Perilaku')
                                     ->integer()
                                     ->required()
-                                    ->minValue(0)
-                                    ->maxValue(100)
+                                    ->rule('min:0')
+                                    ->rule('max:100')
                                     ->regex('/^(0|[1-9][0-9]?|100)$/')
                                     ->validationMessages([
                                         'integer' => 'Harus berupa angka bulat.',
@@ -152,6 +164,8 @@ class NilaiPegawaiForm
                                     ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get))
                                     ->extraInputAttributes([
                                         'class' => '!rounded-md !bg-white !border !border-gray-200 !shadow-sm !text-center !p-2 focus:!ring-1 focus:!ring-primary-500',
+                                        'min' => '0',
+                                        'max' => '100',
                                         'oninput' => "if(this.value.length > 1 && this.value[0] === '0') this.value = this.value.replace(/^0+/, ''); if(this.value > 100) this.value = 100;",
                                     ]),
                             ])

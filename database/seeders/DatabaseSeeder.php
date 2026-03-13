@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('admin'),
             ]
         );
+
+        // Seed roles & permissions (Filament Shield)
+        $this->call(ShieldSeeder::class);
     }
 }

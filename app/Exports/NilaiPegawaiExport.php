@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\NilaiPegawai;
+use App\Models\Pegawai;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -14,12 +15,13 @@ class NilaiPegawaiExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        return NilaiPegawai::with('user')->get();
+        return NilaiPegawai::with('user.pegawai')->get();
     }
 
     public function headings(): array
     {
         return [
+            'NIP',
             'Nama Pegawai',
             'Bulan',
             'Tahun',
@@ -52,6 +54,7 @@ class NilaiPegawaiExport implements FromCollection, WithHeadings, WithMapping
         };
 
         return [
+            $nilaiPegawai->user?->pegawai?->nip ?? '-',
             $nilaiPegawai->user?->name,
             $namaBulan,
             $nilaiPegawai->tahun,

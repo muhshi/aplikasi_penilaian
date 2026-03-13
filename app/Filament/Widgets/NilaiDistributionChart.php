@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\NilaiPegawai;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Support\Carbon;
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
 class NilaiDistributionChart extends ChartWidget
 {
     use InteractsWithPageFilters;
+    use HasWidgetShield;
 
     protected ?string $heading = 'Distribusi Predikat Kinerja';
 

@@ -54,9 +54,7 @@ class NilaiKipappForm
                     ->required(),
                 Select::make('tahun')
                     ->label('Tahun')
-                    ->options(function () {
-                        return \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray();
-                    })
+                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
                     ->default(function () {
                         $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
                         return $active ? $active->tahun : date('Y');

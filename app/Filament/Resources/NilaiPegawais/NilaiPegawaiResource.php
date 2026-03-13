@@ -7,12 +7,14 @@ use App\Filament\Resources\NilaiPegawais\Pages\EditNilaiPegawai;
 use App\Filament\Resources\NilaiPegawais\Pages\ListNilaiPegawais;
 use App\Filament\Resources\NilaiPegawais\Schemas\NilaiPegawaiForm;
 use App\Filament\Resources\NilaiPegawais\Tables\NilaiPegawaisTable;
+use App\Filament\Resources\NilaiPegawais\Widgets\NilaiPegawaiRekapWidget;
 use App\Models\NilaiPegawai;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class NilaiPegawaiResource extends Resource
 {
@@ -39,6 +41,25 @@ class NilaiPegawaiResource extends Resource
         ];
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            NilaiPegawaiRekapWidget::class,
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Pegawai hanya bisa melihat nilai milik mereka sendiri
+        if (auth()->user()?->hasRole('pegawai')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        return $query;
+    }
+
     public static function getPages(): array
     {
         return [
@@ -48,3 +69,4 @@ class NilaiPegawaiResource extends Resource
         ];
     }
 }
+

@@ -17,6 +17,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 
@@ -85,6 +86,18 @@ class CkpKipappResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        // Pegawai hanya bisa melihat data milik mereka sendiri
+        if (auth()->user()?->hasRole('pegawai')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        return $query;
     }
 
     public static function getPages(): array
