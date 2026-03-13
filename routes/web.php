@@ -17,3 +17,10 @@ Route::get('/preview/{path}', function (string $path) {
 
     return response()->file($fullPath);
 })->where('path', '.*')->name('file.preview');
+
+Route::get('/download/template-nilai-pegawai', function () {
+    return \Maatwebsite\Excel\Facades\Excel::download(
+        new \App\Exports\NilaiPegawaiTemplateExport,
+        'template-nilai-pegawai.xlsx'
+    );
+})->name('download.template.nilai_pegawai');

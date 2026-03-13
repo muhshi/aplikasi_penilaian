@@ -38,8 +38,21 @@ class ListNilaiPegawais extends ListRecords
                             'application/vnd.ms-excel',
                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         ])
-                        ->required()
-                        ->helperText('Format: nip, bulan, tahun, kualitas, kuantitas, perilaku. Download template untuk memudahkan pengisian.'),
+                        ->required(),
+                        //->helperText('Format: nip, bulan, tahun, kualitas, kuantitas, perilaku.'),
+                    \Filament\Forms\Components\Placeholder::make('download_template')
+                        ->label('')
+                        ->content(new \Illuminate\Support\HtmlString('
+                            <div style="font-size: 0.875rem; color: rgb(107 114 128);">
+                                Download template: 
+                                <a href="' . route('download.template.nilai_pegawai') . '" 
+                                   style="color: rgb(59 130 246); text-decoration: none;"
+                                   onmouseover="this.style.textDecoration=\'underline\'"
+                                   onmouseout="this.style.textDecoration=\'none\'">
+                                    template-nilai-pegawai.xlsx
+                                </a>
+                            </div>
+                        ')),
                 ])
                 ->action(function (array $data) {
                     $disk = \Illuminate\Support\Facades\Storage::disk('local');
@@ -66,16 +79,6 @@ class ListNilaiPegawais extends ListRecords
                         // Hapus file temporary setelah import
                         $disk->delete($data['file']);
                     }
-                }),
-            \Filament\Actions\Action::make('downloadTemplate')
-                ->label('Download Template')
-                ->color('info')
-                ->icon('heroicon-o-document-arrow-down')
-                ->action(function () {
-                    return \Maatwebsite\Excel\Facades\Excel::download(
-                        new \App\Exports\NilaiPegawaiTemplateExport,
-                        'template-nilai-pegawai.xlsx'
-                    );
                 }),
             \Filament\Actions\Action::make('export')
                 ->label('Export Excel')
