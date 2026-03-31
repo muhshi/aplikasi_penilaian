@@ -134,7 +134,7 @@ class MonitoringCkpKipapp extends Page
             $ketuaRecords = $nilaiRecords->get($ketuaTim->id, collect());
 
             $status = [];
-            foreach ($this->bulanList as $bulanName => $bulanNum) {
+            foreach ($this->bulanList as $bulanNum => $bulanName) {
                 // Berapa banyak pegawai yang ditugaskan ke ketua tim ini yang sudah dinilai?
                 $jumlahDinilai = $ketuaRecords->where('bulan', $bulanNum)->count();
                 // Berapa total pegawai yang ditugaskan ke ketua tim ini?
