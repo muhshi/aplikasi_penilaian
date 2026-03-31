@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44c76144ed8280bd70f2d5d8d90dcd4d",
+    "content-hash": "f8c09dc19e12ed5f4099156c91b6ca8e",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2458,16 +2458,16 @@
         },
         {
             "name": "joaopaulolndev/filament-pdf-viewer",
-            "version": "v3.0.0",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joaopaulolndev/filament-pdf-viewer.git",
-                "reference": "0ea716c6dc794ac4b682c13a6fd27a4233468ab2"
+                "reference": "94655bb6b8c31ecd821b128a01db4bb915cdc4b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joaopaulolndev/filament-pdf-viewer/zipball/0ea716c6dc794ac4b682c13a6fd27a4233468ab2",
-                "reference": "0ea716c6dc794ac4b682c13a6fd27a4233468ab2",
+                "url": "https://api.github.com/repos/joaopaulolndev/filament-pdf-viewer/zipball/94655bb6b8c31ecd821b128a01db4bb915cdc4b8",
+                "reference": "94655bb6b8c31ecd821b128a01db4bb915cdc4b8",
                 "shasum": ""
             },
             "require": {
@@ -2524,7 +2524,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-20T13:06:42+00:00"
+            "time": "2026-02-28T00:53:51+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
