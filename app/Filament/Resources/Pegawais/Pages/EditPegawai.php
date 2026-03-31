@@ -1,3 +1,7 @@
+<?php
+
+namespace App\Filament\Resources\Pegawais\Pages;
+
 use App\Filament\Resources\Pegawais\PegawaiResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
