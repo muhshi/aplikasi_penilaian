@@ -34,13 +34,14 @@ class PegawaiForm
                                 TextInput::make('nip')
                                     ->label('NIP Baru')
                                     ->required()
-                                    ->numeric()
+                                    ->rule('numeric')
                                     ->minLength(18)
                                     ->maxLength(18)
                                     ->unique(ignoreRecord: true),
                                 TextInput::make('nip_lama')
                                     ->label('NIP Lama')
                                     ->required()
+                                    ->rule('numeric')
                                     ->maxLength(9)
                                     ->unique(ignoreRecord: true),
                             ]),
