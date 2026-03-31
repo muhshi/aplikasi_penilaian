@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        PeriodeTahun::observe(PeriodeTahunObserver::class);
+        if (config('app.env') !== 'local') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+        
+        \App\Models\PeriodeTahun::observe(\App\Observers\PeriodeTahunObserver::class);
     }
 }
