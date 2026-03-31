@@ -135,15 +135,19 @@ class MonitoringCkpKipapp extends Page
 
             $status = [];
             foreach ($this->bulanList as $bulanNum => $bulanName) {
-                // Berapa banyak pegawai yang ditugaskan ke ketua tim ini yang sudah dinilai?
+                // Berapa banyak pegawai yang sudah dinilai oleh ketua tim ini?
                 $jumlahDinilai = $ketuaRecords->where('bulan', $bulanNum)->count();
-                // Berapa total pegawai yang ditugaskan ke ketua tim ini?
+                
+                // Cek apakah ketua tim ini punya pemetaan bawahan khusus
                 $assignedCount = \App\Models\Pegawai::where('penilai_id', $ketuaTim->id)->count();
+                
+                // Jika punya bawahan, targetnya adalah jumlah bawahan. Jika tidak (sistem terbuka), targetnya adalah total semua pegawai.
+                $target = ($assignedCount > 0) ? $assignedCount : $totalPegawai;
 
                 $status[$bulanName] = [
                     'sudah' => $jumlahDinilai,
-                    'total' => $assignedCount,
-                    'selesai' => ($assignedCount > 0) ? ($jumlahDinilai >= $assignedCount) : true,
+                    'total' => $target,
+                    'selesai' => ($target > 0) && ($jumlahDinilai >= $target),
                 ];
             }
 
@@ -176,13 +180,17 @@ class MonitoringCkpKipapp extends Page
 
             $status = [];
             foreach ($this->bulanList as $bulanNum => $bulanName) {
-                // Cek apakah penilai yang ditugaskan sudah menilai
-                $isAssessed = $assignedPenilaiId ? $pegawaiNilai->where('bulan', $bulanNum)->where('penilai_id', $assignedPenilaiId)->count() > 0 : false;
+                // Hitung total penilai yang sudah menilai pegawai ini
+                $jumlahAktual = $pegawaiNilai->where('bulan', $bulanNum)->count();
+                
+                // Jika pegawai ini sudah ditugaskan ke penilai tertentu, targetnya 1.
+                // Jika belum dipetakan (terbuka), targetnya adalah seluruh ketua tim.
+                $target = $assignedPenilaiId ? 1 : $totalPenilai;
 
                 $status[$bulanName] = [
-                    'sudah' => $isAssessed ? 1 : 0,
-                    'total' => $assignedPenilaiId ? 1 : 0,
-                    'lengkap' => $assignedPenilaiId ? $isAssessed : false,
+                    'sudah' => $jumlahAktual,
+                    'total' => $target,
+                    'lengkap' => ($target > 0) && ($jumlahAktual >= $target),
                 ];
             }
 
