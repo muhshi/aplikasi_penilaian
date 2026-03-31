@@ -15,6 +15,9 @@
 /node_modules
 /public/hot
 /public/storage
+/public/build
+/public/css/filament
+/public/js/filament
 /storage/*.key
 /storage/pail
 /vendor
