@@ -73,10 +73,11 @@ class CkpKipappResource extends Resource
                             ->url(fn($record) => route('file.preview', ['path' => $record->nama_file]), true)
                             ->color('primary')
                             ->icon('heroicon-m-arrow-top-right-on-square'),
-                        PdfViewerEntry::make('nama_file')
-                            ->label('Dokumen Terlampir')
-                            ->minHeight('1000px')
-                            ->fileUrl(fn($record) => route('file.preview', ['path' => $record->nama_file])),
+                        PdfViewerEntry::make('nama_file_viewer')
+                            ->label('Pratinjau PDF')
+                            ->minHeight('100svh')
+                            ->fileUrl(fn($record) => route('file.preview', ['path' => $record->nama_file]))
+                            ->columnSpanFull(),
                     ]),
             ]);
     }
