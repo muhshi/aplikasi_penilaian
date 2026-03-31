@@ -125,6 +125,11 @@ Aplikasi ini menggunakan **Filament Shield** untuk manajemen role dan permission
 - **Super Admin** — Akses penuh ke seluruh fitur
 - **Pegawai** — Akses terbatas untuk mengirim CKP dan melihat nilai
 
+## 📝 Changelog
+
+- **[2026-03-31]** `fix(pegawai)`: Memperbaiki error `SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.email' in 'where clause'` saat melakukan input data Pegawai dengan menyesuaikan *rule validator unique* agar secara eksplisit diarahkan ke tabel `users`.
+- **[2026-03-31]** `docs(rules)`: Menambahkan *Git Workflow* rule pada `.cursorrules` agar setiap adanya perubahan di repositori wajib memperbarui log `README.md` dan melakukan `push`.
+
 ## 📄 Lisensi
 
 Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
