@@ -1,0 +1,9 @@
+# Custom Rules for Aplikasi Penilaian CKP KIPAPP
+
+These rules apply to all AI code-generation for this repository.
+
+1. **Filament V5 Ecosystem Rules:**
+   - **Action Namespaces:** Since Filament v5 merges all Context Actions, **always** import Table Actions, Infolist Actions, and Page Actions from the standardized `Filament\Actions` namespace (e.g., `use Filament\Actions\ViewAction;`, `use Filament\Actions\EditAction;`). Do **NOT** use `Filament\Tables\Actions` to avoid "Class Not Found" errors.
+   - **Schema Merging:** Forms and Infolists in Filament v5 share the same Context builder. Always define `public static function infolist(Schema $schema): Schema` using `Filament\Schemas\Schema`.
+   - **Filament PDF Viewer:** Always install `joaopaulolndev/filament-pdf-viewer:"^3.0"` for Filament V5 compatibility. When displaying files from generic/custom routes (especially when auth/preview routes are required), use a distinct placeholder field name (e.g. `PdfViewerField::make('nama_file_viewer')`) that bypasses direct state-binding, and explicitly pass the custom URL generated from the target record via `->fileUrl(fn($record) => ... )`. This prevents the library from attempting to execute `->url()` internally on protected properties.
+   - **Database Strict Mode / Only Full Group By:** Given Laravel's default `strict` DB mode is ON, whenever you need to apply an Eloquent `GROUP BY` that needs compatible column sorting (like Filament's default pagination by ID), wrap the subquery using `->fromSub()` to ensure compatibility. Do not try to disable strict mode in `config/database.php`.
