@@ -35,17 +35,21 @@ class NilaiPegawaiRekapWidget extends TableWidget
         $totalPenilai = self::getTotalPenilai();
 
         $query = NilaiPegawai::query()
-            ->select(
-                'user_id',
-                'bulan',
-                'tahun',
-                DB::raw('ROUND(AVG(kualitas), 2) as avg_kualitas'),
-                DB::raw('ROUND(AVG(kuantitas), 2) as avg_kuantitas'),
-                DB::raw('ROUND(AVG(perilaku), 2) as avg_perilaku'),
-                DB::raw('ROUND(AVG(nilai_akhir), 2) as avg_nilai_akhir'),
-                DB::raw('COUNT(DISTINCT penilai_id) as jumlah_penilai'),
-            )
-            ->groupBy('user_id', 'bulan', 'tahun');
+            ->fromSub(function ($query) {
+                $query->from('nilai_pegawai')
+                    ->select(
+                        DB::raw('MAX(id) as id'),
+                        'user_id',
+                        'bulan',
+                        'tahun',
+                        DB::raw('ROUND(AVG(kualitas), 2) as avg_kualitas'),
+                        DB::raw('ROUND(AVG(kuantitas), 2) as avg_kuantitas'),
+                        DB::raw('ROUND(AVG(perilaku), 2) as avg_perilaku'),
+                        DB::raw('ROUND(AVG(nilai_akhir), 2) as avg_nilai_akhir'),
+                        DB::raw('COUNT(DISTINCT penilai_id) as jumlah_penilai')
+                    )
+                    ->groupBy('user_id', 'bulan', 'tahun');
+            }, 'nilai_pegawai');
 
         // Pegawai hanya bisa melihat rekap nilai milik mereka sendiri
         if (auth()->user()?->hasRole('pegawai')) {
