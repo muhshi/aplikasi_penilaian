@@ -24,9 +24,9 @@ class UserForm
                     ->unique(ignorable: fn($record) => $record),
                 TextInput::make('password')
                     ->password()
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn (?string $state): bool => filled($state))
+                    ->required(fn (string $operation): bool => $operation === 'create')
                     ->maxLength(255),
                 Select::make('roles')
                     ->label('Peran')
