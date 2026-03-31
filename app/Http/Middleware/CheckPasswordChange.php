@@ -16,12 +16,16 @@ class CheckPasswordChange
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && auth()->user()->must_change_password) {
-            \Filament\Notifications\Notification::make()
-                ->title('Keamanan Akun')
-                ->body('Anda menggunakan password default. Harap segera ganti password Anda.')
-                ->warning()
-                ->persistent()
-                ->send();
+            if (!session()->has('password_warning_sent')) {
+                \Filament\Notifications\Notification::make()
+                    ->title('Keamanan Akun')
+                    ->body('Anda menggunakan password default. Harap segera ganti password Anda.')
+                    ->warning()
+                    ->persistent()
+                    ->send();
+                
+                session()->put('password_warning_sent', true);
+            }
         }
 
         return $next($request);
