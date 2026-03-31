@@ -24,7 +24,7 @@ class PegawaiForm
                             ->email()
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true),
+                            ->unique(table: \App\Models\User::class, column: 'email', ignorable: fn ($record) => $record?->user),
                     ])->columns(2),
 
                 Section::make('Data Kepegawaian')
