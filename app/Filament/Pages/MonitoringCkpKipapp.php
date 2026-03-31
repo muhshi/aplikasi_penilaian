@@ -172,7 +172,7 @@ class MonitoringCkpKipapp extends Page
             ->whereNotNull('penilai_id')
             ->get();
 
-        return $pegawais->map(function ($pegawaiUser) use ($nilaiRecords) {
+        return $pegawais->map(function ($pegawaiUser) use ($nilaiRecords, $totalPenilai) {
             $pegawaiModel = $pegawaiUser->pegawai;
             $assignedPenilaiId = $pegawaiModel?->penilai_id;
             
