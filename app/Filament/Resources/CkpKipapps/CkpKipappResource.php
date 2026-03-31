@@ -94,19 +94,12 @@ class CkpKipappResource extends Resource
         $query = parent::getEloquentQuery();
         $user = auth()->user();
 
-        // 1. Super Admin bisa melihat semua data
-        if ($user?->hasRole('super_admin')) {
+        // 1. Super Admin & Ketua Tim bisa melihat semua data (Global Monitoring)
+        if ($user?->hasAnyRole(['super_admin', 'ketua_tim'])) {
             return $query;
         }
 
-        // 2. Ketua Tim hanya melihat data pegawai yang dibimbingnya
-        if ($user?->hasRole('ketua_tim')) {
-            return $query->whereHas('user.pegawai', function ($q) use ($user) {
-                $q->where('penilai_id', $user->id);
-            });
-        }
-
-        // 3. Pegawai hanya bisa melihat data milik mereka sendiri
+        // 2. Pegawai hanya bisa melihat data milik mereka sendiri
         if ($user?->hasRole('pegawai')) {
             return $query->where('user_id', $user->id);
         }

@@ -12,6 +12,8 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -82,25 +84,20 @@ class NilaiPegawaiForm
                                 $currentUser = auth()->user();
                                 $penilaiId = $currentUser->id;
 
+                                // Tampilkan semua user yang memiliki data Pegawai
                                 $query = \App\Models\User::query()
-                                    ->whereHas('pegawai') // Pastikan dia adalah pegawai
+                                    ->whereHas('pegawai') // Pastikan dia adalah pegawai/punya data di tabel pegawai
                                     ->whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun, $penilaiId) {
                                         if ($bulan && $tahun) {
+                                            // Jangan tampilkan pegawai yang SUDAH dinilai oleh penilai ini di periode terpilih
                                             $q->where('bulan', $bulan)
                                                 ->where('tahun', $tahun)
                                                 ->where('penilai_id', $penilaiId);
                                         } else {
-                                            // Jika bulan/tahun belum dipilih, jangan tampilkan opsi dulu
+                                            // Jika periode belum dipilih, jangan tampilkan opsi apa pun
                                             $q->whereRaw('1 = 0');
                                         }
                                     });
-
-                                // Terapkan filter pemetaan: Ketua Tim hanya bisa menilai pegawai yang ditugaskan kepadanya
-                                if ($currentUser->hasRole('ketua_tim') && !$currentUser->hasRole('super_admin')) {
-                                    $query->whereHas('pegawai', function ($q) use ($penilaiId) {
-                                        $q->where('penilai_id', $penilaiId);
-                                    });
-                                }
 
                                 return $query->pluck('name', 'id');
                             })
