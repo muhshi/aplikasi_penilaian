@@ -74,6 +74,14 @@ class CkpKipappForm
                     ->pdfToolbar(true)
                     ->pdfZoomLevel(100)
                     ->required(),
+
+                // Pdf Viewer di form (menyesuaikan request user)
+                \Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField::make('nama_file_viewer')
+                    ->label('Pratinjau PDF')
+                    ->minHeight('100svh')
+                    ->fileUrl(fn($record) => $record && $record->nama_file ? route('file.preview', ['path' => $record->nama_file]) : '')
+                    ->visible(fn($record) => $record && $record->nama_file)
+                    ->columnSpanFull(),
             ]);
     }
 }
