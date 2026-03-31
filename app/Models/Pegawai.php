@@ -10,6 +10,7 @@ class Pegawai extends Model
 
     protected $fillable = [
         'user_id',
+        'penilai_id', // ID Ketua Tim as assessor
         'nip',
         'nip_lama',
         'no_hp',
@@ -17,6 +18,11 @@ class Pegawai extends Model
         'pangkat',
         'golongan',
     ];
+
+    public function penilai()
+    {
+        return $this->belongsTo(User::class, 'penilai_id');
+    }
 
     public function user()
     {

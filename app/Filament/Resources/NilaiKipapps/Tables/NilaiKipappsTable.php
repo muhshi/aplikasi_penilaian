@@ -62,17 +62,17 @@ class NilaiKipappsTable
             ->filters([
                 //
             ])
-            ->recordActions(
-                auth()->user()?->hasRole('pegawai') ? [] : [
+            ->actions(
+                auth()->user()?->hasAnyRole(['super_admin', 'ketua_tim']) ? [
                     EditAction::make(),
-                ]
+                ] : []
             )
-            ->toolbarActions(
-                auth()->user()?->hasRole('pegawai') ? [] : [
+            ->bulkActions(
+                auth()->user()?->hasAnyRole(['super_admin', 'ketua_tim']) ? [
                     BulkActionGroup::make([
                         DeleteBulkAction::make(),
                     ]),
-                ]
+                ] : []
             );
     }
 }

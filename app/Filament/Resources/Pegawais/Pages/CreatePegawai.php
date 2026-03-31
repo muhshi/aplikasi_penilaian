@@ -29,7 +29,7 @@ class CreatePegawai extends CreateRecord
         // 3. (Opsional) Langsung beri role 'pegawai' pada user tersebut jika ada
         $role = Role::where('name', 'pegawai')->first();
         if ($role) {
-            $newUser->assignRole($role);
+            $newUser->syncRoles([$role->name]);
         }
 
         // 4. Masukkan user_id yang baru dibuat ke data Pegawai

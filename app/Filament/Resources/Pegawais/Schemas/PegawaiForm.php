@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Pegawais\Schemas;
 
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -25,7 +26,13 @@ class PegawaiForm
                             ->required()
                             ->maxLength(255)
                             ->unique(table: \App\Models\User::class, column: 'email', ignorable: fn ($record) => $record?->user, ignoreRecord: true),
-                    ])->columns(2),
+                        Select::make('penilai_id')
+                            ->label('Penilai / Ketua Tim')
+                            ->options(\App\Models\User::role('ketua_tim')->pluck('name', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                    ])->columns(3),
 
                 Section::make('Data Kepegawaian')
                     ->schema([

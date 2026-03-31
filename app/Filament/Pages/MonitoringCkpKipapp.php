@@ -134,12 +134,16 @@ class MonitoringCkpKipapp extends Page
             $ketuaRecords = $nilaiRecords->get($ketuaTim->id, collect());
 
             $status = [];
-            foreach ($this->bulanList as $bulanNum => $bulanName) {
+            foreach ($this->bulanList as $bulanName => $bulanNum) {
+                // Berapa banyak pegawai yang ditugaskan ke ketua tim ini yang sudah dinilai?
                 $jumlahDinilai = $ketuaRecords->where('bulan', $bulanNum)->count();
+                // Berapa total pegawai yang ditugaskan ke ketua tim ini?
+                $assignedCount = \App\Models\Pegawai::where('penilai_id', $ketuaTim->id)->count();
+
                 $status[$bulanName] = [
                     'sudah' => $jumlahDinilai,
-                    'total' => $totalPegawai,
-                    'selesai' => $jumlahDinilai >= $totalPegawai,
+                    'total' => $assignedCount,
+                    'selesai' => ($assignedCount > 0) ? ($jumlahDinilai >= $assignedCount) : true,
                 ];
             }
 
@@ -164,22 +168,26 @@ class MonitoringCkpKipapp extends Page
             ->whereNotNull('penilai_id')
             ->get();
 
-        return $pegawais->map(function ($pegawai) use ($nilaiRecords, $totalPenilai) {
-            $pegawaiNilai = $nilaiRecords->where('user_id', $pegawai->id);
+        return $pegawais->map(function ($pegawaiUser) use ($nilaiRecords) {
+            $pegawaiModel = $pegawaiUser->pegawai;
+            $assignedPenilaiId = $pegawaiModel?->penilai_id;
+            
+            $pegawaiNilai = $nilaiRecords->where('user_id', $pegawaiUser->id);
 
             $status = [];
             foreach ($this->bulanList as $bulanNum => $bulanName) {
-                $jumlahPenilai = $pegawaiNilai->where('bulan', $bulanNum)->unique('penilai_id')->count();
+                // Cek apakah penilai yang ditugaskan sudah menilai
+                $isAssessed = $assignedPenilaiId ? $pegawaiNilai->where('bulan', $bulanNum)->where('penilai_id', $assignedPenilaiId)->count() > 0 : false;
 
                 $status[$bulanName] = [
-                    'sudah' => $jumlahPenilai,
-                    'total' => $totalPenilai,
-                    'lengkap' => $jumlahPenilai >= $totalPenilai,
+                    'sudah' => $isAssessed ? 1 : 0,
+                    'total' => $assignedPenilaiId ? 1 : 0,
+                    'lengkap' => $assignedPenilaiId ? $isAssessed : false,
                 ];
             }
 
             return [
-                'name' => $pegawai->name,
+                'name' => $pegawaiUser->name,
                 'status' => $status,
             ];
         });

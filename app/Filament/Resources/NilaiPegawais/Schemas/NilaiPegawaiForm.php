@@ -76,20 +76,33 @@ class NilaiPegawaiForm
                         // Query: pegawai yang BELUM dinilai oleh penilai yang login di bulan/tahun yg dipilih
                         Select::make('user_id')
                             ->label('Nama Pegawai')
-                            // Trick Intelephense dengan variabel bertipe array
-                            ->options(/** @var array $dynamicOptions */ $dynamicOptions = function (Get $get) {
+                            ->options(function (Get $get) {
                                 $bulan = $get('bulan');
                                 $tahun = $get('tahun');
-                                $penilaiId = auth()->id();
-                                return \App\Models\User::whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun, $penilaiId) {
-                                    if ($bulan && $tahun) {
-                                        $q->where('bulan', $bulan)
-                                            ->where('tahun', $tahun)
-                                            ->where('penilai_id', $penilaiId);
-                                    } else {
-                                        $q->whereRaw('1 = 0');
-                                    }
-                                })->pluck('name', 'id');
+                                $currentUser = auth()->user();
+                                $penilaiId = $currentUser->id;
+
+                                $query = \App\Models\User::query()
+                                    ->whereHas('pegawai') // Pastikan dia adalah pegawai
+                                    ->whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun, $penilaiId) {
+                                        if ($bulan && $tahun) {
+                                            $q->where('bulan', $bulan)
+                                                ->where('tahun', $tahun)
+                                                ->where('penilai_id', $penilaiId);
+                                        } else {
+                                            // Jika bulan/tahun belum dipilih, jangan tampilkan opsi dulu
+                                            $q->whereRaw('1 = 0');
+                                        }
+                                    });
+
+                                // Terapkan filter pemetaan: Ketua Tim hanya bisa menilai pegawai yang ditugaskan kepadanya
+                                if ($currentUser->hasRole('ketua_tim') && !$currentUser->hasRole('super_admin')) {
+                                    $query->whereHas('pegawai', function ($q) use ($penilaiId) {
+                                        $q->where('penilai_id', $penilaiId);
+                                    });
+                                }
+
+                                return $query->pluck('name', 'id');
                             })
                             ->searchable()
                             ->preload()

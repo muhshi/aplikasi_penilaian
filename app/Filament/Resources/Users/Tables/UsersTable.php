@@ -53,7 +53,7 @@ class UsersTable
                         ->action(function (Collection $records, array $data): void {
                             $role = Role::findById($data['role_id']);
                             foreach ($records as $record) {
-                                $record->assignRole($role);
+                                $record->syncRoles([$role->name]);
                             }
                         })
                         ->deselectRecordsAfterCompletion(),

@@ -44,14 +44,26 @@ class NilaiKipappResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
+        $user = auth()->user();
 
-        // Pegawai hanya bisa melihat nilai KIPAPP milik mereka sendiri
-        if (auth()->user()?->hasRole('pegawai')) {
-            $pegawai = Pegawai::where('user_id', auth()->id())->first();
+        // 1. Super Admin bisa melihat semua data
+        if ($user?->hasRole('super_admin')) {
+            return $query;
+        }
+
+        // 2. Ketua Tim hanya melihat data pegawai yang dibimbingnya
+        if ($user?->hasRole('ketua_tim')) {
+            return $query->whereHas('pegawai', function ($q) use ($user) {
+                $q->where('penilai_id', $user->id);
+            });
+        }
+
+        // 3. Pegawai hanya bisa melihat nilai KIPAPP milik mereka sendiri
+        if ($user?->hasRole('pegawai')) {
+            $pegawai = Pegawai::where('user_id', $user->id)->first();
             if ($pegawai) {
                 $query->where('nip_lama', $pegawai->nip_lama);
             } else {
-                // Jika pegawai tidak ditemukan, jangan tampilkan data apapun
                 $query->whereRaw('1 = 0');
             }
         }

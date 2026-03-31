@@ -51,10 +51,21 @@ class NilaiPegawaiResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
+        $user = auth()->user();
 
-        // Pegawai hanya bisa melihat nilai milik mereka sendiri
-        if (auth()->user()?->hasRole('pegawai')) {
-            $query->where('user_id', auth()->id());
+        // 1. Super Admin bisa melihat semua data
+        if ($user?->hasRole('super_admin')) {
+            return $query;
+        }
+
+        // 2. Ketua Tim hanya melihat data di mana mereka adalah penilainya
+        if ($user?->hasRole('ketua_tim')) {
+            return $query->where('penilai_id', $user->id);
+        }
+
+        // 3. Pegawai hanya bisa melihat nilai milik mereka sendiri
+        if ($user?->hasRole('pegawai')) {
+            return $query->where('user_id', $user->id);
         }
 
         return $query;
@@ -64,8 +75,8 @@ class NilaiPegawaiResource extends Resource
     {
         return [
             'index' => ListNilaiPegawais::route('/'),
-            //'create' => CreateNilaiPegawai::route('/create'),
-            //'edit' => EditNilaiPegawai::route('/{record}/edit'),
+            'create' => CreateNilaiPegawai::route('/create'),
+            'edit' => EditNilaiPegawai::route('/{record}/edit'),
         ];
     }
 }
