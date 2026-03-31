@@ -73,7 +73,7 @@ class CkpKipappForm
                     ->pdfDisplayPage(1)
                     ->pdfToolbar(true)
                     ->pdfZoomLevel(100)
-                    ->required(),
+                    ->required(fn ($context) => $context === 'create'),
 
                 // Pdf Viewer di form (menyesuaikan request user)
                 \Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField::make('nama_file_viewer')
