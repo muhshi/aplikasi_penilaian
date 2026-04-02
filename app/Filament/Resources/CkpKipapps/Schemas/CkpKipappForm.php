@@ -7,6 +7,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rules\Unique;
 
 /**
  * Class CkpKipappForm
@@ -51,7 +52,15 @@ class CkpKipappForm
                         'Tahunan Dokumen Evaluasi' => 'Tahunan Dokumen Evaluasi',
                     ])
                     ->searchable()
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, $get) {
+                        return $rule->where('user_id', $get('user_id'))
+                                    ->where('bulan', $get('bulan'))
+                                    ->where('tahun', $get('tahun'));
+                    })
+                    ->validationMessages([
+                        'unique' => 'Anda sudah mengupload CKP untuk bulan dan tahun ini.',
+                    ]),
 
                 // Tahun periode CKP 
                 Select::make('tahun')
@@ -69,6 +78,8 @@ class CkpKipappForm
                     ->disk('public')
                     ->directory('ckp-documents')
                     ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(10240) // Batasi maksimal 10MB
+                    ->validationAttribute('Dokumen CKP')
                     ->pdfPreviewHeight(500)
                     ->pdfDisplayPage(1)
                     ->pdfToolbar(true)
