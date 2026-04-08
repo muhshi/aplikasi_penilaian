@@ -18,6 +18,24 @@ class StatsOverview extends BaseWidget
 
     protected static ?int $sort = 1;
 
+    /**
+     * Mapping angka bulan ke nama bulan (sesuai format yang disimpan di tabel ckp_kipapp).
+     */
+    protected const BULAN_MAP = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember',
+    ];
+
     protected function getStats(): array
     {
         $bulan = $this->filters['bulan'] ?? null;
@@ -31,17 +49,22 @@ class StatsOverview extends BaseWidget
 
         $bulan = (int) $bulan;
         $tahun = (int) $tahun;
-        $namaBulan = Carbon::create()->month($bulan)->translatedFormat('F');
+        $namaBulan = self::BULAN_MAP[$bulan] ?? Carbon::create()->month($bulan)->translatedFormat('F');
 
         $totalPegawai = Pegawai::count();
+
+        // Hitung rata-rata nilai (cap di 100 maksimal)
         $avgNilai = NilaiPegawai::where('bulan', $bulan)
             ->where('tahun', $tahun)
             ->avg('nilai_akhir') ?? 0;
+        $avgNilai = min((float) $avgNilai, 100);
 
-        $totalCkp = CkpKipapp::where('bulan', $bulan)
+        // Hitung kelengkapan CKP — gunakan nama bulan string karena tabel ckp_kipapp
+        // menyimpan bulan sebagai string (e.g. 'Januari', 'Februari', etc.)
+        $totalCkp = CkpKipapp::where('bulan', $namaBulan)
             ->where('tahun', $tahun)
             ->distinct('user_id')
-            ->count();
+            ->count('user_id');
 
         return [
             Stat::make('Total Pegawai', $totalPegawai)

@@ -1,0 +1,12 @@
+[
+    {
+        "ID": 1,
+        "Tahun": 2026,
+        "IsActive": true
+    },
+    {
+        "ID": 2,
+        "Tahun": 2025,
+        "IsActive": false
+    }
+]

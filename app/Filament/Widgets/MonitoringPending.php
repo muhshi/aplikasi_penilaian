@@ -38,16 +38,25 @@ class MonitoringPending extends BaseWidget
         $bulan = (int) $bulan;
         $tahun = (int) $tahun;
 
+        // Mapping angka bulan ke nama bulan (sesuai format di tabel ckp_kipapp)
+        $bulanMap = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret',
+            4 => 'April', 5 => 'Mei', 6 => 'Juni',
+            7 => 'Juli', 8 => 'Agustus', 9 => 'September',
+            10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+        $namaBulan = $bulanMap[$bulan] ?? (string) $bulan;
+
         return $table
             ->query(
                 User::query()
                     ->whereHas('pegawai') // Hanya user yang merupakan pegawai
-                    ->where(function ($query) use ($bulan, $tahun) {
+                    ->where(function ($query) use ($bulan, $tahun, $namaBulan) {
                         $query->whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun) {
                             $q->where('bulan', $bulan)->where('tahun', $tahun);
                         })
-                            ->orWhereDoesntHave('ckpKipapps', function ($q) use ($bulan, $tahun) {
-                                $q->where('bulan', $bulan)->where('tahun', $tahun);
+                            ->orWhereDoesntHave('ckpKipapps', function ($q) use ($namaBulan, $tahun) {
+                                $q->where('bulan', $namaBulan)->where('tahun', $tahun);
                             });
                     })
             )
@@ -69,7 +78,7 @@ class MonitoringPending extends BaseWidget
                 IconColumn::make('ckp_status')
                     ->label('Dokumen CKP')
                     ->boolean()
-                    ->state(fn($record) => $record->ckpKipapps()->where('bulan', $bulan)->where('tahun', $tahun)->exists())
+                    ->state(fn($record) => $record->ckpKipapps()->where('bulan', $namaBulan)->where('tahun', $tahun)->exists())
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')

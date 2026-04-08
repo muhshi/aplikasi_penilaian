@@ -1,0 +1,71 @@
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   app/Http/Middleware/CheckPasswordChange.php
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.git_status_check.txt
+	.git_status_cmd.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+diff --git a/app/Http/Middleware/CheckPasswordChange.php b/app/Http/Middleware/CheckPasswordChange.php
+index ae7a30a..7b82e83 100644
+--- a/app/Http/Middleware/CheckPasswordChange.php
++++ b/app/Http/Middleware/CheckPasswordChange.php
+@@ -16,16 +16,12 @@ class CheckPasswordChange
+     public function handle(Request $request, Closure $next): Response
+     {
+         if (auth()->check() && auth()->user()->must_change_password) {
+-            if (!session()->has('password_warning_sent')) {
+-                \Filament\Notifications\Notification::make()
+-                    ->title('Keamanan Akun')
+-                    ->body('Anda menggunakan password default. Harap segera ganti password Anda.')
+-                    ->warning()
+-                    ->persistent()
+-                    ->send();
+-                
+-                session()->put('password_warning_sent', true);
+-            }
++            \Filament\Notifications\Notification::make()
++                ->title('Keamanan Akun')
++                ->body('Anda menggunakan password default. Harap segera ganti password Anda.')
++                ->warning()
++                ->persistent()
++                ->send();
+         }
+ 
+         return $next($request);
+commit e7f2e838e550cb78ee7fd0a299ee28780ff80f83
+Merge: 22a9033 2c5a608
+Author: Sriayuu <sriayupalangda@gmail.com>
+Date:   Thu Apr 2 16:02:18 2026 +0800
+
+    Merge branch 'master' of https://github.com/muhshi/aplikasi_penilaian
+
+commit 22a9033909b968f6b44833db528361ed322a270d
+Author: Sriayuu <sriayupalangda@gmail.com>
+Date:   Thu Apr 2 16:01:25 2026 +0800
+
+    feat: add unique validation to CKP KIPAPP upload to prevent duplicates
+
+commit 2c5a608d1adf9cb1fa96fb52052affe376801f6d
+Author: muhshi <amuhshi@gmail.com>
+Date:   Tue Mar 31 15:21:38 2026 +0700
+
+    Fix: push build assets to server
+
+commit c220120c15387051b617b0720efb54033981f72e
+Author: muhshi <amuhshi@gmail.com>
+Date:   Tue Mar 31 15:14:07 2026 +0700
+
+    Add .dockerignore to fix permission issues during docker build
+
+commit d4ceefc7b7041682e89e3b0200718512368c2a66
+Author: muhshi <amuhshi@gmail.com>
+Date:   Tue Mar 31 15:07:50 2026 +0700
+
+    Fix: force https asset loading in production

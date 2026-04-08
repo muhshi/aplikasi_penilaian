@@ -1,0 +1,20 @@
+e7f2e83 Merge branch 'master' of https://github.com/muhshi/aplikasi_penilaian
+22a9033 feat: add unique validation to CKP KIPAPP upload to prevent duplicates
+2c5a608 Fix: push build assets to server
+c220120 Add .dockerignore to fix permission issues during docker build
+d4ceefc Fix: force https asset loading in production
+9d411af build: compile frontend assets
+2d9813b fix(middleware): resolve infinite notification loop
+6b378cb chore: update revisions
+707d6ab fix: PDF upload only required on create for CkpKipappForm
+7ccd09d fix: Undefined variable totalPenilai in MonitoringCkpKipapp.php
+a5e200e fix: Perbaikan logika monitoring agar tidak centang hijau jika data pemetaan kosong
+88751a4 docs: Update README.md and CHANGELOG.md with recent features and fixes
+cfdec7d feat: Nilai Pegawai bersifat Personal, CPK & Nilai KIPAPP bersifat Global untuk Ketua Tim
+4ee29f7 feat: Implementasi Pemetaan Penilai, Filter Akses Ketua Tim, dan Perbaikan Role Stacking
+021642d fix: Gunakan rules('digits:X') untuk validasi NIP guna menghindari BadMethodCallException
+23e715d fix: Gunakan digits() untuk validasi NIP agar tidak konflik dengan max numeric
+6582f58 fix: Kembalikan <?php tag dan namespace yang terhapus di EditPegawai.php
+de3c469 feat: Otomatisasi Create/Edit User via Pegawai & Fix NIP Numeric Error
+ba47c31 chore(assets): hapus tracking file statis filament
+5aab3f5 chore(gitignore): abaikan folder public/build dan assets filament
