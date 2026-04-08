@@ -51,7 +51,6 @@ class CkpKipappForm
                         'Tahunan Penilaian' => 'Tahunan Penilaian',
                         'Tahunan Dokumen Evaluasi' => 'Tahunan Dokumen Evaluasi',
                     ])
-                    ->searchable()
                     ->required()
                     ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, $get) {
                         return $rule->where('user_id', $get('user_id'))

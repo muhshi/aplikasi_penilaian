@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-03-31
+## [Unreleased] - 2026-04-08
+
+### Fixed
+- **Dashboard Accuracy Fix**: Resolved data type mismatch in month comparison (numeric vs string) that caused CKP completeness to show 0 when it should have been populated.
+- **Grade Calculation Refinement**: Updated grade formatting logic to ensure values are accurate and do not exceed 100% in the monitor matrix.
+- **UI Consistency**: Standardized CSS for dashboard titles and logo alignment to prevent overlapping and visibility issues.
+
+## [1.1.0] - 2026-03-31
 
 ### Added
 - **Otomatisasi User via Pegawai**: Implementasi pembuatan akun `User` secara otomatis (password default: `password123`) saat data `Pegawai` baru dibuat, serta sinkronisasi nama/email saat data diperbarui.
