@@ -1,4 +1,0 @@
-From https://github.com/muhshi/aplikasi_penilaian
- * branch            master     -> FETCH_HEAD
-   b25ac88..8f3997a  master     -> origin/master
-Rebasing (1/2)Rebasing (2/2)[KSuccessfully rebased and updated refs/heads/master.
