@@ -16,6 +16,20 @@ class DownloadLapkinJob implements ShouldQueue
     use Queueable;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * The number of seconds to wait before retrying the job.
+     *
+     * @var int
+     */
+    public $backoff = 60;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(
@@ -33,29 +47,36 @@ class DownloadLapkinJob implements ShouldQueue
         $downloadUrl = GDriveHelper::getDirectDownloadUrl($this->gdriveUrl);
 
         if (!$downloadUrl) {
-            Log::error("Bulk Import: Invalid GDrive link for user {$this->userId}", ['url' => $this->gdriveUrl]);
+            Log::error("Bulk Import: Link GDrive tidak valid untuk user {$this->userId}", ['url' => $this->gdriveUrl]);
             return;
         }
 
         try {
-            $response = Http::timeout(60)->get($downloadUrl);
+            // Meningkatkan timeout ke 120 detik karena file PDF mungkin besar
+            // Menggunakan withoutVerifying() jika ada masalah SSL cert pada environment tertentu
+            $response = Http::timeout(120)
+                ->withOptions(['verify' => false]) // Hindari masalah SSL EOF di beberapa server
+                ->get($downloadUrl);
 
             if ($response->failed()) {
-                Log::error("Bulk Import: Download failed for user {$this->userId}", [
+                Log::error("Bulk Import: Download gagal untuk user {$this->userId}", [
                     'url' => $this->gdriveUrl,
                     'status' => $response->status(),
-                    'body' => $response->body()
+                    'hint' => 'Pastikan share link GDrive bersifat Public/Anyone with the link'
                 ]);
-                return;
+                
+                // Melempar exception agar Laravel melakukan retry sesuai property $tries
+                throw new \Exception("Download HTTP failed with status " . $response->status());
             }
 
-            // Generate unique filename following the convention seen in the project
+            // Generate unique filename
             $filename = 'ckp-documents/' . Str::upper(Str::random(26)) . '.pdf';
             
-            // Save file to public disk
+            // Simpan file ke disk public
             Storage::disk('public')->put($filename, $response->body());
 
-            // Create or update database record
+            // Create atau update record di database
+            // Note: Pastikan koneksi DB mengarah ke server yang benar saat dijalankan
             CkpKipapp::updateOrCreate(
                 [
                     'user_id' => $this->userId,
@@ -68,10 +89,13 @@ class DownloadLapkinJob implements ShouldQueue
             );
 
         } catch (\Exception $e) {
-            Log::error("Bulk Import: Exception during download for user {$this->userId}", [
+            Log::error("Bulk Import: Kesalahan saat memproses download untuk user {$this->userId}", [
                 'message' => $e->getMessage(),
                 'url' => $this->gdriveUrl
             ]);
+            
+            // Lempar kembali agar retry jalan
+            throw $e;
         }
     }
 }
