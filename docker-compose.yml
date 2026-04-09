@@ -19,6 +19,23 @@ services:
       - default
       - mysql-stack_mysql_network
 
+  aplikasi-penilaian-worker:
+    container_name: aplikasi-penilaian-worker
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Menjalankan worker dengan 3x percobaan (sesuai setting job)
+    command: php artisan queue:work --tries=3 --backoff=60
+    volumes:
+      - .:/app
+      - .:/var/www/html
+    networks:
+      - default
+      - mysql-stack_mysql_network
+    depends_on:
+      - aplikasi-penilaian-franken
+
 networks:
   default: {}
   mysql-stack_mysql_network:
