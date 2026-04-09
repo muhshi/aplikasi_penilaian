@@ -1,302 +1,338 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Penilaian CKP — BPS Kabupaten Demak</title>
-    <meta name="description" content="Sistem Informasi Penilaian Capaian Kinerja Pegawai (CKP) BPS Kabupaten Demak">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sistem Informasi Penilaian Capaian Kinerja Pegawai (CKP) - BPS Kabupaten Demak. Platform terintegrasi untuk manajemen dokumen KIPAPP dan penilaian kinerja secara akurat.">
+    
+    <title>Portal CKP - BPS Kabupaten Demak</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-bps.png') }}">
+
+    <!-- Fonts: Plus Jakarta Sans for Premium Feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A2540',
+                        accent: '#F8B803',
+                        'bps-dark': '#06162a',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'marquee': 'marquee 40s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0a1628 0%, #0f2744 30%, #132f52 50%, #0d2240 70%, #091a30 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Subtle animated background pattern */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(30, 90, 170, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(20, 70, 140, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 60% 80%, rgba(25, 80, 155, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Floating decorative elements */
-        .bg-decoration {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.07;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .bg-decoration-1 {
-            width: 500px;
-            height: 500px;
-            background: #3b82f6;
-            top: -150px;
-            right: -100px;
-            animation: float1 20s ease-in-out infinite;
-        }
-
-        .bg-decoration-2 {
-            width: 400px;
-            height: 400px;
-            background: #1d4ed8;
-            bottom: -100px;
-            left: -100px;
-            animation: float2 25s ease-in-out infinite;
-        }
-
-        @keyframes float1 {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(-30px, 30px);
-            }
-        }
-
-        @keyframes float2 {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(20px, -20px);
-            }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 2rem 1.5rem;
-            max-width: 580px;
-            width: 100%;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Logo */
-        .logo-wrapper {
-            margin-bottom: 2rem;
-        }
-
-        .logo-wrapper img {
-            width: 90px;
-            height: auto;
-            filter: drop-shadow(0 4px 20px rgba(59, 130, 246, 0.3));
-            transition: transform 0.3s ease;
-        }
-
-        .logo-wrapper img:hover {
-            transform: scale(1.05);
-        }
-
-        /* Titles */
-        .app-title {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #93c5fd 100%);
+        .text-gradient {
+            background: linear-gradient(135deg, #0A2540 0%, #F8B803 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
-
-        .app-subtitle {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #93c5fd;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
-
-        /* Divider */
-        .divider {
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-            border-radius: 2px;
-            margin: 0 auto 1.5rem;
+        .btn-premium {
+            background: #0A2540;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        /* Description */
-        .description {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #94a3b8;
-            margin-bottom: 2.5rem;
-            max-width: 460px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* CTA Button */
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.9rem 2.2rem;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            box-shadow:
-                0 4px 15px rgba(37, 99, 235, 0.3),
-                0 1px 3px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            letter-spacing: 0.01em;
-        }
-
-        .cta-button:hover {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            box-shadow:
-                0 8px 25px rgba(37, 99, 235, 0.4),
-                0 2px 6px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        .btn-premium:hover {
+            background: #14375a;
             transform: translateY(-2px);
+            box-shadow: 0 15px 35px -5px rgba(10, 37, 64, 0.25);
         }
-
-        .cta-button:active {
-            transform: translateY(0);
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .cta-button svg {
-            width: 18px;
-            height: 18px;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-button:hover svg {
-            transform: translateX(3px);
-        }
-
-        /* Footer */
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1;
-            text-align: center;
-            padding: 1.2rem;
-            color: #475569;
-            font-size: 0.8rem;
-            letter-spacing: 0.02em;
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            .app-title {
-                font-size: 1.5rem;
-            }
-
-            .app-subtitle {
-                font-size: 0.95rem;
-            }
-
-            .description {
-                font-size: 0.88rem;
-            }
-
-            .logo-wrapper img {
-                width: 72px;
-            }
+        .reveal-visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
         }
     </style>
 </head>
 
-<body>
-    <!-- Background decorations -->
-    <div class="bg-decoration bg-decoration-1"></div>
-    <div class="bg-decoration bg-decoration-2"></div>
+<body class="text-slate-900 font-sans antialiased overflow-x-hidden selection:bg-primary/10" style="background-color: #FAFAF6;">
 
-    <main class="container">
-        <!-- Logo BPS -->
-        <div class="logo-wrapper">
-            <img src="{{ asset('images/logo-bps.png') }}" alt="Logo BPS Kabupaten Demak">
+    <!-- Premium Background -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, #FAFAF6 0%, #F5F0EB 40%, #EEF4FF 100%);"></div>
+        <div class="absolute top-[-15%] left-[-10%] w-[60%] h-[60%] rounded-full animate-pulse-slow" style="background: radial-gradient(circle, rgba(10,37,64,0.06) 0%, transparent 70%); filter: blur(80px);"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full animate-pulse-slow" style="animation-delay: 2s; background: radial-gradient(circle, rgba(248,184,3,0.05) 0%, transparent 70%); filter: blur(80px);"></div>
+        <!-- Subtle Linen texture -->
+        <div class="absolute inset-0 opacity-[0.015]" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='none'/%3E%3Cpath d='M0 0h1v100H0zM10 0h1v100h-1zM20 0h1v100h-1zM30 0h1v100h-1zM40 0h1v100h-1zM50 0h1v100h-1zM60 0h1v100h-1zM70 0h1v100h-1zM80 0h1v100h-1zM90 0h1v100h-1zM0 0v1h100V0zM0 10v1h100v-1zM0 20v1h100v-1zM0 30v1h100v-1zM0 40v1h100v-1zM0 50v1h100v-1zM0 60v1h100v-1zM0 70v1h100v-1zM0 80v1h100v-1zM0 90v1h100v-1z' fill='%23000' opacity='0.05'/%3E%3C/svg%3E&quot;);"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-6 inset-x-6 z-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between px-8 py-4 rounded-[2.5rem] glass shadow-xl shadow-primary/5 border border-primary/5">
+                <div class="flex items-center gap-4 group cursor-pointer">
+                    <img src="{{ asset('images/logo-bps.png') }}" alt="Logo BPS" class="h-10 w-auto">
+                    <div class="border-l-2 border-slate-200 pl-4">
+                        <span class="block text-base font-black text-primary uppercase tracking-tighter leading-none mb-0.5">PENILAIAN CKP</span>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">BPS Kab. Demak</span>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="https://demakkab.bps.go.id" target="_blank" class="text-sm font-bold text-slate-500 hover:text-primary transition-colors relative group">
+                        Profil Kantor
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+                    </a>
+                    @auth
+                        <a href="{{ url('/admin') }}" class="btn-premium px-6 py-2.5 rounded-full text-sm font-bold">Dashboard</a>
+                    @else
+                        <a href="{{ route('filament.admin.auth.login') }}" class="btn-premium px-6 py-2.5 rounded-full text-sm font-bold">Masuk Aplikasi</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="relative pt-40 pb-20 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            
+            <div class="flex-1 text-center lg:text-left relative z-10 animate-reveal">
+                <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-primary/10 mb-8 bg-white/50 backdrop-blur">
+                    <span class="flex h-1.5 w-1.5 rounded-full bg-accent animate-ping"></span>
+                    <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Portal Kinerja Pegawai</span>
+                </div>
+
+                <h1 class="text-5xl md:text-6xl font-black tracking-tight mb-6 leading-[1.1] text-primary">
+                    Sistem Penilaian <br> <span class="text-gradient">Capaian Kinerja</span>
+                </h1>
+
+                <p class="text-lg text-slate-500 max-w-lg mb-10 leading-relaxed font-medium">
+                    Transformasi digital manajemen kinerja <span class="font-bold text-primary">BPS Kabupaten Demak</span>. 
+                    Kelola dokumen KIPAPP dan pantau rekapitulasi nilai secara akurat, cepat, dan transparan.
+                </p>
+
+                <!-- CTA -->
+                <div class="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
+                    @auth
+                        <a href="{{ url('/admin') }}" class="btn-premium group px-10 py-4 rounded-3xl text-sm font-black shadow-2xl shadow-primary/20">
+                            <span class="flex items-center gap-2">
+                                Dashboard Admin
+                                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </span>
+                        </a>
+                    @else
+                        <a href="{{ route('filament.admin.auth.login') }}" class="btn-premium group px-10 py-4 rounded-3xl text-sm font-black shadow-2xl shadow-primary/20">
+                            <span class="flex items-center gap-2">
+                                Masuk ke Aplikasi
+                                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </span>
+                        </a>
+                    @endauth
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="mt-12 transition-all duration-1000">
+                    <div class="inline-flex items-center gap-1.5 p-1 rounded-[2rem] glass border border-primary/5 shadow-lg shadow-primary/5">
+                        <div class="flex items-center gap-3 pl-3 pr-6 py-2 rounded-full cursor-default group/stat">
+                            <div class="w-9 h-9 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover/stat:bg-primary group-hover/stat:text-white transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-lg font-black text-primary leading-none tracking-tighter">38 Pegawai</span>
+                                <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Terdaftar di SDM</span>
+                            </div>
+                        </div>
+                        <div class="w-px h-6 bg-slate-200"></div>
+                        <div class="flex items-center gap-3 pl-3 pr-6 py-2 rounded-full cursor-default group/stat">
+                            <div class="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center text-primary group-hover/stat:bg-accent group-hover/stat:text-white transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-lg font-black text-primary leading-none tracking-tighter">Security</span>
+                                <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Internal Network</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Mockup -->
+            <div class="flex-1 relative hidden lg:block animate-float">
+                <div class="relative w-[450px] mx-auto">
+                    <div class="absolute -inset-10 bg-primary/5 rounded-[4rem] blur-[60px] opacity-40"></div>
+                    <div class="relative bg-white p-3 rounded-[3.5rem] shadow-2xl border border-primary/10 overflow-hidden">
+                        <img src="{{ asset('images/ckp-dashboard-actual.png') }}" alt="Dashboard Preview" class="w-full h-auto rounded-[2.8rem] shadow-inner opacity-90 transition-opacity group-hover:opacity-100">
+                        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-2xl shadow-xl flex items-center gap-4 border-white/50">
+                            <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                            <span class="text-[10px] font-black text-primary uppercase tracking-widest leading-none">Dashboard Aktif</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Title -->
-        <h1 class="app-title">Aplikasi Penilaian CKP</h1>
-        <p class="app-subtitle">BPS Kabupaten Demak</p>
-
-        <!-- Divider -->
-        <div class="divider"></div>
-
-        <!-- Description -->
-        <p class="description">
-            Sistem informasi untuk mengelola pengiriman, monitoring, dan penilaian
-            Capaian Kinerja Pegawai (CKP) di lingkungan BPS Kabupaten Demak.
-        </p>
-
-        <!-- CTA Button -->
-        <a href="{{ url('/admin') }}" class="cta-button" id="login-button">
-            Masuk ke Aplikasi
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-        </a>
+        <!-- Marquee -->
+        <div class="relative mt-24 overflow-hidden py-4 border-y border-primary/5">
+            <div class="flex gap-12 animate-marquee whitespace-nowrap opacity-60">
+                @foreach (['Monitoring Lapkin', 'Verifikasi KIPAPP', 'Rekapitulasi Nilai', 'Sistem Informasi CKP', 'Manajemen Pegawai', 'Dokumentasi Digital'] as $label)
+                    <div class="inline-flex items-center gap-3 px-6 py-2 bg-white rounded-full border border-primary/10 shadow-sm">
+                        <span class="text-primary font-bold text-xs uppercase tracking-widest">{{ $label }}</span>
+                    </div>
+                @endforeach
+                <!-- Duplicate for seamless scroll -->
+                @foreach (['Monitoring Lapkin', 'Verifikasi KIPAPP', 'Rekapitulasi Nilai', 'Sistem Informasi CKP', 'Manajemen Pegawai', 'Dokumentasi Digital'] as $label)
+                    <div class="inline-flex items-center gap-3 px-6 py-2 bg-white rounded-full border border-primary/10 shadow-sm">
+                        <span class="text-primary font-bold text-xs uppercase tracking-widest">{{ $label }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        &copy; {{ date('Y') }} BPS Kabupaten Demak. Seluruh hak cipta dilindungi.
-    </footer>
-</body>
+    <!-- Features Section -->
+    <section class="py-32 px-6 bg-white/30 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl font-black text-primary tracking-tighter mb-6">Fokus <span class="text-gradient">Layanan Utama</span></h2>
+                <p class="text-slate-500 font-medium max-w-2xl mx-auto text-lg leading-relaxed italic">Instrumen digital untuk mendukung tertib administrasi kinerja di lingkungan BPS.</p>
+            </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Card 1 -->
+                <div class="group h-full reveal" style="transition-delay: 100ms">
+                    <div class="h-full p-12 rounded-[3.5rem] bg-white border border-primary/5 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-3 relative overflow-hidden">
+                        <div class="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center mb-8 shadow-xl shadow-primary/20 transition-transform group-hover:rotate-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-black text-primary mb-4 tracking-tighter">Monitoring Lapkin</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed text-sm">Pantau pengumpulan laporan kinerja bulanan pegawai secara terpusat dan rapi.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group h-full reveal" style="transition-delay: 200ms">
+                    <div class="h-full p-12 rounded-[3.5rem] bg-white border border-accent/20 shadow-lg hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 hover:-translate-y-3 relative overflow-hidden">
+                        <div class="w-16 h-16 rounded-2xl bg-accent text-primary flex items-center justify-center mb-8 shadow-xl shadow-accent/20 transition-transform group-hover:rotate-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-black text-primary mb-4 tracking-tighter">Manajemen KIPAPP</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed text-sm">Organisasi dokumen capaian kinerja bulanan yang aman dan tersusun sesuai periode.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group h-full reveal" style="transition-delay: 300ms">
+                    <div class="h-full p-12 rounded-[3.5rem] bg-white border border-primary/5 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-3 relative overflow-hidden">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-800 text-white flex items-center justify-center mb-8 shadow-xl shadow-slate-800/20 transition-transform group-hover:rotate-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-black text-primary mb-4 tracking-tighter">Rekapitulasi Nilai</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed text-sm">Otomatisasi penilaian kinerja untuk mempermudah evaluasi akhir bulan pegawai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white pt-24 pb-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+                <div class="lg:col-span-6 flex flex-col items-start gap-8">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white rounded-2xl">
+                            <img src="{{ asset('images/logo-bps.png') }}" class="h-10 w-auto" alt="Logo Footer">
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-black tracking-tighter leading-none mb-1 uppercase">BPS KABUPATEN</h4>
+                            <h4 class="text-lg font-black tracking-tighter text-accent leading-none uppercase">DEMAK</h4>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 font-medium leading-relaxed max-w-md">
+                        Penyedia data statistik berkualitas untuk pembangunan berkelanjutan. Melayani dengan integritas, profesionalisme, dan amanah.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 text-slate-300 text-sm">
+                            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                            <span>Jl. Sultan Hadiwijaya No. 23, Demak, Jawa Tengah 59515</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-slate-300 text-sm">
+                            <svg class="w-5 h-5 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 5z"></path></svg>
+                            <span>(0291) 685445</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 flex flex-col gap-8">
+                    <h5 class="text-xs font-black uppercase tracking-[0.3em] text-white/50">Layanan Internal</h5>
+                    <ul class="space-y-4 font-bold text-slate-400 text-xs">
+                        <li><a href="#" class="hover:text-accent transition-colors">Monitoring CKP</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Verifikasi KIPAPP</a></li>
+                        <li><a href="#" class="hover:text-accent transition-colors">Rekapitulasi Nilai</a></li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-3 flex flex-col gap-8">
+                    <h5 class="text-xs font-black uppercase tracking-[0.3em] text-white/50">Tautan Resmi</h5>
+                    <ul class="space-y-4 font-bold text-slate-400 text-xs">
+                        <li><a href="https://bps.go.id" target="_blank" class="hover:text-accent transition-colors">BPS RI</a></li>
+                        <li><a href="https://jateng.bps.go.id" target="_blank" class="hover:text-accent transition-colors">BPS Jawa Tengah</a></li>
+                        <li><a href="https://demakkab.bps.go.id" target="_blank" class="hover:text-accent transition-colors">BPS Kab. Demak</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <p class="text-slate-500 font-bold text-[10px] tracking-widest uppercase text-center md:text-left">
+                    &copy; 2026 Badan Pusat Statistik Kabupaten Demak.
+                </p>
+                <div class="flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                    <span class="text-[8px] font-black uppercase tracking-[0.3em] text-slate-300 italic">Melayani Dengan Data</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+</body>
 </html>

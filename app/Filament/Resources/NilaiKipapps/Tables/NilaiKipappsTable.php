@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class NilaiKipappsTable
@@ -60,7 +61,25 @@ class NilaiKipappsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('bulan')
+                    ->label('Bulan')
+                    ->options([
+                        1 => 'Januari',
+                        2 => 'Februari',
+                        3 => 'Maret',
+                        4 => 'April',
+                        5 => 'Mei',
+                        6 => 'Juni',
+                        7 => 'Juli',
+                        8 => 'Agustus',
+                        9 => 'September',
+                        10 => 'Oktober',
+                        11 => 'November',
+                        12 => 'Desember',
+                    ]),
+                SelectFilter::make('tahun')
+                    ->label('Tahun')
+                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray()),
             ])
             ->actions(
                 auth()->user()?->hasAnyRole(['super_admin', 'ketua_tim']) ? [

@@ -18,13 +18,10 @@ class ListNilaiPegawais extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        // Pegawai hanya bisa melihat, tidak bisa import/export/create
-        if (auth()->user()?->hasRole('pegawai')) {
-            return [];
-        }
+        $user = auth()->user();
 
         return array_filter([
-            \Filament\Actions\Action::make('import')
+            $user?->hasRole('super_admin') ? \Filament\Actions\Action::make('import')
                 ->label('Import CSV')
                 ->color('warning')
                 ->icon('heroicon-o-arrow-up-tray')
@@ -79,18 +76,19 @@ class ListNilaiPegawais extends ListRecords
                         // Hapus file temporary setelah import
                         $disk->delete($data['file']);
                     }
-                }),
+                }) : null,
             \Filament\Actions\Action::make('export')
                 ->label('Export Excel')
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
+                ->visible(fn() => !$user?->hasRole('pegawai'))
                 ->action(function () {
                     return \Maatwebsite\Excel\Facades\Excel::download(
                         new \App\Exports\NilaiPegawaiExport,
                         'nilai-pegawai-' . now()->format('Y-m-d') . '.xlsx'
                     );
                 }),
-            CreateAction::make(),
+            CreateAction::make()->visible(fn() => !$user?->hasRole('pegawai')),
         ]);
     }
 

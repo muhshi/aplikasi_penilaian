@@ -17,23 +17,10 @@ class ListNilaiKipapps extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        // Pegawai hanya bisa melihat, tidak bisa import/export/create
-        if (auth()->user()?->hasRole('pegawai')) {
-            return [];
-        }
+        $user = auth()->user();
 
-        return [
-            /**
-             * Action untuk import data Nilai KIPAPP dari file Excel
-             * 
-             * Fitur:
-             * - Upload file Excel/CSV
-             * - Validasi format file
-             * - Tahun dibaca langsung dari kolom "Tahun" di file Excel
-             * - Import data menggunakan NilaiKipappImport class
-             * - Notifikasi sukses/gagal
-             */
-            Action::make('import')
+        return array_filter([
+            $user?->hasRole('super_admin') ? Action::make('import')
                 ->label('Import Excel')
                 ->color('success')
                 ->icon('heroicon-o-arrow-up-tray')
@@ -74,18 +61,19 @@ class ListNilaiKipapps extends ListRecords
                         // Hapus file temporary setelah import
                         $disk->delete($data['file']);
                     }
-                }),
+                }) : null,
             Action::make('export')
                 ->label('Export Excel')
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
+                ->visible(fn() => !$user?->hasRole('pegawai'))
                 ->action(function () {
                     return Excel::download(
                         new \App\Exports\NilaiKipappExport,
                         'nilai-kipapp-' . now()->format('Y-m-d') . '.xlsx'
                     );
                 }),
-            CreateAction::make(),
-        ];
+            CreateAction::make()->visible(fn() => !$user?->hasRole('pegawai')),
+        ]);
     }
 }

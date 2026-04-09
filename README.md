@@ -31,9 +31,15 @@ Sistem informasi berbasis web untuk mengelola proses **pengiriman**, **monitorin
 
 ### 4. Nilai KIPAPP
 - Input dan pengelolaan nilai KIPAPP per pegawai
+- Filter berdasarkan **Bulan** dan **Tahun** untuk kemudahan manajemen data
 
 ### 5. Nilai Pegawai
 - Rekapitulasi nilai pegawai secara keseluruhan
+
+### 9. Bulk Import Lapkin (Google Drive)
+- Impor dokumen CKP/KIPAPP massal dari link Google Drive via Excel.
+- **Fuzzy Name Matching**: Otomatis mendeteksi pegawai meskipun penulisan nama di Excel berbeda dengan database (mendukung singkatan, nama panggilan, dan pembersihan gelar).
+- **Background Processing**: Dokumentasi diunduh menggunakan antrian (Queue) untuk efisiensi server.
 
 ### 6. Manajemen Pegawai
 - Kelola data pegawai (NIP, nama, jabatan)
@@ -89,11 +95,18 @@ npm run build
 php artisan serve
 ```
 
-Atau gunakan shortcut:
+ Atau gunakan shortcut:
 ```bash
 composer setup   # Install, migrate, build sekaligus
 composer dev     # Jalankan server + queue + pail + vite secara bersamaan
 ```
+
+### 🕒 Menjalankan Antrian (Background Job)
+Fitur Bulk Import memerlukan Worker untuk mendownload file di latar belakang. Jalankan perintah ini di terminal:
+```bash
+php artisan queue:work
+```
+*(Gunakan **Supervisor** jika dideploy ke server produksi untuk memastikan worker selalu aktif).*
 
 ## 📁 Struktur Utama
 
@@ -140,9 +153,25 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 # Changelog
 
-All notable changes to this project will be documented in this section.
+Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
-## [Unreleased] - 2026-03-31
+## [Unreleased] - 2026-04-09
+
+### Added
+- **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.
+- **Smart Name Matching (Fuzzy Matching)**: Peningkatan algoritma pencarian user yang mampu menangani perbedaan penulisan nama antara Excel dan database (misal: "Siswo Pranyoto" cocok dengan "Siswo") serta normalisasi singkatan umum (M., Muh. -> Muhamad).
+- **Background Download Queue**: Implementasi sistem antrian (Laravel Queue) untuk mengunduh dokumen di latar belakang, mencegah timeout saat memproses ribuan data sekaligus.
+- **Renovasi Landing Page Modern**: Pembaruan total halaman depan aplikasi dengan desain glassmorphism, Branding BPS yang profesional, skema warna Navy Blue (#0A2540) yang elegan, serta animasi scroll reveal.
+- **Filter Tabel**: Penambahan filter *Tahun* dan *Bulan* pada tabel Nilai Kipapp untuk kemudahan navigasi data.
+- **Aset Visual Baru**: Penambahan berbagai aset gambar premium untuk mendukung tampilan landing page yang lebih modern dan informatif.
+
+### Fixed
+- **Masalah Visibilitas Role**: Perbaikan masalah menu yang hilang dengan melakukan *Bulk Role Assignment* (menugaskan role `pegawai`) ke seluruh user yang belum memiliki peran.
+- **Akurasi Statistik Dashboard**: Resolusi ketidakcocokan tipe data pada perbandingan bulan (numerik vs string) yang sebelumnya menyebabkan kelengkapan CKP terbaca 0.
+- **Penyempurnaan Perhitungan Nilai**: Pembaruan logika format nilai pada matriks monitoring untuk memastikan akurasi data dan memastikan nilai tidak melebihi 100%.
+- **Konsistensi UI**: Standardisasi CSS untuk judul dashboard dan penyelarasan logo guna mencegah penumpukan (overlapping) dan masalah visibilitas.
+
+## [1.1.0] - 2026-03-31
 
 ### Added
 - **Otomatisasi User via Pegawai**: Implementasi pembuatan akun `User` secara otomatis (password default: `password123`) saat data `Pegawai` baru dibuat, serta sinkronisasi nama/email saat data diperbarui.
@@ -152,7 +181,7 @@ All notable changes to this project will be documented in this section.
 - **Bulk Download ZIP**: Menambahkan aksi massal (Bulk Action) pada tabel CKP KIPAPP untuk mendownload beberapa file CKP sekaligus dalam format ZIP.
 - **Bulk Assign Role User**: Menambahkan aksi massal pada tabel User untuk memberikan (assign) Role ke beberapa pengguna sekaligus.
 - **Tampilan Peran User**: Menambahkan kolom pencarian dan tampilan label Peran/Role pada tabel User.
-- **PDF Viewer Support**: Migrated `joaopaulolndev/filament-pdf-viewer` to `^3.0` untuk Filament v5.
+- **PDF Viewer Support**: Migrasi `joaopaulolndev/filament-pdf-viewer` ke `^3.0` untuk Filament v5.
 - **CKP KIPAPP PDF Preview**: Integrasi PDF preview pada detail halaman dan form edit CKP.
 
 ### Fixed

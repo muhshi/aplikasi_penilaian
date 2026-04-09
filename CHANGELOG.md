@@ -2,12 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-04-08
+## [Unreleased] - 2026-04-09
+
+### Added
+- **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.
+- **Smart Name Matching (Fuzzy Matching)**: Peningkatan algoritma pencarian user yang mampu menangani perbedaan penulisan nama antara Excel dan database (misal: "Siswo Pranyoto" cocok dengan "Siswo") serta normalisasi singkatan umum (M., Muh. -> Muhamad).
+- **Background Download Queue**: Implementasi sistem antrian (Laravel Queue) untuk mengunduh dokumen di latar belakang, mencegah timeout saat memproses ribuan data sekaligus.
+- **Renovasi Landing Page Modern**: Pembaruan total halaman depan aplikasi dengan desain glassmorphism, Branding BPS yang profesional, skema warna Navy Blue (#0A2540) yang elegan, serta animasi scroll reveal.
+- **Filter Tabel**: Penambahan filter *Tahun* dan *Bulan* pada tabel Nilai Kipapp untuk kemudahan navigasi data.
+- **Aset Visual Baru**: Penambahan berbagai aset gambar premium untuk mendukung tampilan landing page yang lebih modern dan informatif.
 
 ### Fixed
-- **Dashboard Accuracy Fix**: Resolved data type mismatch in month comparison (numeric vs string) that caused CKP completeness to show 0 when it should have been populated.
-- **Grade Calculation Refinement**: Updated grade formatting logic to ensure values are accurate and do not exceed 100% in the monitor matrix.
-- **UI Consistency**: Standardized CSS for dashboard titles and logo alignment to prevent overlapping and visibility issues.
+- **Masalah Visibilitas Role**: Perbaikan masalah menu yang hilang dengan melakukan *Bulk Role Assignment* (menugaskan role `pegawai`) ke seluruh user yang belum memiliki peran.
+- **Akurasi Statistik Dashboard**: Resolusi ketidakcocokan tipe data pada perbandingan bulan (numerik vs string) yang sebelumnya menyebabkan kelengkapan CKP terbaca 0.
+- **Penyempurnaan Perhitungan Nilai**: Pembaruan logika format nilai pada matriks monitoring untuk memastikan akurasi data dan memastikan nilai tidak melebihi 100%.
+- **Konsistensi UI**: Standardisasi CSS untuk judul dashboard dan penyelarasan logo guna mencegah penumpukan (overlapping) dan masalah visibilitas.
 
 ## [1.1.0] - 2026-03-31
 
