@@ -23,15 +23,16 @@
                 extend: {
                     colors: {
                         primary: '#0A2540',
-                        accent: '#F8B803',
+                        accent: '#38BDF8',
                         'bps-dark': '#06162a',
+                        'bps-light': '#E8EDF2',
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                     },
                     animation: {
                         'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
+                        'float': 'float 8s ease-in-out infinite',
                         'marquee': 'marquee 40s linear infinite',
                     },
                     keyframes: {
@@ -51,14 +52,14 @@
     
     <style>
         .text-gradient {
-            background: linear-gradient(135deg, #0A2540 0%, #F8B803 100%);
+            background: linear-gradient(135deg, #0A2540 0%, #38BDF8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .glass {
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
         .btn-premium {
             background: #0A2540;
@@ -84,11 +85,11 @@
 
 <body class="text-slate-900 font-sans antialiased overflow-x-hidden selection:bg-primary/10" style="background-color: #FAFAF6;">
 
-    <!-- Premium Background -->
+    <!-- Premium Background (Synced with Dashboard) -->
     <div class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
-        <div class="absolute inset-0" style="background: linear-gradient(135deg, #FAFAF6 0%, #F5F0EB 40%, #EEF4FF 100%);"></div>
+        <div class="absolute inset-0" style="background: linear-gradient(135deg, #E8EDF2 0%, #F5F7FA 40%, #FFFFFF 100%);"></div>
         <div class="absolute top-[-15%] left-[-10%] w-[60%] h-[60%] rounded-full animate-pulse-slow" style="background: radial-gradient(circle, rgba(10,37,64,0.06) 0%, transparent 70%); filter: blur(80px);"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full animate-pulse-slow" style="animation-delay: 2s; background: radial-gradient(circle, rgba(248,184,3,0.05) 0%, transparent 70%); filter: blur(80px);"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full animate-pulse-slow" style="animation-delay: 2s; background: radial-gradient(circle, rgba(56,189,248,0.05) 0%, transparent 70%); filter: blur(80px);"></div>
         <!-- Subtle Linen texture -->
         <div class="absolute inset-0 opacity-[0.015]" style="background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='none'/%3E%3Cpath d='M0 0h1v100H0zM10 0h1v100h-1zM20 0h1v100h-1zM30 0h1v100h-1zM40 0h1v100h-1zM50 0h1v100h-1zM60 0h1v100h-1zM70 0h1v100h-1zM80 0h1v100h-1zM90 0h1v100h-1zM0 0v1h100V0zM0 10v1h100v-1zM0 20v1h100v-1zM0 30v1h100v-1zM0 40v1h100v-1zM0 50v1h100v-1zM0 60v1h100v-1zM0 70v1h100v-1zM0 80v1h100v-1zM0 90v1h100v-1z' fill='%23000' opacity='0.05'/%3E%3C/svg%3E&quot;);"></div>
     </div>
@@ -267,8 +268,8 @@
                 <!-- Feature Card 2 (Highlighted) -->
                 <div class="group reveal" style="transition-delay: 200ms">
                     <div class="relative h-full p-1 w-full rounded-[3.5rem] bg-gradient-to-br from-accent/20 to-transparent">
-                        <div class="h-full bg-white rounded-[3.4rem] p-12 shadow-xl border border-accent/20 flex flex-col items-start gap-8 group-hover:shadow-[0_40px_80px_-20px_rgba(248,184,3,0.15)] transition-all duration-700 group-hover:-translate-y-4">
-                            <div class="w-16 h-16 rounded-2xl bg-accent text-primary flex items-center justify-center shadow-xl shadow-accent/20 transition-all duration-500 group-hover:scale-110">
+                        <div class="h-full bg-white rounded-[3.4rem] p-12 shadow-xl border border-accent/20 flex flex-col items-start gap-8 group-hover:shadow-[0_40px_80px_-20px_rgba(56,189,248,0.15)] transition-all duration-700 group-hover:-translate-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-accent text-white flex items-center justify-center shadow-xl shadow-accent/20 transition-all duration-500 group-hover:scale-110">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             </div>
                             <div>
