@@ -28,7 +28,8 @@ class NilaiPegawaisTable
                     ->label('Penilai')
                     ->searchable()
                     ->sortable()
-                    ->default('-'),
+                    ->default('-')
+                    ->visible(fn() => !auth()->user()?->hasRole('pegawai')),
                 TextColumn::make('bulan')
                     ->formatStateUsing(fn(int $state): string => match ($state) {
                         1 => 'Januari',

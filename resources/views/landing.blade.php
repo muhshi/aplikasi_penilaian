@@ -184,139 +184,207 @@
                 </div>
             </div>
 
-            <!-- Dashboard Mockup -->
-            <div class="flex-1 relative hidden lg:block animate-float">
-                <div class="relative w-[450px] mx-auto">
-                    <div class="absolute -inset-10 bg-primary/5 rounded-[4rem] blur-[60px] opacity-40"></div>
-                    <div class="relative bg-white p-3 rounded-[3.5rem] shadow-2xl border border-primary/10 overflow-hidden">
-                        <img src="{{ asset('images/ckp-dashboard-actual.png') }}" alt="Dashboard Preview" class="w-full h-auto rounded-[2.8rem] shadow-inner opacity-90 transition-opacity group-hover:opacity-100">
-                        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 glass px-6 py-3 rounded-2xl shadow-xl flex items-center gap-4 border-white/50">
-                            <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                            <span class="text-[10px] font-black text-primary uppercase tracking-widest leading-none">Dashboard Aktif</span>
+            <!-- Refined Dashboard Mockup -->
+            <div class="flex-1 relative hidden lg:block reveal" style="transition-delay: 400ms">
+                <div class="relative w-[500px] mx-auto transform hover:scale-[1.02] transition-transform duration-700">
+                    <!-- Layered Glows for Depth -->
+                    <div class="absolute -inset-20 bg-primary/10 rounded-[6rem] blur-[100px] opacity-30 animate-pulse-slow"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-white/20 rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+                    
+                    <!-- The Mockup Container -->
+                    <div class="relative bg-white/40 p-1.5 rounded-[4rem] shadow-[0_40px_100px_-20px_rgba(10,37,64,0.15)] backdrop-blur-md border border-white/60 group overflow-hidden">
+                        <div class="bg-white rounded-[3.8rem] p-3 shadow-inner">
+                            <div class="relative rounded-[3rem] overflow-hidden border border-primary/5 shadow-2xl">
+                                <img src="{{ asset('images/ckp-dashboard-actual.png') }}" alt="Dashboard Preview" class="w-full h-auto opacity-95 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-transparent pointer-events-none"></div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Indicators -->
+                        <div class="absolute -top-6 -right-6 glass px-6 py-4 rounded-3xl shadow-xl border-white group-hover:-translate-y-2 transition-transform duration-500">
+                            <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Sistem</span>
+                            <div class="flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span class="text-[10px] font-black text-primary uppercase tracking-tighter">Aktif Terhubung</span>
+                            </div>
+                        </div>
+
+                        <div class="absolute -bottom-8 -left-8 glass px-8 py-5 rounded-[2rem] shadow-xl border-white group-hover:translate-x-2 transition-transform duration-500">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <div>
+                                    <span class="block text-xs font-black text-primary leading-none">Terverifikasi</span>
+                                    <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1">Data BPS RI Valid</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Marquee -->
-        <div class="relative mt-24 overflow-hidden py-4 border-y border-primary/5">
-            <div class="flex gap-12 animate-marquee whitespace-nowrap opacity-60">
-                @foreach (['Monitoring Lapkin', 'Verifikasi KIPAPP', 'Rekapitulasi Nilai', 'Sistem Informasi CKP', 'Manajemen Pegawai', 'Dokumentasi Digital'] as $label)
-                    <div class="inline-flex items-center gap-3 px-6 py-2 bg-white rounded-full border border-primary/10 shadow-sm">
-                        <span class="text-primary font-bold text-xs uppercase tracking-widest">{{ $label }}</span>
-                    </div>
-                @endforeach
-                <!-- Duplicate for seamless scroll -->
-                @foreach (['Monitoring Lapkin', 'Verifikasi KIPAPP', 'Rekapitulasi Nilai', 'Sistem Informasi CKP', 'Manajemen Pegawai', 'Dokumentasi Digital'] as $label)
-                    <div class="inline-flex items-center gap-3 px-6 py-2 bg-white rounded-full border border-primary/10 shadow-sm">
-                        <span class="text-primary font-bold text-xs uppercase tracking-widest">{{ $label }}</span>
-                    </div>
-                @endforeach
             </div>
         </div>
     </main>
 
-    <!-- Features Section -->
-    <section class="py-32 px-6 bg-white/30 backdrop-blur-sm">
+    <!-- Refined Features Section (Premium Bentukan) -->
+    <section class="py-40 px-6 relative">
+        <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#FAFAF6] to-transparent"></div>
+        
         <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20 reveal">
-                <h2 class="text-4xl font-black text-primary tracking-tighter mb-6">Fokus <span class="text-gradient">Layanan Utama</span></h2>
-                <p class="text-slate-500 font-medium max-w-2xl mx-auto text-lg leading-relaxed italic">Instrumen digital untuk mendukung tertib administrasi kinerja di lingkungan BPS.</p>
+            <div class="max-w-3xl mx-auto text-center mb-24 reveal">
+                <div class="inline-block px-4 py-1 rounded-full bg-primary/5 border border-primary/5 mb-6">
+                    <span class="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Fitur Keunggulan</span>
+                </div>
+                <h2 class="text-5xl font-black text-primary tracking-tighter mb-8 leading-[1.1]">
+                    Fokus <span class="text-gradient">Integritas Penilaian</span>
+                </h2>
+                <div class="w-24 h-1.5 bg-accent mx-auto rounded-full mb-8"></div>
+                <p class="text-slate-500 font-medium text-lg leading-relaxed">
+                    Platform khusus yang dirancang untuk menjaga objektivitas dan efisiensi birokrasi di lingkungan Badan Pusat Statistik.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Card 1 -->
-                <div class="group h-full reveal" style="transition-delay: 100ms">
-                    <div class="h-full p-12 rounded-[3.5rem] bg-white border border-primary/5 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-3 relative overflow-hidden">
-                        <div class="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center mb-8 shadow-xl shadow-primary/20 transition-transform group-hover:rotate-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
+                <!-- Feature Card 1 -->
+                <div class="group reveal" style="transition-delay: 100ms">
+                    <div class="relative h-full p-1 w-full rounded-[3.5rem] bg-gradient-to-br from-primary/5 to-transparent hover:from-primary/10 transition-all duration-700">
+                        <div class="h-full bg-white rounded-[3.4rem] p-12 shadow-sm border border-primary/[0.03] flex flex-col items-start gap-8 group-hover:shadow-[0_40px_80px_-20px_rgba(10,37,64,0.08)] transition-all duration-700 group-hover:-translate-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-xl shadow-transparent group-hover:shadow-primary/20">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-primary mb-4 tracking-tight">Monitoring CKP</h3>
+                                <p class="text-slate-500 font-medium leading-relaxed text-sm">Pemantauan *real-time* pengumpulan capaian kinerja bulanan untuk memastikan tertib waktu seluruh pegawai.</p>
+                            </div>
+                            <div class="mt-auto pt-4 flex items-center gap-2 text-primary/30 group-hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest">
+                                <span>Learn More</span>
+                                <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </div>
                         </div>
-                        <h3 class="text-2xl font-black text-primary mb-4 tracking-tighter">Monitoring Lapkin</h3>
-                        <p class="text-slate-500 font-medium leading-relaxed text-sm">Pantau pengumpulan laporan kinerja bulanan pegawai secara terpusat dan rapi.</p>
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="group h-full reveal" style="transition-delay: 200ms">
-                    <div class="h-full p-12 rounded-[3.5rem] bg-white border border-accent/20 shadow-lg hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 hover:-translate-y-3 relative overflow-hidden">
-                        <div class="w-16 h-16 rounded-2xl bg-accent text-primary flex items-center justify-center mb-8 shadow-xl shadow-accent/20 transition-transform group-hover:rotate-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <!-- Feature Card 2 (Highlighted) -->
+                <div class="group reveal" style="transition-delay: 200ms">
+                    <div class="relative h-full p-1 w-full rounded-[3.5rem] bg-gradient-to-br from-accent/20 to-transparent">
+                        <div class="h-full bg-white rounded-[3.4rem] p-12 shadow-xl border border-accent/20 flex flex-col items-start gap-8 group-hover:shadow-[0_40px_80px_-20px_rgba(248,184,3,0.15)] transition-all duration-700 group-hover:-translate-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-accent text-primary flex items-center justify-center shadow-xl shadow-accent/20 transition-all duration-500 group-hover:scale-110">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-primary mb-4 tracking-tight">Verifikasi KIPAPP</h3>
+                                <p class="text-slate-500 font-medium leading-relaxed text-sm">Sistem pengarsipan digital bukti fisik kinerja (KIPAPP) yang terintegrasi dengan tautan dokumen *cloud* yang aman.</p>
+                            </div>
+                            <div class="mt-auto pt-4">
+                                <span class="bg-accent/10 px-4 py-1.5 rounded-full text-[10px] font-black text-primary uppercase tracking-widest">Fitur Unggulan</span>
+                            </div>
                         </div>
-                        <h3 class="text-2xl font-black text-primary mb-4 tracking-tighter">Manajemen KIPAPP</h3>
-                        <p class="text-slate-500 font-medium leading-relaxed text-sm">Organisasi dokumen capaian kinerja bulanan yang aman dan tersusun sesuai periode.</p>
                     </div>
                 </div>
 
-                <!-- Card 3 -->
-                <div class="group h-full reveal" style="transition-delay: 300ms">
-                    <div class="h-full p-12 rounded-[3.5rem] bg-white border border-primary/5 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-3 relative overflow-hidden">
-                        <div class="w-16 h-16 rounded-2xl bg-slate-800 text-white flex items-center justify-center mb-8 shadow-xl shadow-slate-800/20 transition-transform group-hover:rotate-6">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <!-- Feature Card 3 -->
+                <div class="group reveal" style="transition-delay: 300ms">
+                    <div class="relative h-full p-1 w-full rounded-[3.5rem] bg-gradient-to-br from-slate-200 to-transparent hover:from-slate-300 transition-all duration-700">
+                        <div class="h-full bg-white rounded-[3.4rem] p-12 shadow-sm border border-primary/[0.03] flex flex-col items-start gap-8 group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.06)] transition-all duration-700 group-hover:-translate-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-slate-900 text-white flex items-center justify-center group-hover:bg-primary group-hover:rotate-12 transition-all duration-500 shadow-xl group-hover:shadow-primary/20">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-black text-primary mb-4 tracking-tight">Rekap Nilai Otomatis</h3>
+                                <p class="text-slate-500 font-medium leading-relaxed text-sm">Dapatkan rekapitulasi nilai akhir secara instan dari berbagai penilai (Ketua Tim) dengan perhitungan rata-rata yang akurat.</p>
+                            </div>
+                            <div class="mt-auto pt-4 flex items-center gap-2 text-slate-100 group-hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest">
+                                <span>Automation Ready</span>
+                                <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            </div>
                         </div>
-                        <h3 class="text-2xl font-black text-primary mb-4 tracking-tighter">Rekapitulasi Nilai</h3>
-                        <p class="text-slate-500 font-medium leading-relaxed text-sm">Otomatisasi penilaian kinerja untuk mempermudah evaluasi akhir bulan pegawai.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-primary text-white pt-24 pb-12 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-                <div class="lg:col-span-6 flex flex-col items-start gap-8">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-white rounded-2xl">
-                            <img src="{{ asset('images/logo-bps.png') }}" class="h-10 w-auto" alt="Logo Footer">
+    <!-- Redesigned Footer -->
+    <footer class="relative bg-primary pt-32 pb-16 overflow-hidden">
+        <!-- Abstract Decoration -->
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-accent/5 rounded-full blur-[100px]"></div>
+
+        <div class="max-w-7xl mx-auto px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-20 mb-24">
+                <!-- Branding Section -->
+                <div class="max-w-md">
+                    <div class="flex items-center gap-5 mb-10">
+                        <div class="p-3 bg-white rounded-[1.25rem] shadow-xl">
+                            <img src="{{ asset('images/logo-bps.png') }}" class="h-12 w-auto" alt="Logo Footer">
                         </div>
+                        <div class="h-10 w-px bg-white/20"></div>
                         <div>
-                            <h4 class="text-lg font-black tracking-tighter leading-none mb-1 uppercase">BPS KABUPATEN</h4>
-                            <h4 class="text-lg font-black tracking-tighter text-accent leading-none uppercase">DEMAK</h4>
+                            <h4 class="text-xl font-black tracking-tight leading-none text-white uppercase italic">Portal <span class="text-accent">CKP</span></h4>
+                            <p class="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em] mt-1">BPS Kabupaten Demak</p>
                         </div>
                     </div>
-                    <p class="text-slate-400 font-medium leading-relaxed max-w-md">
-                        Penyedia data statistik berkualitas untuk pembangunan berkelanjutan. Melayani dengan integritas, profesionalisme, dan amanah.
+                    <p class="text-white/60 font-medium leading-relaxed text-lg mb-10 italic">
+                        "Menyediakan data statistik berkualitas untuk Indonesia Maju. Melayani dengan integritas dan profesionalisme tinggi."
                     </p>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4 text-slate-300 text-sm">
-                            <svg class="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
-                            <span>Jl. Sultan Hadiwijaya No. 23, Demak, Jawa Tengah 59515</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-slate-300 text-sm">
-                            <svg class="w-5 h-5 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 5z"></path></svg>
-                            <span>(0291) 685445</span>
-                        </div>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-500 group">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-500 group">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.916 4.916 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.213c9.057 0 14.01-7.496 14.01-13.986 0-.21 0-.423-.015-.634a10.025 10.025 0 002.457-2.548l-.047-.02z"/></svg>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-all duration-500 group">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.264-.069-1.644-.069-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
                     </div>
                 </div>
 
-                <div class="lg:col-span-3 flex flex-col gap-8">
-                    <h5 class="text-xs font-black uppercase tracking-[0.3em] text-white/50">Layanan Internal</h5>
-                    <ul class="space-y-4 font-bold text-slate-400 text-xs">
-                        <li><a href="#" class="hover:text-accent transition-colors">Monitoring CKP</a></li>
-                        <li><a href="#" class="hover:text-accent transition-colors">Verifikasi KIPAPP</a></li>
-                        <li><a href="#" class="hover:text-accent transition-colors">Rekapitulasi Nilai</a></li>
-                    </ul>
-                </div>
-
-                <div class="lg:col-span-3 flex flex-col gap-8">
-                    <h5 class="text-xs font-black uppercase tracking-[0.3em] text-white/50">Tautan Resmi</h5>
-                    <ul class="space-y-4 font-bold text-slate-400 text-xs">
-                        <li><a href="https://bps.go.id" target="_blank" class="hover:text-accent transition-colors">BPS RI</a></li>
-                        <li><a href="https://jateng.bps.go.id" target="_blank" class="hover:text-accent transition-colors">BPS Jawa Tengah</a></li>
-                        <li><a href="https://demakkab.bps.go.id" target="_blank" class="hover:text-accent transition-colors">BPS Kab. Demak</a></li>
-                    </ul>
+                <!-- Contact & Location Section -->
+                <div class="lg:w-1/3 flex flex-col gap-10">
+                    <h5 class="text-sm font-black uppercase tracking-[0.3em] text-accent">Kantor Pusat Kami</h5>
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-6 group">
+                            <div class="w-12 h-12 rounded-[1rem] bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-primary transition-all duration-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                            </div>
+                            <div>
+                                <span class="block text-white/40 text-[10px] uppercase font-black tracking-widest mb-1">Alamat</span>
+                                <p class="text-white/80 font-bold text-sm leading-relaxed">Jl. Sultan Hadiwijaya No. 23, Demak, <br> Jawa Tengah 59515</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-6 group">
+                            <div class="w-12 h-12 rounded-[1rem] bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-primary transition-all duration-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 5z"></path></svg>
+                            </div>
+                            <div>
+                                <span class="block text-white/40 text-[10px] uppercase font-black tracking-widest mb-1">Telepon & Email</span>
+                                <p class="text-white/80 font-bold text-sm">(0291) 685445</p>
+                                <p class="text-white/80 font-bold text-sm mt-1">bps3321@bps.go.id</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
-                <p class="text-slate-500 font-bold text-[10px] tracking-widest uppercase text-center md:text-left">
+            <!-- Horizontal Links (Replaces Image 2 columns) -->
+            <div class="py-12 border-t border-white/10 flex flex-wrap justify-center gap-10">
+                <a href="https://bps.go.id" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-accent transition-colors">BPS RI</a>
+                <a href="https://jateng.bps.go.id" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-accent transition-colors">BPS Jawa Tengah</a>
+                <a href="https://demakkab.bps.go.id" target="_blank" class="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-accent transition-colors">BPS Kab. Demak</a>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+                <p class="text-white/20 font-black text-[9px] tracking-[0.3em] uppercase">
                     &copy; 2026 Badan Pusat Statistik Kabupaten Demak.
                 </p>
-                <div class="flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
-                    <span class="text-[8px] font-black uppercase tracking-[0.3em] text-slate-300 italic">Melayani Dengan Data</span>
+                <div class="flex items-center gap-4">
+                    <span class="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 italic">v2.0.4 - Premium Edition</span>
+                    <div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                        <span class="text-[8px] font-black text-white/40 tracking-widest leading-none">SYSTEM ONLINE</span>
+                    </div>
                 </div>
             </div>
         </div>

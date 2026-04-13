@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.
+- **Anonimitas Penilai**: Menyembunyikan nama penilai (Ketua Tim) pada tabel Nilai Pegawai untuk pengguna dengan role `pegawai` guna menjaga objektivitas dan privasi proses penilaian.
 - **Smart Name Matching (Fuzzy Matching)**: Peningkatan algoritma pencarian user yang mampu menangani perbedaan penulisan nama antara Excel dan database (misal: "Siswo Pranyoto" cocok dengan "Siswo") serta normalisasi singkatan umum (M., Muh. -> Muhamad).
 - **Background Download Queue**: Implementasi sistem antrian (Laravel Queue) untuk mengunduh dokumen di latar belakang, mencegah timeout saat memproses ribuan data sekaligus.
 - **Renovasi Landing Page Modern**: Pembaruan total halaman depan aplikasi dengan desain glassmorphism, Branding BPS yang profesional, skema warna Navy Blue (#0A2540) yang elegan, serta animasi scroll reveal.
