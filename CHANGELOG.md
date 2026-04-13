@@ -7,6 +7,15 @@ All notable changes to this project will be documented in this file.
 ### Added
 - **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.
 - **Anonimitas Penilai**: Menyembunyikan nama penilai (Ketua Tim) pada tabel Nilai Pegawai untuk pengguna dengan role `pegawai` guna menjaga objektivitas dan privasi proses penilaian.
+- **UI/UX & Desain**:
+    - **Revitalisasi Landing Page**: Desain ulang hero section, footer, dan kartu fitur untuk tampilan yang lebih premium dan unik.
+    - **Sinkronisasi Warna**: Penyelarasan palet warna landing page dengan dashboard (Navy & Sky Blue).
+- **Penyederhanaan Nilai Pegawai**: 
+    - Menghilangkan widget rekap redundan untuk role `pegawai`.
+    - Mengubah tabel utama role `pegawai` menjadi mode agregat (ringkasan 1 baris per periode) untuk kemudahan membaca skor final.
+- **Sistem & Performa**:
+    - **Optimasi Queue Worker**: Peningkatan stabilitas `DownloadLapkinJob` untuk menangani error SSL/EOF dari GDrive.
+    - **Docker Integration**: Menambahkan service worker ke `docker-compose.yml`.
 - **Smart Name Matching (Fuzzy Matching)**: Peningkatan algoritma pencarian user yang mampu menangani perbedaan penulisan nama antara Excel dan database (misal: "Siswo Pranyoto" cocok dengan "Siswo") serta normalisasi singkatan umum (M., Muh. -> Muhamad).
 - **Background Download Queue**: Implementasi sistem antrian (Laravel Queue) untuk mengunduh dokumen di latar belakang, mencegah timeout saat memproses ribuan data sekaligus.
 - **Renovasi Landing Page Modern**: Pembaruan total halaman depan aplikasi dengan desain glassmorphism, Branding BPS yang profesional, skema warna Navy Blue (#0A2540) yang elegan, serta animasi scroll reveal.
