@@ -163,6 +163,11 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 - **SSO Login Button**: Penambahan tombol "Masuk dengan SIPETRA SSO" pada halaman login Filament.
 - **Auto User Provisioning**: Otomatisasi pendaftaran user baru atau pembaruan data user (NIP, Jabatan, Token) saat login melalui SSO.
 
+### Fixed
+- **Development Environment Compatibility**: Memperbaiki perintah `composer dev` agar dapat berjalan di Windows dengan menghapus `laravel/pail` (yang memerlukan ekstensi `pcntl` khusus Unix) dari skrip `concurrently` di `composer.json`.
+- **Missing Dependencies**: Memastikan seluruh dependensi frontend terpasang agar perintah `npm run dev` (Vite) dapat berjalan dengan semestinya.
+
+
 ## [Unreleased] - 2026-04-09
 
 
