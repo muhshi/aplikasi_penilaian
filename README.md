@@ -162,6 +162,8 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 - **Custom Socialite Provider**: Pembuatan provider khusus untuk menangani otentikasi SIPETRA.
 - **SSO Login Button**: Penambahan tombol "Masuk dengan SIPETRA SSO" pada halaman login Filament.
 - **Auto User Provisioning**: Otomatisasi pendaftaran user baru atau pembaruan data user (NIP, Jabatan, Token) saat login melalui SSO.
+- **Premium SSO Login UI**: Pembaruan tampilan tombol login SSO dengan desain yang lebih premium, divider "atau", dan integrasi logo BPS menggunakan blade component.
+
 
 ### Fixed
 - **Development Environment Compatibility**: Memperbaiki perintah `composer dev` agar dapat berjalan di Windows dengan menghapus `laravel/pail` (yang memerlukan ekstensi `pcntl` khusus Unix) dari skrip `concurrently` di `composer.json`.

@@ -68,19 +68,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 \Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
-                fn (): string => \Illuminate\Support\Facades\Blade::render('
-                    <div class="mt-4">
-                        <x-filament::button
-                            href="{{ route(\'sipetra.login\') }}"
-                            tag="a"
-                            color="info"
-                            outlined
-                            full-width
-                        >
-                            Masuk dengan SIPETRA SSO
-                        </x-filament::button>
-                    </div>
-                '),
+                fn (): string => \Illuminate\Support\Facades\Blade::render('@include("auth.sso-button")'),
             );
     }
 }
