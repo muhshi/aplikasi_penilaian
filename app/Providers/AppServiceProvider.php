@@ -27,5 +27,12 @@ class AppServiceProvider extends ServiceProvider
         }
         
         \App\Models\PeriodeTahun::observe(\App\Observers\PeriodeTahunObserver::class);
+
+        $socialite = $this->app->make(\Laravel\Socialite\Contracts\Factory::class);
+        $socialite->extend('sipetra', function ($app) use ($socialite) {
+            $config = $app['config']['services.sipetra'];
+            return $socialite->buildProvider(\App\Providers\SipetraSocialiteProvider::class, $config);
+        });
     }
 }
+

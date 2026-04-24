@@ -155,7 +155,16 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-04-24
+
+### Added
+- **Integrasi SIPETRA SSO**: Implementasi Single Sign-On (SSO) menggunakan OAuth2 dari SIPETRA.
+- **Custom Socialite Provider**: Pembuatan provider khusus untuk menangani otentikasi SIPETRA.
+- **SSO Login Button**: Penambahan tombol "Masuk dengan SIPETRA SSO" pada halaman login Filament.
+- **Auto User Provisioning**: Otomatisasi pendaftaran user baru atau pembaruan data user (NIP, Jabatan, Token) saat login melalui SSO.
+
 ## [Unreleased] - 2026-04-09
+
 
 ### Added
 - **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.

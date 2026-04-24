@@ -24,3 +24,8 @@ Route::get('/download/template-nilai-pegawai', function () {
         'template-nilai-pegawai.xlsx'
     );
 })->name('download.template.nilai_pegawai');
+ 
+use App\Http\Controllers\Auth\SsoController;
+Route::get('/auth/sipetra/redirect', [SsoController::class, 'redirect'])->name('sipetra.login');
+Route::get('/auth/sipetra/callback', [SsoController::class, 'callback']);
+
