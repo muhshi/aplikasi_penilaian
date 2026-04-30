@@ -108,6 +108,19 @@ php artisan queue:work
 ```
 *(Gunakan **Supervisor** jika dideploy ke server produksi untuk memastikan worker selalu aktif).*
 
+### 🔑 Troubleshooting SSO (OAuth2 Key Permissions)
+Jika muncul error `Key file ".../oauth-private.key" permissions are not correct`, jalankan perintah berikut di server (atau di dalam container):
+
+```bash
+# Jika di server langsung (host)
+chmod 600 storage/oauth-private.key
+chmod 600 storage/oauth-public.key
+
+# Jika menggunakan Docker
+docker exec -it aplikasi-penilaian-franken chmod 600 /app/storage/oauth-private.key
+docker exec -it aplikasi-penilaian-franken chmod 600 /app/storage/oauth-public.key
+```
+
 ## 📁 Struktur Utama
 
 ```
@@ -155,7 +168,25 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-04-24
+
+### Added
+- **Integrasi SIPETRA SSO**: Implementasi Single Sign-On (SSO) menggunakan OAuth2 dari SIPETRA.
+- **Custom Socialite Provider**: Pembuatan provider khusus untuk menangani otentikasi SIPETRA.
+- **SSO Login Button**: Penambahan tombol "Masuk dengan SIPETRA SSO" pada halaman login Filament.
+- **Auto User Provisioning**: Otomatisasi pendaftaran user baru atau pembaruan data user (NIP, Jabatan, Token) saat login melalui SSO.
+- **Premium SSO Login UI**: Pembaruan tampilan tombol login SSO dengan desain yang lebih premium, divider "atau", dan integrasi logo BPS menggunakan blade component.
+
+### Fixed
+- **SSO Key Permissions**: Dokumentasi perbaikan error permission pada file kunci OAuth2 (`oauth-private.key`) yang terlalu longgar (775) menjadi lebih aman (600).
+
+### Fixed
+- **Development Environment Compatibility**: Memperbaiki perintah `composer dev` agar dapat berjalan di Windows dengan menghapus `laravel/pail` (yang memerlukan ekstensi `pcntl` khusus Unix) dari skrip `concurrently` di `composer.json`.
+- **Missing Dependencies**: Memastikan seluruh dependensi frontend terpasang agar perintah `npm run dev` (Vite) dapat berjalan dengan semestinya.
+
+
 ## [Unreleased] - 2026-04-09
+
 
 ### Added
 - **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.

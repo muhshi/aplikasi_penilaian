@@ -19,7 +19,13 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'must_change_password',
+        'sipetra_id',
+        'sipetra_token',
+        'sipetra_refresh_token',
+        'nip',
+        'jabatan',
     ];
+
 
     protected $hidden = [
         'password',
