@@ -108,6 +108,19 @@ php artisan queue:work
 ```
 *(Gunakan **Supervisor** jika dideploy ke server produksi untuk memastikan worker selalu aktif).*
 
+### 🔑 Troubleshooting SSO (OAuth2 Key Permissions)
+Jika muncul error `Key file ".../oauth-private.key" permissions are not correct`, jalankan perintah berikut di server (atau di dalam container):
+
+```bash
+# Jika di server langsung (host)
+chmod 600 storage/oauth-private.key
+chmod 600 storage/oauth-public.key
+
+# Jika menggunakan Docker
+docker exec -it aplikasi-penilaian-franken chmod 600 /app/storage/oauth-private.key
+docker exec -it aplikasi-penilaian-franken chmod 600 /app/storage/oauth-public.key
+```
+
 ## 📁 Struktur Utama
 
 ```
@@ -164,6 +177,8 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 - **Auto User Provisioning**: Otomatisasi pendaftaran user baru atau pembaruan data user (NIP, Jabatan, Token) saat login melalui SSO.
 - **Premium SSO Login UI**: Pembaruan tampilan tombol login SSO dengan desain yang lebih premium, divider "atau", dan integrasi logo BPS menggunakan blade component.
 
+### Fixed
+- **SSO Key Permissions**: Dokumentasi perbaikan error permission pada file kunci OAuth2 (`oauth-private.key`) yang terlalu longgar (775) menjadi lebih aman (600).
 
 ### Fixed
 - **Development Environment Compatibility**: Memperbaiki perintah `composer dev` agar dapat berjalan di Windows dengan menghapus `laravel/pail` (yang memerlukan ekstensi `pcntl` khusus Unix) dari skrip `concurrently` di `composer.json`.
