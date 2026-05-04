@@ -9,14 +9,28 @@ class Pegawai extends Model
     protected $table = 'pegawai';
 
     protected $fillable = [
+        'sipetra_id',
         'user_id',
-        'penilai_id', // ID Ketua Tim as assessor
+        'penilai_id',
         'nip',
+        'nip_baru',
         'nip_lama',
+        'sobat_id',
         'no_hp',
         'jabatan',
+        'unit_kerja',
+        'kd_satker',
+        'jenis_kelamin',
         'pangkat',
         'golongan',
+        'period',
+        'contract_start',
+        'contract_end',
+    ];
+
+    protected $casts = [
+        'contract_start' => 'date',
+        'contract_end' => 'date',
     ];
 
     public function penilai()

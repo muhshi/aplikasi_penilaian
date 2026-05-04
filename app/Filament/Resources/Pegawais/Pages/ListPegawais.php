@@ -13,6 +13,20 @@ class ListPegawais extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            \Filament\Actions\Action::make('sync_sipetra')
+                ->label('Sync dari Sipetra')
+                ->icon('heroicon-o-arrow-path')
+                ->color('info')
+                ->requiresConfirmation()
+                ->action(function () {
+                    \App\Jobs\SyncUsersJob::dispatch();
+                    
+                    \Filament\Notifications\Notification::make()
+                        ->title('Sinkronisasi Dimulai')
+                        ->body('Proses berjalan di latar belakang. Data pegawai & mitra akan terupdate otomatis.')
+                        ->info()
+                        ->send();
+                }),
             CreateAction::make(),
         ];
     }

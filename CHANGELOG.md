@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2026-04-09
+## [Unreleased] - 2026-05-04
+
+### Added
+- **API Master Data (Server)**: Implementasi endpoint API `/api/master/users` yang mengikuti standar Sipetra untuk pertukaran data antar-sistem (M2M).
+- **Master API Token Management**: Menambahkan Widget di halaman User untuk generate Personal Access Token (Sanctum) khusus M2M.
+- **Sipetra Data Synchronization (Client)**: Implementasi perintah `php artisan sync:users` dan background job `SyncUsersJob` untuk menarik data pegawai dan mitra dari Sipetra.
+- **Pegawai Observer**: Sinkronisasi otomatis antara data `Pegawai` dan data `User` untuk menjaga integritas nama, NIP, dan jabatan.
+- **Sync UI**: Penambahan tombol sinkronisasi pada header halaman Manajemen Pegawai.
+- **Extended Schema**: Penambahan field `sipetra_id`, `identity_type`, `is_active`, dan data kontrak mitra pada tabel `users` dan `pegawai`.
+
+## [Unreleased] - 2026-04-24
 
 ### Added
 - **Otorisasi Import Massal**: Implementasi pembatasan fitur impor massal dokumen CKP/KIPAPP via Excel dan Google Drive yang kini hanya dapat diakses oleh role `super_admin`.
