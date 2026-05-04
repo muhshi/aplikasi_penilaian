@@ -41,6 +41,7 @@ class SyncUsersFromSipetra extends Command
                 ->get("{$baseUrl}/api/master/users", array_filter([
                     'page'          => $page,
                     'per_page'      => 100,
+                    'type'          => 'pegawai',
                     'updated_after' => $lastSync,
                 ]));
 
@@ -55,18 +56,35 @@ class SyncUsersFromSipetra extends Command
 
             foreach ($payload['data'] as $data) {
                 // 1. Update/Create User
+                // Fallback: Jika sipetra_id tidak ditemukan, cari berdasarkan email
+                // Ini penting untuk menautkan akun lokal (seperti admin@gmail.com) ke akun Sipetra
+                $user = User::where('sipetra_id', $data['sipetra_id'])->first();
+                
+                if (!$user && isset($data['email'])) {
+                    $user = User::where('email', $data['email'])->first();
+                    if ($user) {
+                        $user->update(['sipetra_id' => $data['sipetra_id']]);
+                    }
+                }
+
+                $userData = [
+                    'name'          => $data['name'],
+                    'email'         => $data['email'] ?? "no-email-{$data['sipetra_id']}@bps.go.id",
+                    'avatar_url'    => $data['avatar_url'],
+                    'identity_type' => $data['identity_type'],
+                    'is_active'     => $data['is_active'],
+                    'nip'           => $data['nip'],
+                    'jabatan'       => $data['jabatan'],
+                ];
+
+                // Jika user baru (berdasarkan sipetra_id atau email tadi), berikan password default
+                if (!$user) {
+                    $userData['password'] = Hash::make('password123');
+                }
+
                 $user = User::updateOrCreate(
                     ['sipetra_id' => $data['sipetra_id']],
-                    [
-                        'name'          => $data['name'],
-                        'email'         => $data['email'] ?? "no-email-{$data['sipetra_id']}@bps.go.id",
-                        'avatar_url'    => $data['avatar_url'],
-                        'identity_type' => $data['identity_type'],
-                        'is_active'     => $data['is_active'],
-                        'nip'           => $data['nip'],
-                        'jabatan'       => $data['jabatan'],
-                        'password'      => $this->option('full') ? Hash::make('password123') : null, // Hanya set pass jika baru/full
-                    ]
+                    $userData
                 );
 
                 if ($user->wasRecentlyCreated) {
@@ -81,26 +99,38 @@ class SyncUsersFromSipetra extends Command
                 }
 
                 // 2. Update/Create Pegawai
-                $pegawai = Pegawai::updateOrCreate(
-                    ['sipetra_id' => $data['sipetra_id']],
-                    [
-                        'user_id'        => $user->id,
-                        'nip'            => $data['nip'],
-                        'nip_baru'       => $data['nip_baru'],
-                        'nip_lama'       => $data['nip'], // Asumsi nip lama = nip di sipetra jika tidak ada khusus
-                        'sobat_id'       => $data['sobat_id'],
-                        'jabatan'        => $data['jabatan'],
-                        'unit_kerja'     => $data['unit_kerja'],
-                        'kd_satker'      => $data['kd_satker'],
-                        'jenis_kelamin'  => $data['gender'],
-                        'golongan'       => $data['golongan'],
-                        'period'         => $data['period'],
-                        'contract_start' => $data['contract_start'],
-                        'contract_end'   => $data['contract_end'],
-                    ]
-                );
+                // Hanya buat record Pegawai jika memiliki NIP (Pegawai/Mitra)
+                if (!empty($data['nip'])) {
+                    $pegawai = Pegawai::where('sipetra_id', $data['sipetra_id'])->first();
 
-                $pegawai->wasRecentlyCreated ? $created++ : $updated++;
+                    if (!$pegawai) {
+                        $pegawai = Pegawai::where('nip', $data['nip'])->first();
+                        if ($pegawai) {
+                            $pegawai->update(['sipetra_id' => $data['sipetra_id']]);
+                        }
+                    }
+
+                    Pegawai::updateOrCreate(
+                        ['sipetra_id' => $data['sipetra_id']],
+                        [
+                            'user_id'        => $user->id,
+                            'nip'            => $data['nip'],
+                            'nip_baru'       => $data['nip_baru'],
+                            'nip_lama'       => $data['nip'], // Asumsi nip lama = nip di sipetra jika tidak ada khusus
+                            'sobat_id'       => $data['sobat_id'],
+                            'jabatan'        => $data['jabatan'] ?? '-',
+                            'unit_kerja'     => $data['unit_kerja'],
+                            'kd_satker'      => $data['kd_satker'],
+                            'jenis_kelamin'  => $data['gender'],
+                            'golongan'       => $data['golongan'],
+                            'period'         => $data['period'],
+                            'contract_start' => $data['contract_start'],
+                            'contract_end'   => $data['contract_end'],
+                        ]
+                    );
+                }
+
+                $user->wasRecentlyCreated ? $created++ : $updated++;
             }
 
             $page++;

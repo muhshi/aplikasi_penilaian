@@ -57,8 +57,8 @@ Sistem informasi berbasis web untuk mengelola proses **pengiriman**, **monitorin
 - **Incremental Sync** — Mendukung filter `updated_after` untuk efisiensi transfer data.
 
 ### 10. Sinkronisasi Sipetra (Client)
-- **Auto-Sync Pegawai & Mitra** — Menarik data master dari Sipetra secara otomatis (background job) untuk menjaga data pegawai tetap up-to-date.
-- **Status Monitoring** — Sinkronisasi status aktif/pensiun dan siklus kontrak mitra statistik.
+- **Auto-Sync Pegawai** — Menarik data master pegawai dari Sipetra secara otomatis (background job) untuk menjaga data tetap up-to-date.
+- **Status Monitoring** — Sinkronisasi status aktif/pensiun pegawai.
 - **Sync Button** — Tombol sinkronisasi manual pada halaman Manajemen Pegawai.
 
 ## ⚙️ Instalasi
