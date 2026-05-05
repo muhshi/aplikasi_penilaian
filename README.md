@@ -173,6 +173,11 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-05-05
+
+### Fixed
+- **RouteNotFoundException**: Menambahkan definisi route `login` pada `web.php` untuk menangani redirect otomatis dari middleware Laravel dan SsoController, guna mencegah error "Route [login] not defined".
+
 ## [Unreleased] - 2026-05-04
 
 ### Added
