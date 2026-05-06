@@ -51,10 +51,15 @@ Sistem informasi berbasis web untuk mengelola proses **pengiriman**, **monitorin
 - **Pemetaan Penilai** — Fitur untuk menentukan hubungan atasan-bawahan (Ketua Tim -> Pegawai).
 - **Fitur Paksa Ganti Password** — Mewajibkan ganti password saat login pertama kali.
 
-### 8. Pengaturan Sistem
-- Manajemen Periode Tahun
-- Satu tahun aktif sebagai default di seluruh aplikasi
-- Dropdown tahun pada Dashboard, CKP, dan Nilai otomatis mengambil dari tabel ini
+### 9. Master Data API (M2M)
+- **Standardized API** — Menyediakan endpoint `/api/master/users` untuk sinkronisasi data antar-sistem dengan standar Sipetra.
+- **Secure Authentication** — Menggunakan token khusus `master-data-api` (Sanctum) yang dapat di-generate melalui dashboard.
+- **Incremental Sync** — Mendukung filter `updated_after` untuk efisiensi transfer data.
+
+### 10. Sinkronisasi Sipetra (Client)
+- **Auto-Sync Pegawai** — Menarik data master pegawai dari Sipetra secara otomatis (background job) untuk menjaga data tetap up-to-date.
+- **Status Monitoring** — Sinkronisasi status aktif/pensiun pegawai.
+- **Sync Button** — Tombol sinkronisasi manual pada halaman Manajemen Pegawai.
 
 ## ⚙️ Instalasi
 
@@ -167,6 +172,21 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 # Changelog
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
+
+## [Unreleased] - 2026-05-05
+
+### Fixed
+- **RouteNotFoundException**: Menambahkan definisi route `login` pada `web.php` untuk menangani redirect otomatis dari middleware Laravel dan SsoController, guna mencegah error "Route [login] not defined".
+
+## [Unreleased] - 2026-05-04
+
+### Added
+- **API Master Data (Server)**: Implementasi endpoint API `/api/master/users` yang mengikuti standar Sipetra untuk pertukaran data antar-sistem (M2M).
+- **Master API Token Management**: Menambahkan Widget di halaman User untuk generate Personal Access Token (Sanctum) khusus M2M.
+- **Sipetra Data Synchronization (Client)**: Implementasi perintah `php artisan sync:users` dan background job `SyncUsersJob` untuk menarik data pegawai dan mitra dari Sipetra.
+- **Pegawai Observer**: Sinkronisasi otomatis antara data `Pegawai` dan data `User` untuk menjaga integritas nama, NIP, dan jabatan.
+- **Sync UI**: Penambahan tombol sinkronisasi pada header halaman Manajemen Pegawai.
+- **Extended Schema**: Penambahan field `sipetra_id`, `identity_type`, `is_active`, dan data kontrak mitra pada tabel `users` dan `pegawai`.
 
 ## [Unreleased] - 2026-04-24
 

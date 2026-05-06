@@ -29,3 +29,8 @@ use App\Http\Controllers\Auth\SsoController;
 Route::get('/auth/sipetra/redirect', [SsoController::class, 'redirect'])->name('sipetra.login');
 Route::get('/auth/sipetra/callback', [SsoController::class, 'callback']);
 
+// Define default login route for Laravel middleware & SsoController redirects
+Route::get('/login', function () {
+    return redirect()->route('filament.admin.auth.login');
+})->name('login');
+

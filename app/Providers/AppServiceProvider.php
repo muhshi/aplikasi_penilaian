@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         }
         
         \App\Models\PeriodeTahun::observe(\App\Observers\PeriodeTahunObserver::class);
+        \App\Models\Pegawai::observe(\App\Observers\PegawaiObserver::class);
 
         $this->app->resolving(\Laravel\Socialite\Contracts\Factory::class, function ($socialite, $app) {
             $socialite->extend('sipetra', function ($app) use ($socialite) {
