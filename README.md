@@ -173,7 +173,13 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-05-06
+
+### Removed
+- **Temporary AI Files**: Pembersihan file-file log, output sementara, dan file error yang dihasilkan oleh AI (`composer_error.txt`, `output.txt`, `schema.txt`, dll) untuk menjaga kebersihan repositori.
+
 ## [Unreleased] - 2026-05-05
+
 
 ### Fixed
 - **RouteNotFoundException**: Menambahkan definisi route `login` pada `web.php` untuk menangani redirect otomatis dari middleware Laravel dan SsoController, guna mencegah error "Route [login] not defined".
