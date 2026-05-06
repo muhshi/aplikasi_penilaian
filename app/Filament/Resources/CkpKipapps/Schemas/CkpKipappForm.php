@@ -32,26 +32,25 @@ class CkpKipappForm
 
                 // Pilihan bulan/periode CKP
                 Select::make('bulan')
-                    ->label('Bulan')
-                    ->options([
-                        'Januari' => 'Januari',
-                        'Februari' => 'Februari',
-                        'Maret' => 'Maret',
-                        'April' => 'April',
-                        'Mei' => 'Mei',
-                        'Juni' => 'Juni',
-                        'Juli' => 'Juli',
-                        'Agustus' => 'Agustus',
-                        'September' => 'September',
-                        'Oktober' => 'Oktober',
-                        'November' => 'November',
-                        'Desember' => 'Desember',
-                        // Opsi tahunan untuk dokumen yang bersifat tahunan
-                        'Tahunan Penetapan' => 'Tahunan Penetapan',
-                        'Tahunan Penilaian' => 'Tahunan Penilaian',
-                        'Tahunan Dokumen Evaluasi' => 'Tahunan Dokumen Evaluasi',
-                    ])
+                    ->label('Bulan / Periode')
+                    ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
+                        $tahun = $get('tahun');
+                        if (! $tahun) return [];
+                        
+                        $pengaturan = \App\Models\PeriodeTahun::where('tahun', $tahun)->first();
+                        $periodeAktif = $pengaturan ? $pengaturan->periode_aktif : [];
+                        
+                        if (!is_array($periodeAktif)) $periodeAktif = [];
+                        
+                        $options = [];
+                        foreach ($periodeAktif as $periode) {
+                            $options[$periode] = $periode;
+                        }
+                        
+                        return $options;
+                    })
                     ->required()
+                    ->live()
                     ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, $get) {
                         return $rule->where('user_id', $get('user_id'))
                                     ->where('bulan', $get('bulan'))
@@ -69,7 +68,9 @@ class CkpKipappForm
                         $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
                         return $active ? $active->tahun : date('Y');
                     })
-                    ->required(),
+                    ->required()
+                    ->live()
+                    ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set) => $set('bulan', null)),
 
                 //upload dokumen
                 AdvancedFileUpload::make('nama_file')

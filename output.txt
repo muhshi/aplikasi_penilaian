@@ -1,0 +1,228 @@
+digraph "G" {
+style="filled"
+bgcolor="#F7F7F7"
+fontsize="12"
+labelloc="t"
+concentrate="1"
+splines="polyline"
+overlap=""
+nodesep="1"
+rankdir="LR"
+pad="0.5"
+ranksep="2"
+esep="1"
+fontname="Helvetica Neue"
+appmodelsckpkipapp:user_id -> appmodelsuser:id [
+label=" "
+xlabel="BelongsTo
+user"
+color="#F77F00"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="crow"
+]
+appmodelsnilaikipapp:nip_lama -> appmodelspegawai:nip_lama [
+label=" "
+xlabel="BelongsTo
+pegawai"
+color="#F77F00"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="crow"
+]
+appmodelsnilaipegawai:user_id -> appmodelsuser:id [
+label=" "
+xlabel="BelongsTo
+user"
+color="#F77F00"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="crow"
+]
+appmodelsnilaipegawai:penilai_id -> appmodelsuser:id [
+label=" "
+xlabel="BelongsTo
+penilai"
+color="#F77F00"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="crow"
+]
+appmodelspegawai:penilai_id -> appmodelsuser:id [
+label=" "
+xlabel="BelongsTo
+penilai"
+color="#F77F00"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="crow"
+]
+appmodelspegawai:user_id -> appmodelsuser:id [
+label=" "
+xlabel="BelongsTo
+user"
+color="#F77F00"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="crow"
+]
+appmodelspegawai:nip_lama -> appmodelsnilaikipapp:nip_lama [
+label=" "
+xlabel="HasMany
+nilaiKipapps"
+color="#FCBF49"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="crow"
+arrowtail="none"
+]
+appmodelsuser:id -> appmodelspegawai:user_id [
+label=" "
+xlabel="HasOne
+pegawai"
+color="#D62828"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="tee"
+arrowtail="none"
+]
+appmodelsuser:id -> appmodelsckpkipapp:user_id [
+label=" "
+xlabel="HasMany
+ckpKipapps"
+color="#FCBF49"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="crow"
+arrowtail="none"
+]
+appmodelsuser:id -> appmodelsnilaipegawai:user_id [
+label=" "
+xlabel="HasMany
+nilaiPegawais"
+color="#FCBF49"
+penwidth="1.8"
+fontname="Helvetica Neue"
+dir="both"
+arrowhead="crow"
+arrowtail="none"
+]
+"appmodelsckpkipapp" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">CkpKipapp</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (integer)</font></td></tr>
+<tr width="100%"><td port="user_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >user_id (integer)</font></td></tr>
+<tr width="100%"><td port="nama_file" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nama_file (varchar)</font></td></tr>
+<tr width="100%"><td port="bulan" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >bulan (varchar)</font></td></tr>
+<tr width="100%"><td port="tahun" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >tahun (integer)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (datetime)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (datetime)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsnilaikipapp" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">NilaiKipapp</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (integer)</font></td></tr>
+<tr width="100%"><td port="nip_lama" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nip_lama (varchar)</font></td></tr>
+<tr width="100%"><td port="bulan" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >bulan (integer)</font></td></tr>
+<tr width="100%"><td port="tahun" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >tahun (integer)</font></td></tr>
+<tr width="100%"><td port="rata_rata_hasil_kerja" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >rata_rata_hasil_kerja (numeric)</font></td></tr>
+<tr width="100%"><td port="rata_rata_perilaku" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >rata_rata_perilaku (numeric)</font></td></tr>
+<tr width="100%"><td port="nilai_rata_rata" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nilai_rata_rata (numeric)</font></td></tr>
+<tr width="100%"><td port="predikat_kinerja" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >predikat_kinerja (varchar)</font></td></tr>
+<tr width="100%"><td port="nilai_prestasi" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nilai_prestasi (numeric)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (datetime)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (datetime)</font></td></tr>
+<tr width="100%"><td port="nama_file" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nama_file (varchar)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsnilaipegawai" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">NilaiPegawai</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (integer)</font></td></tr>
+<tr width="100%"><td port="user_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >user_id (integer)</font></td></tr>
+<tr width="100%"><td port="bulan" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >bulan (integer)</font></td></tr>
+<tr width="100%"><td port="tahun" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >tahun (integer)</font></td></tr>
+<tr width="100%"><td port="kualitas" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >kualitas (numeric)</font></td></tr>
+<tr width="100%"><td port="kuantitas" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >kuantitas (numeric)</font></td></tr>
+<tr width="100%"><td port="perilaku" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >perilaku (numeric)</font></td></tr>
+<tr width="100%"><td port="nilai_akhir" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nilai_akhir (numeric)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (datetime)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (datetime)</font></td></tr>
+<tr width="100%"><td port="penilai_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >penilai_id (integer)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelspegawai" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">Pegawai</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (integer)</font></td></tr>
+<tr width="100%"><td port="user_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >user_id (integer)</font></td></tr>
+<tr width="100%"><td port="nip" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nip (varchar)</font></td></tr>
+<tr width="100%"><td port="nip_lama" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >nip_lama (varchar)</font></td></tr>
+<tr width="100%"><td port="no_hp" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >no_hp (varchar)</font></td></tr>
+<tr width="100%"><td port="jabatan" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >jabatan (varchar)</font></td></tr>
+<tr width="100%"><td port="pangkat" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >pangkat (varchar)</font></td></tr>
+<tr width="100%"><td port="golongan" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >golongan (varchar)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (datetime)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (datetime)</font></td></tr>
+<tr width="100%"><td port="penilai_id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >penilai_id (integer)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsperiodetahun" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">PeriodeTahun</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (integer)</font></td></tr>
+<tr width="100%"><td port="tahun" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >tahun (integer)</font></td></tr>
+<tr width="100%"><td port="is_active" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >is_active (tinyint(1))</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (datetime)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (datetime)</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+"appmodelsuser" [
+label=<<table width="100%" height="100%" border="0" margin="0" cellborder="1" cellspacing="0" cellpadding="10">
+<tr width="100%"><td width="100%" bgcolor="#d3d3d3"><font color="#333333">User</font></td></tr>
+<tr width="100%"><td port="id" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >id (integer)</font></td></tr>
+<tr width="100%"><td port="name" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >name (varchar)</font></td></tr>
+<tr width="100%"><td port="email" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >email (varchar)</font></td></tr>
+<tr width="100%"><td port="email_verified_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >email_verified_at (datetime)</font></td></tr>
+<tr width="100%"><td port="password" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >password (varchar)</font></td></tr>
+<tr width="100%"><td port="remember_token" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >remember_token (varchar)</font></td></tr>
+<tr width="100%"><td port="created_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >created_at (datetime)</font></td></tr>
+<tr width="100%"><td port="updated_at" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >updated_at (datetime)</font></td></tr>
+<tr width="100%"><td port="must_change_password" align="left" width="100%"  bgcolor="#ffffff"><font color="#333333" >must_change_password (tinyint(1))</font></td></tr>
+</table>>
+margin="0"
+shape="rectangle"
+fontname="Helvetica Neue"
+]
+}

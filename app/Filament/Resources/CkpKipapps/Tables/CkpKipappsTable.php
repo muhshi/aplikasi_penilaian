@@ -43,24 +43,13 @@ class CkpKipappsTable
             ])
             ->filters([
                 SelectFilter::make('bulan')
-                    ->options([
-                        'Januari' => 'Januari',
-                        'Februari' => 'Februari',
-                        'Maret' => 'Maret',
-                        'April' => 'April',
-                        'Mei' => 'Mei',
-                        'Juni' => 'Juni',
-                        'Juli' => 'Juli',
-                        'Agustus' => 'Agustus',
-                        'September' => 'September',
-                        'Oktober' => 'Oktober',
-                        'November' => 'November',
-                        'Desember' => 'Desember',
-                        'Tahunan Penetapan' => 'Tahunan Penetapan',
-                        'Tahunan Penilaian' => 'Tahunan Penilaian',
-                        'Tahunan Dokumen Evaluasi' => 'Tahunan Dokumen Evaluasi',
-                    ])
-                    ->label('Filter Bulan'),
+                    ->options(fn () => \App\Models\CkpKipapp::select('bulan')
+                        ->whereNotNull('bulan')
+                        ->distinct()
+                        ->pluck('bulan', 'bulan')
+                        ->toArray()
+                    )
+                    ->label('Filter Bulan / Periode'),
                 SelectFilter::make('tahun')
                     ->options(fn () => \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
                     ->label('Filter Tahun'),

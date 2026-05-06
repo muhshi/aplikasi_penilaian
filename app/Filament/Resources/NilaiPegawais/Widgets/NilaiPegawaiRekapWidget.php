@@ -19,6 +19,9 @@ class NilaiPegawaiRekapWidget extends TableWidget
 
     public function getTableRecordKey(Model|array $record): string
     {
+        if (is_array($record)) {
+            return ($record['user_id'] ?? '') . '-' . ($record['bulan'] ?? '') . '-' . ($record['tahun'] ?? '');
+        }
         return $record->user_id . '-' . $record->bulan . '-' . $record->tahun;
     }
 
@@ -64,20 +67,25 @@ class NilaiPegawaiRekapWidget extends TableWidget
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('bulan')
-                    ->formatStateUsing(fn(int $state): string => match ($state) {
-                        1 => 'Januari',
-                        2 => 'Februari',
-                        3 => 'Maret',
-                        4 => 'April',
-                        5 => 'Mei',
-                        6 => 'Juni',
-                        7 => 'Juli',
-                        8 => 'Agustus',
-                        9 => 'September',
-                        10 => 'Oktober',
-                        11 => 'November',
-                        12 => 'Desember',
-                        default => $state,
+                    ->label('Periode')
+                    ->formatStateUsing(fn($state): string => match ((string) $state) {
+                        '1', '01' => 'Januari',
+                        '2', '02' => 'Februari',
+                        '3', '03' => 'Maret',
+                        '4', '04' => 'April',
+                        '5', '05' => 'Mei',
+                        '6', '06' => 'Juni',
+                        '7', '07' => 'Juli',
+                        '8', '08' => 'Agustus',
+                        '9', '09' => 'September',
+                        '10' => 'Oktober',
+                        '11' => 'November',
+                        '12' => 'Desember',
+                        'T01' => 'Triwulan 1',
+                        'T02' => 'Triwulan 2',
+                        'T03' => 'Triwulan 3',
+                        'T04' => 'Triwulan 4',
+                        default => (string) $state,
                     })
                     ->sortable(),
                 TextColumn::make('tahun')
@@ -137,19 +145,12 @@ class NilaiPegawaiRekapWidget extends TableWidget
                         return $active ? $active->tahun : null;
                     }),
                 SelectFilter::make('bulan')
+                    ->label('Periode')
                     ->options([
-                        1 => 'Januari',
-                        2 => 'Februari',
-                        3 => 'Maret',
-                        4 => 'April',
-                        5 => 'Mei',
-                        6 => 'Juni',
-                        7 => 'Juli',
-                        8 => 'Agustus',
-                        9 => 'September',
-                        10 => 'Oktober',
-                        11 => 'November',
-                        12 => 'Desember',
+                        '1' => 'Januari', '2' => 'Februari', '3' => 'Maret', '4' => 'April',
+                        '5' => 'Mei', '6' => 'Juni', '7' => 'Juli', '8' => 'Agustus',
+                        '9' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember',
+                        'T01' => 'Triwulan 1', 'T02' => 'Triwulan 2', 'T03' => 'Triwulan 3', 'T04' => 'Triwulan 4',
                     ]),
             ])
             ->defaultSort('user.name')

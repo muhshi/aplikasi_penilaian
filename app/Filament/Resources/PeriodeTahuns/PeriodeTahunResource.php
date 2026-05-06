@@ -9,6 +9,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -47,6 +49,23 @@ class PeriodeTahunResource extends Resource
                     ->label('Tahun Aktif (Default)')
                     ->helperText('Hanya boleh ada 1 tahun yang aktif pada satu waktu.')
                     ->default(false),
+                Select::make('periode_aktif')
+                    ->label('Periode Aktif')
+                    ->multiple()
+                    ->options(fn () => \App\Models\MasterPeriode::pluck('nama', 'nama')->toArray())
+                    ->createOptionForm([
+                        \Filament\Forms\Components\TextInput::make('nama')
+                            ->label('Nama Periode Baru')
+                            ->required()
+                            ->rule('unique:master_periodes,nama')
+                    ])
+                    ->createOptionUsing(function (array $data) {
+                        $record = \App\Models\MasterPeriode::create($data);
+                        return $record->nama;
+                    })
+                    ->searchable()
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 

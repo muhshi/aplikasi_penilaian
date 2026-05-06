@@ -31,20 +31,25 @@ class NilaiPegawaisTable
                     ->default('-')
                     ->visible(fn() => !auth()->user()?->hasRole('pegawai')),
                 TextColumn::make('bulan')
-                    ->formatStateUsing(fn(int $state): string => match ($state) {
-                        1 => 'Januari',
-                        2 => 'Februari',
-                        3 => 'Maret',
-                        4 => 'April',
-                        5 => 'Mei',
-                        6 => 'Juni',
-                        7 => 'Juli',
-                        8 => 'Agustus',
-                        9 => 'September',
-                        10 => 'Oktober',
-                        11 => 'November',
-                        12 => 'Desember',
-                        default => $state,
+                    ->label('Periode')
+                    ->formatStateUsing(fn($state): string => match ((string) $state) {
+                        '1', '01' => 'Januari',
+                        '2', '02' => 'Februari',
+                        '3', '03' => 'Maret',
+                        '4', '04' => 'April',
+                        '5', '05' => 'Mei',
+                        '6', '06' => 'Juni',
+                        '7', '07' => 'Juli',
+                        '8', '08' => 'Agustus',
+                        '9', '09' => 'September',
+                        '10' => 'Oktober',
+                        '11' => 'November',
+                        '12' => 'Desember',
+                        'T01' => 'Triwulan 1',
+                        'T02' => 'Triwulan 2',
+                        'T03' => 'Triwulan 3',
+                        'T04' => 'Triwulan 4',
+                        default => (string) $state,
                     })
                     ->sortable(),
                 TextColumn::make('tahun')
@@ -113,20 +118,24 @@ class NilaiPegawaisTable
                     ->label('Tahun')
                     ->collapsible(),
                 Group::make('bulan')
-                    ->label('Bulan')
-                    ->getTitleFromRecordUsing(fn($record): string => match ((int) $record->bulan) {
-                        1 => 'Januari',
-                        2 => 'Februari',
-                        3 => 'Maret',
-                        4 => 'April',
-                        5 => 'Mei',
-                        6 => 'Juni',
-                        7 => 'Juli',
-                        8 => 'Agustus',
-                        9 => 'September',
-                        10 => 'Oktober',
-                        11 => 'November',
-                        12 => 'Desember',
+                    ->label('Periode')
+                    ->getTitleFromRecordUsing(fn($record): string => match ((string) $record->bulan) {
+                        '1', '01' => 'Januari',
+                        '2', '02' => 'Februari',
+                        '3', '03' => 'Maret',
+                        '4', '04' => 'April',
+                        '5', '05' => 'Mei',
+                        '6', '06' => 'Juni',
+                        '7', '07' => 'Juli',
+                        '8', '08' => 'Agustus',
+                        '9', '09' => 'September',
+                        '10' => 'Oktober',
+                        '11' => 'November',
+                        '12' => 'Desember',
+                        'T01' => 'Triwulan 1',
+                        'T02' => 'Triwulan 2',
+                        'T03' => 'Triwulan 3',
+                        'T04' => 'Triwulan 4',
                         default => (string) $record->bulan,
                     })
                     ->collapsible(),
