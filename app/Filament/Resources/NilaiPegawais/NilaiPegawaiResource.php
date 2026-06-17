@@ -72,18 +72,23 @@ class NilaiPegawaiResource extends Resource
 
         // 3. Pegawai hanya bisa melihat rekap nilai milik mereka sendiri (Agregat)
         if ($user?->hasRole('pegawai')) {
-            return $query->where('user_id', $user->id)
-                ->select([
-                    'user_id',
-                    'bulan',
-                    'tahun',
-                    \Illuminate\Support\Facades\DB::raw('MAX(id) as id'), // Dummy ID for Filament
-                    \Illuminate\Support\Facades\DB::raw('AVG(kualitas) as kualitas'),
-                    \Illuminate\Support\Facades\DB::raw('AVG(kuantitas) as kuantitas'),
-                    \Illuminate\Support\Facades\DB::raw('AVG(perilaku) as perilaku'),
-                    \Illuminate\Support\Facades\DB::raw('AVG(nilai_akhir) as nilai_akhir'),
-                ])
-                ->groupBy('user_id', 'bulan', 'tahun');
+            $query->fromSub(function ($subQuery) use ($user) {
+                $subQuery->from('nilai_pegawai')
+                    ->where('user_id', $user->id)
+                    ->select([
+                        'user_id',
+                        'bulan',
+                        'tahun',
+                        \Illuminate\Support\Facades\DB::raw('MAX(id) as id'), // Dummy ID for Filament
+                        \Illuminate\Support\Facades\DB::raw('AVG(kualitas) as kualitas'),
+                        \Illuminate\Support\Facades\DB::raw('AVG(kuantitas) as kuantitas'),
+                        \Illuminate\Support\Facades\DB::raw('AVG(perilaku) as perilaku'),
+                        \Illuminate\Support\Facades\DB::raw('AVG(nilai_akhir) as nilai_akhir'),
+                    ])
+                    ->groupBy('user_id', 'bulan', 'tahun');
+            }, 'nilai_pegawai');
+
+            return $query;
         }
 
         return $query;
