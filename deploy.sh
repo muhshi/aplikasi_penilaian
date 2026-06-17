@@ -51,7 +51,9 @@ echo "   ✅ Container web dan worker berhasil dinyalakan."
 echo ""
 echo "🗄️  [5/9] Menjalankan migrasi database..."
 docker exec "$CONTAINER_NAME" php artisan migrate --force
-echo "   ✅ Migrasi selesai."
+docker exec "$CONTAINER_NAME" php artisan permission:cache-reset
+docker exec "$CONTAINER_NAME" php artisan shield:generate --all
+echo "   ✅ Migrasi dan Shield selesai."
 
 # 7. Optimasi Laravel (cache config, route, view)
 echo ""
