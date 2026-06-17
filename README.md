@@ -178,7 +178,7 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 ### Added
 - **Multiple Role Support**: Memperbarui form user agar dapat memilih multiple role sekaligus.
 - **Bulk Multiple Role Support**: Memperbarui aksi bulk *Assign Role Massal* agar dapat menerapkan multiple role sekaligus ke banyak user.
-- **Deploy Script**: Menambahkan file `deploy.sh` untuk otomatisasi deployment ke server.
+- **Deploy Script**: Menambahkan file `deploy.sh` untuk otomatisasi deployment ke server dengan menyesuaikan konfigurasi `docker-compose.yml` (menggunakan container franken dan worker).
 
 ## [Unreleased] - 2026-05-06
 
