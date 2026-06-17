@@ -37,7 +37,7 @@ echo "   ✅ Image berhasil di-build."
 # 4. Build frontend assets (Vite)
 echo ""
 echo "📦 [3/9] Build frontend assets..."
-docker run --rm -v "$(pwd):/app" -w /app node:20-alpine sh -c "npm install && npm run build"
+docker run --rm -v "$(pwd):/app" -w /app node:20-alpine sh -c "npm install && npm run build && chown -R $(id -u):$(id -g) public/build node_modules"
 echo "   ✅ Assets berhasil di-build."
 
 # 5. Restart semua container (web + worker)
