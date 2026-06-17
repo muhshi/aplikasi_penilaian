@@ -5,18 +5,17 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
 
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+
 class MasterTokenWidget extends Widget
 {
+    use HasWidgetShield;
+
     protected string $view = 'filament.widgets.master-token-widget';
 
     public ?string $token = null;
 
     protected int|string|array $columnSpan = 'full';
-
-    public static function canView(): bool
-    {
-        return auth()->user()?->hasRole('super_admin') ?? false;
-    }
 
     public function generateToken()
     {

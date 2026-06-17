@@ -54,7 +54,7 @@ class UsersTable
                         ->action(function (Collection $records, array $data): void {
                             $roles = Role::whereIn('id', $data['role_ids'])->pluck('name')->toArray();
                             foreach ($records as $record) {
-                                $record->syncRoles($roles);
+                                $record->assignRole($roles);
                             }
                         })
                         ->deselectRecordsAfterCompletion(),
