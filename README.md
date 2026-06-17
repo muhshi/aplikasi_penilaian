@@ -173,6 +173,13 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-06-17
+
+### Added
+- **Multiple Role Support**: Memperbarui form user agar dapat memilih multiple role sekaligus.
+- **Bulk Multiple Role Support**: Memperbarui aksi bulk *Assign Role Massal* agar dapat menerapkan multiple role sekaligus ke banyak user.
+- **Deploy Script**: Menambahkan file `deploy.sh` untuk otomatisasi deployment ke server.
+
 ## [Unreleased] - 2026-05-06
 
 ### Removed

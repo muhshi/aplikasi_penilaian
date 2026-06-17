@@ -45,15 +45,16 @@ class UsersTable
                         ->label('Assign Role Massal')
                         ->icon('heroicon-o-users')
                         ->form([
-                            Select::make('role_id')
+                            Select::make('role_ids')
                                 ->label('Pilih Role')
+                                ->multiple()
                                 ->options(Role::pluck('name', 'id')->toArray())
                                 ->required(),
                         ])
                         ->action(function (Collection $records, array $data): void {
-                            $role = Role::findById($data['role_id']);
+                            $roles = Role::whereIn('id', $data['role_ids'])->pluck('name')->toArray();
                             foreach ($records as $record) {
-                                $record->syncRoles([$role->name]);
+                                $record->syncRoles($roles);
                             }
                         })
                         ->deselectRecordsAfterCompletion(),
