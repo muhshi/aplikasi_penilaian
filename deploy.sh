@@ -23,52 +23,58 @@ echo "📂 Direktori: $(pwd)"
 
 # 2. Fetch & Pull dari GitHub
 echo ""
-echo "📥 [1/8] Mengambil kode terbaru dari GitHub..."
+echo "📥 [1/9] Mengambil kode terbaru dari GitHub..."
 git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 echo "   ✅ Kode terbaru berhasil ditarik."
 
 # 3. Build ulang Docker image
 echo ""
-echo "🔨 [2/8] Rebuild Docker image..."
+echo "🔨 [2/9] Rebuild Docker image..."
 docker compose build
 echo "   ✅ Image berhasil di-build."
 
-# 4. Restart semua container (web + worker)
+# 4. Build frontend assets (Vite)
 echo ""
-echo "🔄 [3/8] Restart container (web + worker)..."
+echo "📦 [3/9] Build frontend assets..."
+docker run --rm -v "$(pwd):/app" -w /app node:20-alpine sh -c "npm install && npm run build"
+echo "   ✅ Assets berhasil di-build."
+
+# 5. Restart semua container (web + worker)
+echo ""
+echo "🔄 [4/9] Restart container (web + worker)..."
 docker compose down
 docker compose up -d
 echo "   ✅ Container web dan worker berhasil dinyalakan."
 
-# 5. Jalankan migrasi (tanpa --fresh, hanya yang baru)
+# 6. Jalankan migrasi (tanpa --fresh, hanya yang baru)
 echo ""
-echo "🗄️  [4/8] Menjalankan migrasi database..."
+echo "🗄️  [5/9] Menjalankan migrasi database..."
 docker exec "$CONTAINER_NAME" php artisan migrate --force
 echo "   ✅ Migrasi selesai."
 
-# 6. Optimasi Laravel (cache config, route, view)
+# 7. Optimasi Laravel (cache config, route, view)
 echo ""
-echo "⚡ [5/8] Optimasi Laravel..."
+echo "⚡ [6/9] Optimasi Laravel..."
 docker exec "$CONTAINER_NAME" php artisan config:cache
 docker exec "$CONTAINER_NAME" php artisan route:cache
 docker exec "$CONTAINER_NAME" php artisan view:cache
 docker exec "$CONTAINER_NAME" php artisan event:cache
 echo "   ✅ Cache berhasil di-generate."
 
-# 7. Restart queue worker
+# 8. Restart queue worker
 echo ""
-echo "👷 [6/8] Restart Queue Worker..."
+echo "👷 [7/9] Restart Queue Worker..."
 docker restart "$WORKER_NAME"
 echo "   ✅ Worker di-restart dengan kode terbaru."
 
-# 8. Bersihkan image Docker yang tidak terpakai
+# 9. Bersihkan image Docker yang tidak terpakai
 echo ""
-echo "🧹 [7/8] Membersihkan image Docker lama yang tidak terpakai..."
+echo "🧹 [8/9] Membersihkan image Docker lama yang tidak terpakai..."
 docker image prune -f
 echo "   ✅ Image lama dibersihkan."
 
-# 9. Verifikasi
+# 10. Verifikasi
 echo ""
 echo "=========================================="
 echo "  ✅ Deploy Selesai!"
