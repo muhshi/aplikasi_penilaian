@@ -66,14 +66,14 @@ class ListNilaiKipapps extends ListRecords
                 ->label('Export Excel')
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->visible(fn() => !$user?->hasRole('pegawai'))
+                ->visible(fn() => $user?->hasAnyRole(['super_admin', 'ketua_tim']))
                 ->action(function () {
-                    return Excel::download(
+                    return \Maatwebsite\Excel\Facades\Excel::download(
                         new \App\Exports\NilaiKipappExport,
                         'nilai-kipapp-' . now()->format('Y-m-d') . '.xlsx'
                     );
                 }),
-            CreateAction::make()->visible(fn() => !$user?->hasRole('pegawai')),
+            CreateAction::make(),
         ]);
     }
 }

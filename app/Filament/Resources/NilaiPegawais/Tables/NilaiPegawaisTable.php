@@ -29,7 +29,7 @@ class NilaiPegawaisTable
                     ->searchable()
                     ->sortable()
                     ->default('-')
-                    ->visible(fn() => !auth()->user()?->hasRole('pegawai')),
+                    ->visible(fn() => auth()->user()?->hasAnyRole(['super_admin', 'ketua_tim'])),
                 TextColumn::make('bulan')
                     ->label('Periode')
                     ->formatStateUsing(fn($state): string => match ((string) $state) {

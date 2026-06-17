@@ -81,14 +81,14 @@ class ListNilaiPegawais extends ListRecords
                 ->label('Export Excel')
                 ->color('success')
                 ->icon('heroicon-o-arrow-down-tray')
-                ->visible(fn() => !$user?->hasRole('pegawai'))
+                ->visible(fn() => $user?->hasAnyRole(['super_admin', 'ketua_tim']))
                 ->action(function () {
                     return \Maatwebsite\Excel\Facades\Excel::download(
                         new \App\Exports\NilaiPegawaiExport,
                         'nilai-pegawai-' . now()->format('Y-m-d') . '.xlsx'
                     );
                 }),
-            CreateAction::make()->visible(fn() => !$user?->hasRole('pegawai')),
+            CreateAction::make(),
         ]);
     }
 
