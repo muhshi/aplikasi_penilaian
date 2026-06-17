@@ -9,8 +9,12 @@ use BackedEnum;
 use Filament\Pages\Page;
 use Illuminate\Support\Collection;
 
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+
 class MonitoringCkpKipapp extends Page
 {
+    use HasPageShield;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar-square';
 
     protected static ?string $navigationLabel = 'Monitoring';
@@ -22,11 +26,6 @@ class MonitoringCkpKipapp extends Page
     protected static ?int $navigationSort = 1;
 
     protected string $view = 'filament.pages.monitoring-ckp-kipapp';
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()?->hasAnyRole(['super_admin', 'ketua_tim']) ?? false;
-    }
 
     public int $tahun;
 
