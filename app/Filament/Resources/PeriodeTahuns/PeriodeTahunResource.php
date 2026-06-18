@@ -83,6 +83,9 @@ class PeriodeTahunResource extends Resource
                 TextColumn::make('periode_aktif')
                     ->label('Isian Per Tahun (Periode)')
                     ->badge()
+                    ->limitList(5)
+                    ->expandableLimitedList()
+                    ->wrap()
                     ->separator(', ')
                     ->action(
                         Action::make('editPeriode')
