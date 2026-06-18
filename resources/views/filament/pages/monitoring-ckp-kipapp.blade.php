@@ -8,7 +8,7 @@
                     <tr>
                         <th rowspan="2" class="monitoring-th monitoring-th-no">No</th>
                         <th rowspan="2" class="monitoring-th monitoring-th-name">Nama Pegawai</th>
-                        <th colspan="15" class="monitoring-th monitoring-th-year">
+                        <th colspan="{{ count($this->getPeriods()) }}" class="monitoring-th monitoring-th-year">
                             <div class="monitoring-year-dropdown">
                                 <span>Tahun</span>
                                 <select wire:model.live="tahun" class="monitoring-year-select">
@@ -21,7 +21,7 @@
                     </tr>
                     {{-- Row 2: Individual period columns --}}
                     <tr>
-                        @foreach ($periods as $period)
+                        @foreach ($this->getPeriods() as $period)
                             <th class="monitoring-th monitoring-th-period">{{ $period }}</th>
                         @endforeach
                     </tr>
@@ -38,7 +38,7 @@
                             <tr class="monitoring-tr">
                                 <td class="monitoring-td monitoring-td-no">{{ $index + 1 }}</td>
                                 <td class="monitoring-td monitoring-td-name">{{ $row['name'] }}</td>
-                                @foreach ($periods as $period)
+                                @foreach ($this->getPeriods() as $period)
                                     <td class="monitoring-td monitoring-td-status">
                                         @if ($row['status'][$period])
                                             <x-heroicon-o-check-circle class="monitoring-icon-check" />

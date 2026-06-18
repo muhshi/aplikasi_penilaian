@@ -30,25 +30,22 @@ class MonitoringCkpKipapp extends Page
     public int $tahun;
 
     /**
-     * Daftar periode bulanan dan tahunan.
+     * Daftar periode bulanan dan tahunan dinamis berdasarkan pengaturan.
      */
-    public array $periods = [
-        'Januari',
-        'Februari',
-        'Maret',
-        'April',
-        'Mei',
-        'Juni',
-        'Juli',
-        'Agustus',
-        'September',
-        'Oktober',
-        'November',
-        'Desember',
-        'Tahunan Penetapan',
-        'Tahunan Penilaian',
-        'Tahunan Dokumen Evaluasi',
-    ];
+    public function getPeriods(): array
+    {
+        $active = \App\Models\PeriodeTahun::where('tahun', $this->tahun)->first();
+        if ($active && is_array($active->periode_aktif) && count($active->periode_aktif) > 0) {
+            return $active->periode_aktif;
+        }
+
+        // Fallback default
+        return [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
+            'Tahunan Penetapan', 'Tahunan Penilaian', 'Tahunan Dokumen Evaluasi',
+        ];
+    }
 
     public array $bulanList = [
         1 => 'Januari',
@@ -100,7 +97,7 @@ class MonitoringCkpKipapp extends Page
 
             // Buat array status per periode
             $status = [];
-            foreach ($this->periods as $period) {
+            foreach ($this->getPeriods() as $period) {
                 $status[$period] = $userRecords->contains('bulan', $period);
             }
 

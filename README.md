@@ -185,7 +185,11 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
 ## [Unreleased] - 2026-06-18
 
+### Added
+- **PeriodeTahun Seeder**: Menambahkan `PeriodeTahunSeeder` untuk menginisiasi data periode bulan dan triwulan pada tahun 2024, 2025, dan 2026 secara otomatis.
+
 ### Changed
+- **Monitoring CKP KIPAPP**: Menyesuaikan tabel "Monitoring CKP KIPAPP" agar kolom periodenya dirender secara dinamis mengikuti data `periode_aktif` dari `PeriodeTahun` berdasarkan tahun yang dipilih.
 - **Dashboard Filters**: Memperbarui filter `bulan` di Dashboard agar mengambil data `periode_aktif` dari `PeriodeTahun` (dinamis berdasarkan tahun yang dipilih), dan memfilter tipe "Tahunan".
 - **Dashboard Widgets**: Mengubah logika widget `StatsOverview`, `NilaiDistributionChart`, `TopPegawai`, dan `MonitoringPending` untuk dapat memproses filter periode berupa string teks (misal: "Triwulan I") alih-alih terbatas pada angka bulan (1-12).
 - **Nilai Pegawai & KIPAPP Models**: Menghapus casting tipe integer untuk kolom `bulan` pada model `NilaiPegawai` dan `NilaiKipapp` untuk mengakomodasi string periode.
