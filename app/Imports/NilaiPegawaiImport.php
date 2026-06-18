@@ -108,6 +108,10 @@ class NilaiPegawaiImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 
             $userId = $pegawai->user_id;
 
+            if ($userId === $this->penilaiId) {
+                throw new \Exception("Validasi gagal pada baris {$index}: Anda tidak dapat menilai diri Anda sendiri (NIP: {$nip}).");
+            }
+
             $kualitas = (float) ($row['kualitas'] ?? 0);
             $kuantitas = (float) ($row['kuantitas'] ?? 0);
             $perilaku = (float) ($row['perilaku'] ?? 0);

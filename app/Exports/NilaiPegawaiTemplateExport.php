@@ -38,8 +38,11 @@ class NilaiPegawaiTemplateExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        // Pre-fill NIP dan Nama dari semua pegawai
+        $currentUserId = auth()->id();
+
+        // Pre-fill NIP dan Nama dari semua pegawai, kecuali dirinya sendiri
         return Pegawai::with('user')
+            ->where('user_id', '!=', $currentUserId)
             ->orderBy('nip')
             ->get()
             ->map(function ($pegawai) {
