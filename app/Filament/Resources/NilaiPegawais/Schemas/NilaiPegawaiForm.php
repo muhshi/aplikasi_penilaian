@@ -148,7 +148,7 @@ class NilaiPegawaiForm
 
         $query = User::role('pegawai')
             ->where('id', '!=', $penilaiId)
-            ->where('name', '!=', 'Ani Murwani')
+            ->where('is_active', true)
             ->whereDoesntHave('nilaiPegawais', function ($q) use ($penilaiId, $bulan, $tahun) {
                 if ($bulan && $tahun) {
                     $q->where('bulan', $bulan)

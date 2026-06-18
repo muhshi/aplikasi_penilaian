@@ -23,6 +23,8 @@ class UsersTable
                 \Filament\Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->searchable(),
+                \Filament\Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Aktif'),
                 \Filament\Tables\Columns\TextColumn::make('roles.name')
                     ->label('Peran')
                     ->badge()

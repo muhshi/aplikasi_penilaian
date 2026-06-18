@@ -43,7 +43,7 @@ class NilaiPegawaiTemplateExport implements FromCollection, WithHeadings
         // Pre-fill NIP dan Nama dari semua pegawai, kecuali dirinya sendiri
         return Pegawai::with('user')
             ->whereHas('user', function ($query) {
-                $query->where('name', '!=', 'Ani Murwani');
+                $query->where('is_active', true);
             })
             ->where('user_id', '!=', $currentUserId)
             ->orderBy('nip')

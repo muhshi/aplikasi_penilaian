@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,6 +36,10 @@ class UserForm
                     ->preload()
                     ->searchable()
                     ->required(),
+                Toggle::make('is_active')
+                    ->label('Aktif')
+                    ->default(true)
+                    ->helperText('Matikan jika user sudah pensiun, pindah tugas, atau tidak aktif.'),
             ]);
     }
 }
