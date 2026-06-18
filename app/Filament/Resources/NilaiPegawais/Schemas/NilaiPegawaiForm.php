@@ -200,7 +200,7 @@ class NilaiPegawaiForm
                                 'regex' => 'Format tidak valid (0-100).',
                             ])
                             ->default(0)
-                            ->live(onBlur: true)
+                            ->live(debounce: 500)
                             ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
 
                         TextInput::make('perilaku')
@@ -217,7 +217,7 @@ class NilaiPegawaiForm
                                 'regex' => 'Format tidak valid (0-100).',
                             ])
                             ->default(0)
-                            ->live(onBlur: true)
+                            ->live(debounce: 500)
                             ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
 
                         TextInput::make('nilai_akhir')
@@ -239,14 +239,18 @@ class NilaiPegawaiForm
     {
         $k1 = $get('kualitas');
         $k2 = $get('kuantitas');
-        $p = $get('perilaku');
+        $p  = $get('perilaku');
 
-        if (
-            !preg_match('/^(0|[1-9][0-9]?|100)$/', (string) $k1) ||
-            !preg_match('/^(0|[1-9][0-9]?|100)$/', (string) $k2) ||
-            !preg_match('/^(0|[1-9][0-9]?|100)$/', (string) $p)
-        ) {
-            $set('nilai_akhir', 0);
+        // Jika salah satu field masih kosong, jangan lakukan apa-apa dulu
+        if ($k1 === null || $k1 === '' || $k2 === null || $k2 === '' || $p === null || $p === '') {
+            return;
+        }
+
+        // Validasi: harus angka bulat 0–100
+        $isValid = fn($v) => is_numeric($v) && (int)$v == $v && (int)$v >= 0 && (int)$v <= 100;
+
+        if (!$isValid($k1) || !$isValid($k2) || !$isValid($p)) {
+            $set('nilai_akhir', null);
             $set('predikat', 'Input Tidak Valid');
             return;
         }
@@ -262,7 +266,7 @@ class NilaiPegawaiForm
             $avg >= 90 => 'Sangat Baik',
             $avg >= 75 => 'Baik',
             $avg >= 60 => 'Cukup',
-            default => 'Kurang',
+            default    => 'Kurang',
         };
         $set('predikat', $predikat);
     }
