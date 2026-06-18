@@ -23,8 +23,6 @@ class NilaiPegawaiForm
     {
         return $schema
             ->components([
-                Hidden::make('penilai_id')
-                    ->default(fn() => auth()->id()),
 
                 Section::make('Data Penilaian')
                     ->icon('heroicon-o-document-text')
@@ -79,7 +77,8 @@ class NilaiPegawaiForm
                                             ->toArray()
                                     )
                                     ->default(fn() => auth()->id())
-                                    ->searchable()
+                                    ->disabled()
+                                    ->dehydrated()
                                     ->required(),
                             ]),
 
