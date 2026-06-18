@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PeriodeTahuns;
 use App\Filament\Resources\PeriodeTahuns\Pages\ManagePeriodeTahuns;
 use App\Models\PeriodeTahun;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -52,7 +53,7 @@ class PeriodeTahunResource extends Resource
                 Select::make('periode_aktif')
                     ->label('Periode Aktif')
                     ->multiple()
-                    ->options(fn () => \App\Models\MasterPeriode::pluck('nama', 'nama')->toArray())
+                    ->options(fn() => \App\Models\MasterPeriode::pluck('nama', 'nama')->toArray())
                     ->createOptionForm([
                         \Filament\Forms\Components\TextInput::make('nama')
                             ->label('Nama Periode Baru')
@@ -78,19 +79,19 @@ class PeriodeTahunResource extends Resource
                     ->label('Tahun')
                     ->sortable()
                     ->searchable(),
-                
+
                 TextColumn::make('periode_aktif')
                     ->label('Isian Per Tahun (Periode)')
                     ->badge()
                     ->separator(', ')
                     ->action(
-                        \Filament\Tables\Actions\Action::make('editPeriode')
+                        Action::make('editPeriode')
                             ->modalHeading('Edit Periode Aktif')
                             ->form([
                                 Select::make('periode_aktif')
                                     ->label('Periode Aktif')
                                     ->multiple()
-                                    ->options(fn () => \App\Models\MasterPeriode::pluck('nama', 'nama')->toArray())
+                                    ->options(fn() => \App\Models\MasterPeriode::pluck('nama', 'nama')->toArray())
                                     ->createOptionForm([
                                         \Filament\Forms\Components\TextInput::make('nama')
                                             ->label('Nama Periode Baru')
