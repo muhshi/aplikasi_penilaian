@@ -7,12 +7,20 @@ Route::get('/', function () {
 });
 
 // Route khusus untuk preview PDF agar tidak terblokir 403 Forbidden oleh server config
-Route::get('/preview/{path}', function (string $path) {
+Route::get('/preview/{path}', function (string $path, \Illuminate\Http\Request $request) {
     // Pastikan path merujuk ke storage/app/public
     $fullPath = storage_path('app/public/' . $path);
 
     if (!file_exists($fullPath)) {
         abort(404, 'File tidak ditemukan.');
+    }
+
+    // Jika ada query ?name=..., gunakan sebagai nama tampilan file di browser
+    $displayName = $request->query('name');
+    if ($displayName) {
+        return response()->file($fullPath, [
+            'Content-Disposition' => 'inline; filename="' . $displayName . '"',
+        ]);
     }
 
     return response()->file($fullPath);

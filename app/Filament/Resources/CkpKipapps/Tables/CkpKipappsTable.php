@@ -32,7 +32,12 @@ class CkpKipappsTable
                     ->formatStateUsing(fn($state) => $state ? '📄 Dokumen Tersedia' : 'Kosong')
                     ->badge()
                     ->color(fn($state) => $state ? 'success' : 'danger')
-                    ->url(fn($record) => $record->nama_file ? route('file.preview', ['path' => $record->nama_file]) : null)
+                    ->url(function ($record) {
+                        if (!$record->nama_file) return null;
+                        $userName = $record->user ? str_replace(' ', '_', $record->user->name) : 'User';
+                        $displayName = sprintf('%s_%s_%s.pdf', $userName, $record->bulan, $record->tahun);
+                        return route('file.preview', ['path' => $record->nama_file]) . '?name=' . urlencode($displayName);
+                    })
                     ->openUrlInNewTab(),
                 TextColumn::make('bulan')
                     ->searchable()
