@@ -29,25 +29,40 @@ class Dashboard extends BaseDashboard
                                 return $active ? $active->tahun : Carbon::now()->year;
                             })
                             ->searchable()
+                            ->live()
                             ->extraInputAttributes(['class' => '!rounded-lg !bg-gray-50 !border-gray-200 !shadow-sm !text-center !p-2.5 focus:!ring-1 focus:!ring-primary-500']),
 
                         Select::make('bulan')
-                            ->label('Bulan')
-                            ->options([
-                                1 => 'Januari',
-                                2 => 'Februari',
-                                3 => 'Maret',
-                                4 => 'April',
-                                5 => 'Mei',
-                                6 => 'Juni',
-                                7 => 'Juli',
-                                8 => 'Agustus',
-                                9 => 'September',
-                                10 => 'Oktober',
-                                11 => 'November',
-                                12 => 'Desember',
-                            ])
-                            ->default(Carbon::now()->month)
+                            ->label('Periode')
+                            ->options(function (callable $get) {
+                                $tahun = $get('tahun');
+                                $active = \App\Models\PeriodeTahun::where('tahun', $tahun)->first() 
+                                    ?? \App\Models\PeriodeTahun::where('is_active', true)->first();
+                                
+                                $options = [];
+                                if ($active && is_array($active->periode_aktif)) {
+                                    foreach ($active->periode_aktif as $p) {
+                                        if (stripos($p, 'tahunan') === false) {
+                                            $options[$p] = $p;
+                                        }
+                                    }
+                                }
+                                return $options;
+                            })
+                            ->default(function (callable $get) {
+                                $tahun = $get('tahun');
+                                $active = \App\Models\PeriodeTahun::where('tahun', $tahun)->first() 
+                                    ?? \App\Models\PeriodeTahun::where('is_active', true)->first();
+                                
+                                if ($active && is_array($active->periode_aktif)) {
+                                    foreach ($active->periode_aktif as $p) {
+                                        if (stripos($p, 'tahunan') === false) {
+                                            return $p;
+                                        }
+                                    }
+                                }
+                                return null;
+                            })
                             ->extraInputAttributes(['class' => '!rounded-lg !bg-gray-50 !border-gray-200 !shadow-sm !text-center !p-2.5 focus:!ring-1 focus:!ring-primary-500']),
                     ])
                     ->columnSpanFull() // Paksa grid mengisi seluruh lebar

@@ -37,10 +37,9 @@ class TopPegawai extends BaseWidget
             $tahun = $tahun ?? $latestData?->tahun ?? Carbon::now()->year;
         }
 
-        $bulan = (int) $bulan;
         $tahun = (int) $tahun;
 
-        $namaBulan = Carbon::create()->month($bulan)->translatedFormat('F');
+        $namaBulan = is_numeric($bulan) ? Carbon::create()->month((int)$bulan)->translatedFormat('F') : $bulan;
 
         return $table
             ->query(

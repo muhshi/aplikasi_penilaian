@@ -20,7 +20,6 @@ class NilaiPegawai extends Model
     ];
 
     protected $casts = [
-        'bulan' => 'integer',
         'tahun' => 'integer',
         'kualitas' => 'decimal:2',
         'kuantitas' => 'decimal:2',

@@ -46,10 +46,9 @@ class NilaiDistributionChart extends ChartWidget
             $tahun = $tahun ?? $latestRecord?->tahun ?? Carbon::now()->year;
         }
 
-        $bulan = (int) $bulan;
         $tahun = (int) $tahun;
 
-        $namaBulan = Carbon::create()->month($bulan)->translatedFormat('F');
+        $namaBulan = is_numeric($bulan) ? Carbon::create()->month((int)$bulan)->translatedFormat('F') : $bulan;
         $this->heading = "Distribusi Predikat Kinerja ($namaBulan)";
 
         // Ambil data nilai pegawai hanya pada bulan & tahun terpilih

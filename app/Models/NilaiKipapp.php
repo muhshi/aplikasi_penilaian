@@ -21,7 +21,6 @@ class NilaiKipapp extends Model
     ];
 
     protected $casts = [
-        'bulan' => 'integer',
         'tahun' => 'integer',
         'rata_rata_hasil_kerja' => 'decimal:2',
         'rata_rata_perilaku' => 'decimal:2',

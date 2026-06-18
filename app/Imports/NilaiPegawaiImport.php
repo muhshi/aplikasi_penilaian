@@ -50,7 +50,7 @@ class NilaiPegawaiImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
         $this->penilaiId = auth()->id();
     }
 
-    private function parseBulan($bulanValue): ?int
+    private function parseBulan($bulanValue)
     {
         if (empty($bulanValue)) {
             return null;
@@ -77,7 +77,7 @@ class NilaiPegawaiImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
         if (str_starts_with($bulanLower, 'nov')) return 11;
         if (str_starts_with($bulanLower, 'des')) return 12;
 
-        return null;
+        return $bulanValue; // Return original string for periods like "Triwulan I"
     }
 
     public function collection(Collection $rows)

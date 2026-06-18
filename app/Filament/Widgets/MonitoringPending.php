@@ -35,7 +35,6 @@ class MonitoringPending extends BaseWidget
             $tahun = $tahun ?? $latestData?->tahun ?? Carbon::now()->year;
         }
 
-        $bulan = (int) $bulan;
         $tahun = (int) $tahun;
 
         // Mapping angka bulan ke nama bulan (sesuai format di tabel ckp_kipapp)
@@ -45,7 +44,7 @@ class MonitoringPending extends BaseWidget
             7 => 'Juli', 8 => 'Agustus', 9 => 'September',
             10 => 'Oktober', 11 => 'November', 12 => 'Desember',
         ];
-        $namaBulan = $bulanMap[$bulan] ?? (string) $bulan;
+        $namaBulan = is_numeric($bulan) ? ($bulanMap[(int)$bulan] ?? (string) $bulan) : $bulan;
 
         return $table
             ->query(
@@ -95,7 +94,7 @@ class MonitoringPending extends BaseWidget
                     ->icon('heroicon-m-megaphone')
                     ->color('warning')
                     ->url(function ($record) use ($bulan, $tahun) {
-                        $namaBulan = match ($bulan) {
+                        $namaBulanWa = is_numeric($bulan) ? match ((int)$bulan) {
                             1 => 'Januari',
                             2 => 'Februari',
                             3 => 'Maret',
@@ -109,9 +108,9 @@ class MonitoringPending extends BaseWidget
                             11 => 'November',
                             12 => 'Desember',
                             default => $bulan,
-                        };
+                        } : $bulan;
 
-                        $message = "Halo {$record->name}, mengingatkan untuk melengkapi data dan dokumen CKP periode {$namaBulan} {$tahun}. Terima kasih.";
+                        $message = "Halo {$record->name}, mengingatkan untuk melengkapi data dan dokumen CKP periode {$namaBulanWa} {$tahun}. Terima kasih.";
 
                         return "https://wa.me/" . ($record->pegawai->no_hp ?? '') . "?text=" . urlencode($message);
                     }, true)

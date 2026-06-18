@@ -51,7 +51,7 @@ class NilaiKipappImport implements ToModel, WithHeadingRow, SkipsEmptyRows, With
      * @param mixed $bulanValue Nilai bulan dari Excel
      * @return int|null Angka bulan (1-12) atau null jika tidak valid
      */
-    private function parseBulan($bulanValue): ?int
+    private function parseBulan($bulanValue)
     {
         if (empty($bulanValue)) {
             return null;
@@ -60,12 +60,12 @@ class NilaiKipappImport implements ToModel, WithHeadingRow, SkipsEmptyRows, With
         // Jika sudah berupa angka 1-12, langsung return
         if (is_numeric($bulanValue)) {
             $num = (int) $bulanValue;
-            return ($num >= 1 && $num <= 12) ? $num : null;
+            return ($num >= 1 && $num <= 12) ? $num : $bulanValue;
         }
 
         // Konversi nama bulan ke lowercase lalu cari di mapping
         $bulanLower = strtolower(trim($bulanValue));
-        return $this->bulanMapping[$bulanLower] ?? null;
+        return $this->bulanMapping[$bulanLower] ?? $bulanValue;
     }
 
     /**

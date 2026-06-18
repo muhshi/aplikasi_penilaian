@@ -47,9 +47,8 @@ class StatsOverview extends BaseWidget
             $tahun = $tahun ?? $latestData?->tahun ?? Carbon::now()->year;
         }
 
-        $bulan = (int) $bulan;
         $tahun = (int) $tahun;
-        $namaBulan = self::BULAN_MAP[$bulan] ?? Carbon::create()->month($bulan)->translatedFormat('F');
+        $namaBulan = is_numeric($bulan) ? (self::BULAN_MAP[(int)$bulan] ?? Carbon::create()->month((int)$bulan)->translatedFormat('F')) : $bulan;
 
         $totalPegawai = Pegawai::count();
 

@@ -183,6 +183,15 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 ### Fixed
 - **BadMethodCallException Group::collapsible**: Memperbaiki error layout form yang diakibatkan pemanggilan properti `collapsible()` pada wrapper non-section (`Group`) di `NilaiPegawaiForm`.
 
+## [Unreleased] - 2026-06-18
+
+### Changed
+- **Dashboard Filters**: Memperbarui filter `bulan` di Dashboard agar mengambil data `periode_aktif` dari `PeriodeTahun` (dinamis berdasarkan tahun yang dipilih), dan memfilter tipe "Tahunan".
+- **Dashboard Widgets**: Mengubah logika widget `StatsOverview`, `NilaiDistributionChart`, `TopPegawai`, dan `MonitoringPending` untuk dapat memproses filter periode berupa string teks (misal: "Triwulan I") alih-alih terbatas pada angka bulan (1-12).
+- **Nilai Pegawai & KIPAPP Models**: Menghapus casting tipe integer untuk kolom `bulan` pada model `NilaiPegawai` dan `NilaiKipapp` untuk mengakomodasi string periode.
+- **Data Import**: Menyesuaikan `NilaiPegawaiImport` dan `NilaiKipappImport` agar dapat memproses dan mengimpor data periode yang berbentuk teks (string).
+- **Database Schema**: Menambahkan file migrasi `2026_06_18_065725_change_bulan_to_string_in_nilai_tables.php` untuk mengubah tipe kolom `bulan` menjadi `string` pada tabel `nilai_pegawai` dan `nilai_kipapp`.
+
 ## [Unreleased] - 2026-06-17
 
 ### Added
