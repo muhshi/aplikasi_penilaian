@@ -13,6 +13,7 @@ class CkpKipapp extends Model
         'nama_file',
         'bulan',
         'tahun',
+        'keterangan',
     ];
 
     protected $casts = [

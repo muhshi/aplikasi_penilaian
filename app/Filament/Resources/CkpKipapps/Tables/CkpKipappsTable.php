@@ -31,6 +31,10 @@ class CkpKipappsTable
                     ->color(fn ($state) => $state ? 'success' : 'danger')
                     ->url(fn ($record) => $record->nama_file ? route('file.preview', ['path' => $record->nama_file]) : null)
                     ->openUrlInNewTab(),
+                TextColumn::make('keterangan')
+                    ->label('Keterangan / Jabatan')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('bulan')
                     ->searchable()
                     ->sortable()

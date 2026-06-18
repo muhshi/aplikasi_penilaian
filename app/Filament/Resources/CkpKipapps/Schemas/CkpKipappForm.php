@@ -65,15 +65,13 @@ class CkpKipappForm
                                         return $options;
                                     })
                                     ->required()
-                                    ->live()
-                                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, $get) {
-                                        return $rule->where('user_id', $get('user_id'))
-                                                    ->where('bulan', $get('bulan'))
-                                                    ->where('tahun', $get('tahun'));
-                                    })
-                                    ->validationMessages([
-                                        'unique' => 'Anda sudah mengupload CKP untuk bulan dan tahun ini.',
-                                    ]),
+                                    ->live(),
+
+                                TextInput::make('keterangan')
+                                    ->label('Keterangan / Jabatan (Opsional)')
+                                    ->placeholder('Misal: CKP Jabatan Statistisi Ahli Pertama')
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
                             ])
                     ])->collapsible(),
 
