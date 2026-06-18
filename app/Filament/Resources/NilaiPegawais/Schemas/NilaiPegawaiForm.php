@@ -3,16 +3,16 @@
 namespace App\Filament\Resources\NilaiPegawais\Schemas;
 
 use App\Models\NilaiPegawai;
+
 use Filament\Forms\Components\Hidden;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Group;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use App\Models\User;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Spatie\Permission\Models\Role;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,7 +49,7 @@ class NilaiPegawaiForm
 
                                 Select::make('bulan')
                                     ->label('Periode / Bulan')
-                                    ->options(function (Get $get) {
+                                    ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
                                         $tahun = $get('tahun');
                                         if (!$tahun)
                                             return [];
@@ -69,12 +69,12 @@ class NilaiPegawaiForm
                                     })
                                     ->required()
                                     ->live()
-                                    ->afterStateUpdated(fn(Set $set) => $set('user_id', null)),
+                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set) => $set('user_id', null)),
 
                                 Select::make('penilai_id')
                                     ->label('Nama Penilai')
                                     ->options(
-                                        \App\Models\User::role(['super_admin', 'ketua_tim'])
+                                        User::role(['super_admin', 'ketua_tim'])
                                             ->pluck('name', 'id')
                                             ->toArray()
                                     )
@@ -85,7 +85,7 @@ class NilaiPegawaiForm
 
                         Select::make('user_id')
                             ->label('Nama Pegawai (Yang Dinilai)')
-                            ->options(function (Get $get) {
+                            ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
                                 $penilaiId = $get('penilai_id');
                                 $bulan = $get('bulan');
                                 $tahun = $get('tahun');
@@ -94,9 +94,9 @@ class NilaiPegawaiForm
                                     return [];
                                 }
 
-                                $query = \App\Models\User::role('pegawai')
+                                $query = User::role('pegawai')
                                     ->where('id', '!=', $penilaiId)
-                                    ->whereDoesntHave('nilaiPegawai', function ($q) use ($penilaiId, $bulan, $tahun) {
+                                    ->whereDoesntHave('nilaiPegawais', function ($q) use ($penilaiId, $bulan, $tahun) {
                                         if ($bulan && $tahun) {
                                             $q->where('bulan', $bulan)
                                                 ->where('tahun', $tahun)
@@ -134,7 +134,7 @@ class NilaiPegawaiForm
                                     ])
                                     ->default(0)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get) => self::calculateResult($set, $get)),
 
                                 TextInput::make('kuantitas')
                                     ->label('Kuantitas')
@@ -151,7 +151,7 @@ class NilaiPegawaiForm
                                     ])
                                     ->default(0)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get) => self::calculateResult($set, $get)),
 
                                 TextInput::make('perilaku')
                                     ->label('Perilaku')
@@ -168,7 +168,7 @@ class NilaiPegawaiForm
                                     ])
                                     ->default(0)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get) => self::calculateResult($set, $get)),
                             ]),
                     ])->collapsible(),
 
@@ -193,7 +193,7 @@ class NilaiPegawaiForm
     }
 
     // --- LOGIKA HITUNG ---
-    public static function calculateResult(Set $set, Get $get): void
+    public static function calculateResult(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get): void
     {
         $k1 = $get('kualitas');
         $k2 = $get('kuantitas');
