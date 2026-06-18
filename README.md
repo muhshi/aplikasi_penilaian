@@ -186,7 +186,7 @@ Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 ## [Unreleased] - 2026-06-18
 
 ### Added
-- **UI/UX Enhancement (User Form)**: Mempercantik tampilan form create/edit User menggunakan komponen `Section` dan `Grid` sehingga lebih terstruktur.
+- **UI/UX Enhancement (User Form)**: Mempercantik tampilan form create/edit User menjadi lebih ringkas dengan menggabungkan semua field dalam satu `Section` berkolom dua, sehingga menghilangkan ruang kosong (whitespace) yang berlebih.
 - **Table UX Enhancement (PeriodeTahun)**: Mempersempit lebar kolom *Isian Per Tahun (Periode)* pada tabel Pengaturan Sistem dengan membatasi jumlah *badge* yang tampil, menggunakan mode bungkus teks (`wrap`), dan fitur *see more* (`expandableLimitedList`) agar tabel lebih rapi jika data terlalu panjang.
 - **PeriodeTahun Seeder**: Menambahkan `PeriodeTahunSeeder` untuk menginisiasi data periode bulan dan triwulan pada tahun 2024, 2025, dan 2026 secara otomatis.
 
