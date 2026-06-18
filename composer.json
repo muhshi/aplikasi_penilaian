@@ -10,6 +10,7 @@
         "asmit/filament-upload": "^2.0",
         "bezhansalleh/filament-shield": "^4.1",
         "filament/filament": "^5.2",
+        "iio/libmergepdf": "*",
         "joaopaulolndev/filament-pdf-viewer": "^3.0",
         "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
