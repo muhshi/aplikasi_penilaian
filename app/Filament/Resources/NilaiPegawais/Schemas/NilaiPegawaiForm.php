@@ -148,6 +148,7 @@ class NilaiPegawaiForm
 
         $query = User::role('pegawai')
             ->where('id', '!=', $penilaiId)
+            ->where('name', '!=', 'Ani Murwani')
             ->whereDoesntHave('nilaiPegawais', function ($q) use ($penilaiId, $bulan, $tahun) {
                 if ($bulan && $tahun) {
                     $q->where('bulan', $bulan)
@@ -182,7 +183,7 @@ class NilaiPegawaiForm
                                 'regex' => 'Format tidak valid (0-100).',
                             ])
                             ->default(0)
-                            ->live(onBlur: true)
+                            ->live(debounce: 500)
                             ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
 
                         TextInput::make('kuantitas')
