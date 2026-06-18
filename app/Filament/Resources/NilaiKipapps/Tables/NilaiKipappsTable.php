@@ -39,18 +39,39 @@ class NilaiKipappsTable
                     ->sortable(),
                 TextColumn::make('rata_rata_hasil_kerja')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter(),
                 TextColumn::make('rata_rata_perilaku')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter(),
                 TextColumn::make('nilai_rata_rata')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->alignCenter(),
                 TextColumn::make('predikat_kinerja')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Sangat Baik' => 'success',
+                        'Baik' => 'info',
+                        'Cukup' => 'warning',
+                        'Kurang' => 'danger',
+                        default => 'gray',
+                    })
+                    ->alignCenter(),
                 TextColumn::make('nilai_prestasi')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('success')
+                    ->alignCenter(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

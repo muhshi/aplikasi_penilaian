@@ -25,13 +25,24 @@ class CkpKipappsTable
                     ->sortable(),
                 TextColumn::make('nama_file')
                     ->label('File')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(fn ($state) => $state ? '📄 Dokumen Tersedia' : 'Kosong')
+                    ->badge()
+                    ->color(fn ($state) => $state ? 'success' : 'danger')
+                    ->url(fn ($record) => $record->nama_file ? route('file.preview', ['path' => $record->nama_file]) : null)
+                    ->openUrlInNewTab(),
                 TextColumn::make('bulan')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter(),
                 TextColumn::make('tahun')
                     ->numeric(thousandsSeparator: '')
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->alignCenter(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

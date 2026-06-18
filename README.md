@@ -173,6 +173,16 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-06-18
+
+### Added
+- **UI/UX Enhancement (Form & Table)**: Refactoring struktur layout pada form `NilaiPegawai`, `NilaiKipapp`, dan `CkpKipapp` menggunakan `Section` dan `Grid` bawaan Filament. Menghapus hardcoded Tailwind yang menyebabkan inkonsistensi tema gelap.
+- **Editable Table Columns**: Menambahkan fitur edit *inline* (via Action modal) pada kolom `periode_aktif` (Isian Per Tahun) di tabel `PeriodeTahunResource`.
+- **Table Badges**: Menambahkan label *badge* berwarna pada kolom numerik, predikat, dan status dokumen di tabel `NilaiPegawais`, `NilaiKipapps`, dan `CkpKipapps` agar lebih estetis.
+
+### Fixed
+- **BadMethodCallException Group::collapsible**: Memperbaiki error layout form yang diakibatkan pemanggilan properti `collapsible()` pada wrapper non-section (`Group`) di `NilaiPegawaiForm`.
+
 ## [Unreleased] - 2026-06-17
 
 ### Added

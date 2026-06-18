@@ -29,68 +29,86 @@ class NilaiKipappForm
     {
         return $schema
             ->components([
-                // Identitas pegawai
-                TextInput::make('nip_lama')
-                    ->label('NIP Lama')
-                    ->required(),
+                \Filament\Schemas\Components\Section::make('Identitas Pegawai')
+                    ->icon('heroicon-o-user')
+                    ->schema([
+                        TextInput::make('nip_lama')
+                            ->label('NIP Lama')
+                            ->required(),
+                    ])->collapsible(),
 
-                // Periode penilaian
-                Select::make('bulan')
-                    ->label('Bulan')
-                    ->options([
-                        1 => 'Januari',
-                        2 => 'Februari',
-                        3 => 'Maret',
-                        4 => 'April',
-                        5 => 'Mei',
-                        6 => 'Juni',
-                        7 => 'Juli',
-                        8 => 'Agustus',
-                        9 => 'September',
-                        10 => 'Oktober',
-                        11 => 'November',
-                        12 => 'Desember',
-                    ])
-                    ->required(),
-                Select::make('tahun')
-                    ->label('Tahun')
-                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
-                    ->default(function () {
-                        $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
-                        return $active ? $active->tahun : date('Y');
-                    })
-                    ->searchable()
-                    ->required(),
+                \Filament\Schemas\Components\Section::make('Periode Penilaian')
+                    ->icon('heroicon-o-calendar-days')
+                    ->schema([
+                        \Filament\Schemas\Components\Grid::make(2)
+                            ->schema([
+                                Select::make('tahun')
+                                    ->label('Tahun')
+                                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
+                                    ->default(function () {
+                                        $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
+                                        return $active ? $active->tahun : date('Y');
+                                    })
+                                    ->searchable()
+                                    ->required(),
+                                Select::make('bulan')
+                                    ->label('Bulan')
+                                    ->options([
+                                        1 => 'Januari',
+                                        2 => 'Februari',
+                                        3 => 'Maret',
+                                        4 => 'April',
+                                        5 => 'Mei',
+                                        6 => 'Juni',
+                                        7 => 'Juli',
+                                        8 => 'Agustus',
+                                        9 => 'September',
+                                        10 => 'Oktober',
+                                        11 => 'November',
+                                        12 => 'Desember',
+                                    ])
+                                    ->required(),
+                            ]),
+                    ])->collapsible(),
 
-                // Komponen nilai
-                TextInput::make('rata_rata_hasil_kerja')
-                    ->label('Rata-rata Hasil Kerja')
-                    ->numeric(),
-                TextInput::make('rata_rata_perilaku')
-                    ->label('Rata-rata Perilaku')
-                    ->numeric(),
-                TextInput::make('nilai_rata_rata')
-                    ->label('Nilai Rata-rata')
-                    ->numeric(),
-                TextInput::make('predikat_kinerja')
-                    ->label('Predikat Kinerja'),
-                TextInput::make('nilai_prestasi')
-                    ->label('Nilai Prestasi')
-                    ->numeric(),
+                \Filament\Schemas\Components\Section::make('Komponen Penilaian')
+                    ->icon('heroicon-o-chart-bar')
+                    ->schema([
+                        \Filament\Schemas\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('rata_rata_hasil_kerja')
+                                    ->label('Rata-rata Hasil Kerja')
+                                    ->numeric(),
+                                TextInput::make('rata_rata_perilaku')
+                                    ->label('Rata-rata Perilaku')
+                                    ->numeric(),
+                            ]),
+                        \Filament\Schemas\Components\Grid::make(3)
+                            ->schema([
+                                TextInput::make('nilai_rata_rata')
+                                    ->label('Nilai Rata-rata')
+                                    ->numeric(),
+                                TextInput::make('predikat_kinerja')
+                                    ->label('Predikat Kinerja'),
+                                TextInput::make('nilai_prestasi')
+                                    ->label('Nilai Prestasi')
+                                    ->numeric(),
+                            ]),
+                    ])->collapsible(),
 
-                // --- BAGIAN UPLOAD PDF (AdvancedFileUpload) ---
-                // Upload dokumen PDF dengan preview langsung,
-                // agar user bisa memverifikasi file sebelum submit
-                AdvancedFileUpload::make('nama_file')
-                    ->label('Dokumen Nilai KIPAPP (PDF)')
-                    ->disk('public')                           // Simpan di disk 'public' agar bisa diakses
-                    ->directory('nilai-kipapp-documents')       // Folder penyimpanan di storage/app/public/
-                    ->acceptedFileTypes(['application/pdf'])    // Hanya terima file PDF
-                    ->pdfPreviewHeight(500)                     // Tinggi preview PDF (px)
-                    ->pdfDisplayPage(1)                         // Tampilkan halaman pertama saat preview
-                    ->pdfToolbar(true)                          // Tampilkan toolbar PDF (zoom, download, dll)
-                    ->pdfZoomLevel(100),                        // Level zoom default 100%
-                // ----------------------------------------------
+                \Filament\Schemas\Components\Section::make('Dokumen Pendukung')
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        AdvancedFileUpload::make('nama_file')
+                            ->label('Dokumen Nilai KIPAPP (PDF)')
+                            ->disk('public')
+                            ->directory('nilai-kipapp-documents')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->pdfPreviewHeight(500)
+                            ->pdfDisplayPage(1)
+                            ->pdfToolbar(true)
+                            ->pdfZoomLevel(100),
+                    ])->collapsible(),
             ]);
     }
 }

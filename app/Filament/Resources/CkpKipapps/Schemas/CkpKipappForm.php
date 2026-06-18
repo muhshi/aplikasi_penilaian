@@ -26,73 +26,81 @@ class CkpKipappForm
     {
         return $schema
             ->components([
-                // User ID otomatis terisi dari user yang sedang login
                 Hidden::make('user_id')
                     ->default(fn() => auth()->id()),
 
-                // Pilihan bulan/periode CKP
-                Select::make('bulan')
-                    ->label('Bulan / Periode')
-                    ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
-                        $tahun = $get('tahun');
-                        if (! $tahun) return [];
-                        
-                        $pengaturan = \App\Models\PeriodeTahun::where('tahun', $tahun)->first();
-                        $periodeAktif = $pengaturan ? $pengaturan->periode_aktif : [];
-                        
-                        if (!is_array($periodeAktif)) $periodeAktif = [];
-                        
-                        $options = [];
-                        foreach ($periodeAktif as $periode) {
-                            $options[$periode] = $periode;
-                        }
-                        
-                        return $options;
-                    })
-                    ->required()
-                    ->live()
-                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, $get) {
-                        return $rule->where('user_id', $get('user_id'))
-                                    ->where('bulan', $get('bulan'))
-                                    ->where('tahun', $get('tahun'));
-                    })
-                    ->validationMessages([
-                        'unique' => 'Anda sudah mengupload CKP untuk bulan dan tahun ini.',
-                    ]),
+                \Filament\Schemas\Components\Section::make('Detail Periode')
+                    ->description('Pilih periode bulan dan tahun laporan CKP')
+                    ->icon('heroicon-o-calendar')
+                    ->schema([
+                        \Filament\Schemas\Components\Grid::make(2)
+                            ->schema([
+                                Select::make('tahun')
+                                    ->label('Tahun')
+                                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
+                                    ->default(function () {
+                                        $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
+                                        return $active ? $active->tahun : date('Y');
+                                    })
+                                    ->required()
+                                    ->live()
+                                    ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set) => $set('bulan', null)),
 
-                // Tahun periode CKP 
-                Select::make('tahun')
-                    ->label('Tahun')
-                    ->options(\App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
-                    ->default(function () {
-                        $active = \App\Models\PeriodeTahun::where('is_active', true)->first();
-                        return $active ? $active->tahun : date('Y');
-                    })
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set) => $set('bulan', null)),
+                                Select::make('bulan')
+                                    ->label('Bulan / Periode')
+                                    ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
+                                        $tahun = $get('tahun');
+                                        if (! $tahun) return [];
+                                        
+                                        $pengaturan = \App\Models\PeriodeTahun::where('tahun', $tahun)->first();
+                                        $periodeAktif = $pengaturan ? $pengaturan->periode_aktif : [];
+                                        
+                                        if (!is_array($periodeAktif)) $periodeAktif = [];
+                                        
+                                        $options = [];
+                                        foreach ($periodeAktif as $periode) {
+                                            $options[$periode] = $periode;
+                                        }
+                                        
+                                        return $options;
+                                    })
+                                    ->required()
+                                    ->live()
+                                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule, $get) {
+                                        return $rule->where('user_id', $get('user_id'))
+                                                    ->where('bulan', $get('bulan'))
+                                                    ->where('tahun', $get('tahun'));
+                                    })
+                                    ->validationMessages([
+                                        'unique' => 'Anda sudah mengupload CKP untuk bulan dan tahun ini.',
+                                    ]),
+                            ])
+                    ])->collapsible(),
 
-                //upload dokumen
-                AdvancedFileUpload::make('nama_file')
-                    ->label('Dokumen CKP (PDF)')
-                    ->disk('public')
-                    ->directory('ckp-documents')
-                    ->acceptedFileTypes(['application/pdf'])
-                    ->maxSize(10240) // Batasi maksimal 10MB
-                    ->validationAttribute('Dokumen CKP')
-                    ->pdfPreviewHeight(500)
-                    ->pdfDisplayPage(1)
-                    ->pdfToolbar(true)
-                    ->pdfZoomLevel(100)
-                    ->required(fn ($context) => $context === 'create'),
+                \Filament\Schemas\Components\Section::make('Dokumen CKP')
+                    ->description('Unggah dan pratinjau dokumen hasil CKP Anda')
+                    ->icon('heroicon-o-document-arrow-up')
+                    ->schema([
+                        AdvancedFileUpload::make('nama_file')
+                            ->label('Dokumen CKP (PDF)')
+                            ->disk('public')
+                            ->directory('ckp-documents')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->maxSize(10240)
+                            ->validationAttribute('Dokumen CKP')
+                            ->pdfPreviewHeight(500)
+                            ->pdfDisplayPage(1)
+                            ->pdfToolbar(true)
+                            ->pdfZoomLevel(100)
+                            ->required(fn ($context) => $context === 'create'),
 
-                // Pdf Viewer di form (menyesuaikan request user)
-                \Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField::make('nama_file_viewer')
-                    ->label('Pratinjau PDF')
-                    ->minHeight('100svh')
-                    ->fileUrl(fn($record) => $record && $record->nama_file ? route('file.preview', ['path' => $record->nama_file]) : '')
-                    ->visible(fn($record) => $record && $record->nama_file)
-                    ->columnSpanFull(),
+                        \Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField::make('nama_file_viewer')
+                            ->label('Pratinjau PDF')
+                            ->minHeight('100svh')
+                            ->fileUrl(fn($record) => $record && $record->nama_file ? route('file.preview', ['path' => $record->nama_file]) : '')
+                            ->visible(fn($record) => $record && $record->nama_file)
+                            ->columnSpanFull(),
+                    ])->collapsible(),
             ]);
     }
 }

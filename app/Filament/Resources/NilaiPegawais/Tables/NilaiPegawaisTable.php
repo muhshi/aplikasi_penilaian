@@ -57,16 +57,28 @@ class NilaiPegawaisTable
                     ->sortable(),
                 TextColumn::make('kualitas')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter(),
                 TextColumn::make('kuantitas')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter(),
                 TextColumn::make('perilaku')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter(),
                 TextColumn::make('nilai_akhir')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->alignCenter(),
                 TextColumn::make('progres_penilai')
                     ->label('Progres')
                     ->getStateUsing(function ($record) use ($totalPenilai) {

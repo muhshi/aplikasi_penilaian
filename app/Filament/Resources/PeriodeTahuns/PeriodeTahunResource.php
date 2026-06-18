@@ -78,6 +78,38 @@ class PeriodeTahunResource extends Resource
                     ->label('Tahun')
                     ->sortable()
                     ->searchable(),
+                
+                TextColumn::make('periode_aktif')
+                    ->label('Isian Per Tahun (Periode)')
+                    ->badge()
+                    ->separator(', ')
+                    ->action(
+                        \Filament\Tables\Actions\Action::make('editPeriode')
+                            ->modalHeading('Edit Periode Aktif')
+                            ->form([
+                                Select::make('periode_aktif')
+                                    ->label('Periode Aktif')
+                                    ->multiple()
+                                    ->options(fn () => \App\Models\MasterPeriode::pluck('nama', 'nama')->toArray())
+                                    ->createOptionForm([
+                                        \Filament\Forms\Components\TextInput::make('nama')
+                                            ->label('Nama Periode Baru')
+                                            ->required()
+                                            ->rule('unique:master_periodes,nama')
+                                    ])
+                                    ->createOptionUsing(function (array $data) {
+                                        $record = \App\Models\MasterPeriode::create($data);
+                                        return $record->nama;
+                                    })
+                                    ->searchable()
+                                    ->required()
+                            ])
+                            ->action(function (\App\Models\PeriodeTahun $record, array $data): void {
+                                $record->update(['periode_aktif' => $data['periode_aktif']]);
+                            })
+                    )
+                    ->tooltip('Klik untuk mengedit periode'),
+
                 IconColumn::make('is_active')
                     ->label('Status Aktif')
                     ->boolean()

@@ -22,9 +22,7 @@ class NilaiPegawaiForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(['lg' => 1])
             ->components([
-                // Hidden input untuk menyimpan ID penilai (ketua tim yang login)
                 Hidden::make('penilai_id')
                     ->default(fn() => auth()->id()),
 
@@ -69,32 +67,60 @@ class NilaiPegawaiForm
                                     ])
                                     ->required()
                                     ->default(fn() => session('last_nilai_pegawai_bulan'))
-                                    ->live()
-                                    ->extraInputAttributes(['class' => '!rounded-lg !bg-gray-50 !border-gray-200 !shadow-sm !text-center !p-2.5 focus:!ring-1 focus:!ring-primary-500']),
-                            ])
-                            ->extraAttributes(['class' => 'gap-4 mb-4']),
+                                    ->label('Periode / Bulan')
+                                    ->options(function (Get $get) {
+                                        $tahun = $get('tahun');
+                                        if (!$tahun)
+                                            return [];
 
-                        // Baris 2: Nama Pegawai
-                        // Query: pegawai yang BELUM dinilai oleh penilai yang login di bulan/tahun yg dipilih
+                                        $pengaturan = \App\Models\PeriodeTahun::where('tahun', $tahun)->first();
+                                        $periodeAktif = $pengaturan ? $pengaturan->periode_aktif : [];
+
+                                        if (!is_array($periodeAktif))
+                                            $periodeAktif = [];
+
+                                        $options = [];
+                                        foreach ($periodeAktif as $periode) {
+                                            $options[$periode] = $periode;
+                                        }
+
+                                        return $options;
+                                    })
+                                    ->required()
+                                    ->live()
+                                    ->afterStateUpdated(fn(Set $set) => $set('user_id', null)),
+
+                                Select::make('penilai_id')
+                                    ->label('Nama Penilai')
+                                    ->options(
+                                        \App\Models\User::role(['super_admin', 'ketua_tim'])
+                                            ->pluck('name', 'id')
+                                            ->toArray()
+                                    )
+                                    ->default(fn() => auth()->id())
+                                    ->searchable()
+                                    ->required(),
+                            ]),
+
                         Select::make('user_id')
-                            ->label('Nama Pegawai')
+                            ->label('Nama Pegawai (Yang Dinilai)')
                             ->options(function (Get $get) {
+                                $penilaiId = $get('penilai_id');
                                 $bulan = $get('bulan');
                                 $tahun = $get('tahun');
-                                $currentUser = auth()->user();
-                                $penilaiId = $currentUser->id;
 
-                                // Tampilkan semua user yang memiliki data Pegawai
-                                $query = \App\Models\User::query()
-                                    ->whereHas('pegawai') // Pastikan dia adalah pegawai/punya data di tabel pegawai
-                                    ->whereDoesntHave('nilaiPegawais', function ($q) use ($bulan, $tahun, $penilaiId) {
+                                if (!$penilaiId) {
+                                    return [];
+                                }
+
+                                $query = \App\Models\User::role('pegawai')
+                                    ->where('id', '!=', $penilaiId)
+                                    ->whereDoesntHave('nilaiPegawai', function ($q) use ($penilaiId, $bulan, $tahun) {
                                         if ($bulan && $tahun) {
-                                            // Jangan tampilkan pegawai yang SUDAH dinilai oleh penilai ini di periode terpilih
                                             $q->where('bulan', $bulan)
                                                 ->where('tahun', $tahun)
                                                 ->where('penilai_id', $penilaiId);
                                         } else {
-                                            // Jika periode belum dipilih, jangan tampilkan opsi apa pun
                                             $q->whereRaw('1 = 0');
                                         }
                                     });
@@ -104,10 +130,12 @@ class NilaiPegawaiForm
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->live()
-                            ->extraInputAttributes(['class' => '!rounded-lg !bg-gray-50 !border-gray-200 !shadow-sm !text-base !p-3 focus:!ring-1 focus:!ring-primary-500']),
+                            ->live(),
+                    ])->collapsible(),
 
-                        // Baris 3: Komponen Nilai Grid 3 Kolom
+                Section::make('Komponen Nilai')
+                    ->icon('heroicon-o-chart-pie')
+                    ->schema([
                         Grid::make(3)
                             ->schema([
                                 TextInput::make('kualitas')
@@ -121,17 +149,11 @@ class NilaiPegawaiForm
                                         'integer' => 'Harus berupa angka bulat.',
                                         'min' => 'Minimal 0.',
                                         'max' => 'Maksimal 100.',
-                                        'regex' => 'Format tidak valid (0-100, tanpa awalan nol).',
+                                        'regex' => 'Format tidak valid (0-100).',
                                     ])
                                     ->default(0)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get))
-                                    ->extraInputAttributes([
-                                        'class' => '!rounded-md !bg-white !border !border-gray-200 !shadow-sm !text-center !p-2 focus:!ring-1 focus:!ring-primary-500',
-                                        'min' => '0',
-                                        'max' => '100',
-                                        'oninput' => "if(this.value.length > 1 && this.value[0] === '0') this.value = this.value.replace(/^0+/, ''); if(this.value > 100) this.value = 100;",
-                                    ]),
+                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
 
                                 TextInput::make('kuantitas')
                                     ->label('Kuantitas')
@@ -144,17 +166,11 @@ class NilaiPegawaiForm
                                         'integer' => 'Harus berupa angka bulat.',
                                         'min' => 'Minimal 0.',
                                         'max' => 'Maksimal 100.',
-                                        'regex' => 'Format tidak valid (0-100, tanpa awalan nol).',
+                                        'regex' => 'Format tidak valid (0-100).',
                                     ])
                                     ->default(0)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get))
-                                    ->extraInputAttributes([
-                                        'class' => '!rounded-md !bg-white !border !border-gray-200 !shadow-sm !text-center !p-2 focus:!ring-1 focus:!ring-primary-500',
-                                        'min' => '0',
-                                        'max' => '100',
-                                        'oninput' => "if(this.value.length > 1 && this.value[0] === '0') this.value = this.value.replace(/^0+/, ''); if(this.value > 100) this.value = 100;",
-                                    ]),
+                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
 
                                 TextInput::make('perilaku')
                                     ->label('Perilaku')
@@ -167,32 +183,31 @@ class NilaiPegawaiForm
                                         'integer' => 'Harus berupa angka bulat.',
                                         'min' => 'Minimal 0.',
                                         'max' => 'Maksimal 100.',
-                                        'regex' => 'Format tidak valid (0-100, tanpa awalan nol).',
+                                        'regex' => 'Format tidak valid (0-100).',
                                     ])
                                     ->default(0)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get))
-                                    ->extraInputAttributes([
-                                        'class' => '!rounded-md !bg-white !border !border-gray-200 !shadow-sm !text-center !p-2 focus:!ring-1 focus:!ring-primary-500',
-                                        'min' => '0',
-                                        'max' => '100',
-                                        'oninput' => "if(this.value.length > 1 && this.value[0] === '0') this.value = this.value.replace(/^0+/, ''); if(this.value > 100) this.value = 100;",
-                                    ]),
+                                    ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+                            ]),
+                    ])->collapsible(),
+
+                Section::make('Hasil Akhir')
+                    ->icon('heroicon-o-check-badge')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('nilai_akhir')
+                                    ->label('Nilai Akhir')
+                                    ->numeric()
+                                    ->readOnly()
+                                    ->extraInputAttributes(['class' => 'font-bold text-lg']),
+
+                                TextInput::make('predikat')
+                                    ->label('Predikat')
+                                    ->readOnly()
+                                    ->extraInputAttributes(['class' => 'font-bold text-lg']),
                             ])
-                            ->extraAttributes(['class' => 'gap-4 mt-4 mb-4']),
-
-                        // Baris 4: Nilai Akhir 
-                        TextInput::make('nilai_akhir')
-                            ->label('Nilai Akhir')
-                            ->numeric()
-                            ->readOnly()
-                            ->extraInputAttributes(['class' => '!rounded-lg !bg-blue-50 !border-blue-100 !text-blue-700 !font-bold !text-center !text-lg !p-2.5']),
-
-                        TextInput::make('predikat')
-                            ->hidden()
-
-                    ])
-                    ->extraAttributes(['class' => 'w-full py-8 px-6 bg-white rounded-xl shadow-sm border border-gray-200']),
+                    ])->collapsible(),
             ]);
     }
 
