@@ -26,12 +26,10 @@ class NilaiPegawaiForm
                 Hidden::make('penilai_id')
                     ->default(fn() => auth()->id()),
 
-                // Container Utama: Compact & Professional (max-w-4xl)
-                Group::make()
-                    ->columnSpanFull()
+                Section::make('Data Penilaian')
+                    ->icon('heroicon-o-document-text')
                     ->schema([
-                        // Baris 1: Tahun & Bulan (Grid 2 Kolom)
-                        Grid::make(2)
+                        Grid::make(3)
                             ->schema([
                                 Select::make('tahun')
                                     ->label('Tahun')
@@ -50,23 +48,6 @@ class NilaiPegawaiForm
                                     ->extraInputAttributes(['class' => '!rounded-lg !bg-gray-50 !border-gray-200 !shadow-sm !text-center !p-2.5 focus:!ring-1 focus:!ring-primary-500']),
 
                                 Select::make('bulan')
-                                    ->label('Bulan')
-                                    ->options([
-                                        1 => 'Januari',
-                                        2 => 'Februari',
-                                        3 => 'Maret',
-                                        4 => 'April',
-                                        5 => 'Mei',
-                                        6 => 'Juni',
-                                        7 => 'Juli',
-                                        8 => 'Agustus',
-                                        9 => 'September',
-                                        10 => 'Oktober',
-                                        11 => 'November',
-                                        12 => 'Desember',
-                                    ])
-                                    ->required()
-                                    ->default(fn() => session('last_nilai_pegawai_bulan'))
                                     ->label('Periode / Bulan')
                                     ->options(function (Get $get) {
                                         $tahun = $get('tahun');
@@ -218,8 +199,6 @@ class NilaiPegawaiForm
         $k2 = $get('kuantitas');
         $p = $get('perilaku');
 
-        // Validasi internal sebelum menghitung (mencegah manipulasi input)
-        // Jika tidak valid, set nilai_akhir ke 0 atau tampilkan pesan
         if (
             !preg_match('/^(0|[1-9][0-9]?|100)$/', (string) $k1) ||
             !preg_match('/^(0|[1-9][0-9]?|100)$/', (string) $k2) ||
@@ -237,7 +216,6 @@ class NilaiPegawaiForm
         $avg = ($v1 + $v2 + $v3) / 3;
         $set('nilai_akhir', number_format($avg, 2));
 
-        // Tentukan predikat
         $predikat = match (true) {
             $avg >= 90 => 'Sangat Baik',
             $avg >= 75 => 'Baik',
