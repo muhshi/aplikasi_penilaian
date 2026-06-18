@@ -3,16 +3,16 @@
 namespace App\Filament\Resources\NilaiPegawais\Schemas;
 
 use App\Models\NilaiPegawai;
-
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use App\Models\User;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
 use Spatie\Permission\Models\Role;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,7 +47,7 @@ class NilaiPegawaiForm
 
                                 Select::make('bulan')
                                     ->label('Periode / Bulan')
-                                    ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
+                                    ->options(function (Get $get) {
                                         $tahun = $get('tahun');
                                         if (!$tahun)
                                             return [];
@@ -67,7 +67,10 @@ class NilaiPegawaiForm
                                     })
                                     ->required()
                                     ->live()
-                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set) => $set('user_id', null)),
+                                    ->afterStateUpdated(function (Set $set) {
+                                        $set('user_id', null);
+                                        $set('user_ids', []);
+                                    }),
 
                                 Select::make('penilai_id')
                                     ->label('Nama Penilai')
@@ -82,117 +85,156 @@ class NilaiPegawaiForm
                                     ->required(),
                             ]),
 
+                        // Untuk mode EDIT (single)
                         Select::make('user_id')
                             ->label('Nama Pegawai (Yang Dinilai)')
-                            ->options(function (\Filament\Schemas\Components\Utilities\Get $get) {
-                                $penilaiId = $get('penilai_id');
-                                $bulan = $get('bulan');
-                                $tahun = $get('tahun');
-
-                                if (!$penilaiId) {
-                                    return [];
-                                }
-
-                                $query = User::role('pegawai')
-                                    ->where('id', '!=', $penilaiId)
-                                    ->whereDoesntHave('nilaiPegawais', function ($q) use ($penilaiId, $bulan, $tahun) {
-                                        if ($bulan && $tahun) {
-                                            $q->where('bulan', $bulan)
-                                                ->where('tahun', $tahun)
-                                                ->where('penilai_id', $penilaiId);
-                                        } else {
-                                            $q->whereRaw('1 = 0');
-                                        }
-                                    });
-
-                                return $query->pluck('name', 'id');
+                            ->options(function (Get $get) {
+                                return self::getAvailableUsers($get);
                             })
                             ->searchable()
                             ->preload()
-                            ->required()
+                            ->required(fn(string $operation) => $operation === 'edit')
+                            ->hidden(fn(string $operation) => $operation === 'create')
+                            ->live(),
+
+                        // Untuk mode CREATE (multiple)
+                        Select::make('user_ids')
+                            ->label('Nama Pegawai (Yang Dinilai)')
+                            ->multiple()
+                            ->options(function (Get $get) {
+                                return self::getAvailableUsers($get);
+                            })
+                            ->searchable()
+                            ->preload()
+                            ->required(fn(string $operation) => $operation === 'create')
+                            ->hidden(fn(string $operation) => $operation === 'edit')
                             ->live(),
                     ])->collapsible(),
 
-                Section::make('Komponen Nilai')
-                    ->icon('heroicon-o-chart-pie')
-                    ->schema([
-                        Grid::make(3)
-                            ->schema([
-                                TextInput::make('kualitas')
-                                    ->label('Kualitas')
-                                    ->integer()
-                                    ->required()
-                                    ->rule('min:0')
-                                    ->rule('max:100')
-                                    ->regex('/^(0|[1-9][0-9]?|100)$/')
-                                    ->validationMessages([
-                                        'integer' => 'Harus berupa angka bulat.',
-                                        'min' => 'Minimal 0.',
-                                        'max' => 'Maksimal 100.',
-                                        'regex' => 'Format tidak valid (0-100).',
-                                    ])
-                                    ->default(0)
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get) => self::calculateResult($set, $get)),
+                // Komponen Nilai Dinamis
+                Group::make()
+                    ->schema(function (Get $get, string $operation) {
+                        if ($operation === 'edit') {
+                            return [
+                                self::getKomponenNilaiSection('Komponen Nilai', null)
+                            ];
+                        }
 
-                                TextInput::make('kuantitas')
-                                    ->label('Kuantitas')
-                                    ->integer()
-                                    ->required()
-                                    ->rule('min:0')
-                                    ->rule('max:100')
-                                    ->regex('/^(0|[1-9][0-9]?|100)$/')
-                                    ->validationMessages([
-                                        'integer' => 'Harus berupa angka bulat.',
-                                        'min' => 'Minimal 0.',
-                                        'max' => 'Maksimal 100.',
-                                        'regex' => 'Format tidak valid (0-100).',
-                                    ])
-                                    ->default(0)
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get) => self::calculateResult($set, $get)),
+                        $userIds = $get('user_ids') ?? [];
+                        $sections = [];
 
-                                TextInput::make('perilaku')
-                                    ->label('Perilaku')
-                                    ->integer()
-                                    ->required()
-                                    ->rule('min:0')
-                                    ->rule('max:100')
-                                    ->regex('/^(0|[1-9][0-9]?|100)$/')
-                                    ->validationMessages([
-                                        'integer' => 'Harus berupa angka bulat.',
-                                        'min' => 'Minimal 0.',
-                                        'max' => 'Maksimal 100.',
-                                        'regex' => 'Format tidak valid (0-100).',
-                                    ])
-                                    ->default(0)
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get) => self::calculateResult($set, $get)),
-                            ]),
-                    ])->collapsible(),
+                        foreach ($userIds as $userId) {
+                            $user = User::find($userId);
+                            if ($user) {
+                                $sections[] = self::getKomponenNilaiSection('Komponen Nilai - ' . $user->name, $userId)
+                                    ->statePath("nilai.{$userId}");
+                            }
+                        }
 
-                Section::make('Hasil Akhir')
-                    ->icon('heroicon-o-check-badge')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('nilai_akhir')
-                                    ->label('Nilai Akhir')
-                                    ->numeric()
-                                    ->readOnly()
-                                    ->extraInputAttributes(['class' => 'font-bold text-lg']),
-
-                                TextInput::make('predikat')
-                                    ->label('Predikat')
-                                    ->readOnly()
-                                    ->extraInputAttributes(['class' => 'font-bold text-lg']),
-                            ])
-                    ])->collapsible(),
+                        return $sections;
+                    }),
             ]);
     }
 
+    private static function getAvailableUsers(Get $get): array
+    {
+        $penilaiId = $get('penilai_id');
+        $bulan = $get('bulan');
+        $tahun = $get('tahun');
+
+        if (!$penilaiId) {
+            return [];
+        }
+
+        $query = User::role('pegawai')
+            ->where('id', '!=', $penilaiId)
+            ->whereDoesntHave('nilaiPegawais', function ($q) use ($penilaiId, $bulan, $tahun) {
+                if ($bulan && $tahun) {
+                    $q->where('bulan', $bulan)
+                        ->where('tahun', $tahun)
+                        ->where('penilai_id', $penilaiId);
+                } else {
+                    $q->whereRaw('1 = 0');
+                }
+            });
+
+        return $query->pluck('name', 'id')->toArray();
+    }
+
+    private static function getKomponenNilaiSection(string $title, ?string $userId): Section
+    {
+        return Section::make($title)
+            ->icon('heroicon-o-chart-pie')
+            ->schema([
+                Grid::make(5)
+                    ->schema([
+                        TextInput::make('kualitas')
+                            ->label('Kualitas')
+                            ->integer()
+                            ->required()
+                            ->rule('min:0')
+                            ->rule('max:100')
+                            ->regex('/^(0|[1-9][0-9]?|100)$/')
+                            ->validationMessages([
+                                'integer' => 'Harus berupa angka bulat.',
+                                'min' => 'Minimal 0.',
+                                'max' => 'Maksimal 100.',
+                                'regex' => 'Format tidak valid (0-100).',
+                            ])
+                            ->default(0)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+
+                        TextInput::make('kuantitas')
+                            ->label('Kuantitas')
+                            ->integer()
+                            ->required()
+                            ->rule('min:0')
+                            ->rule('max:100')
+                            ->regex('/^(0|[1-9][0-9]?|100)$/')
+                            ->validationMessages([
+                                'integer' => 'Harus berupa angka bulat.',
+                                'min' => 'Minimal 0.',
+                                'max' => 'Maksimal 100.',
+                                'regex' => 'Format tidak valid (0-100).',
+                            ])
+                            ->default(0)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+
+                        TextInput::make('perilaku')
+                            ->label('Perilaku')
+                            ->integer()
+                            ->required()
+                            ->rule('min:0')
+                            ->rule('max:100')
+                            ->regex('/^(0|[1-9][0-9]?|100)$/')
+                            ->validationMessages([
+                                'integer' => 'Harus berupa angka bulat.',
+                                'min' => 'Minimal 0.',
+                                'max' => 'Maksimal 100.',
+                                'regex' => 'Format tidak valid (0-100).',
+                            ])
+                            ->default(0)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn(Set $set, Get $get) => self::calculateResult($set, $get)),
+
+                        TextInput::make('nilai_akhir')
+                            ->label('Nilai Akhir')
+                            ->numeric()
+                            ->readOnly()
+                            ->extraInputAttributes(['class' => 'font-bold text-lg bg-gray-50']),
+
+                        TextInput::make('predikat')
+                            ->label('Predikat')
+                            ->readOnly()
+                            ->extraInputAttributes(['class' => 'font-bold text-lg bg-gray-50']),
+                    ])
+            ])->collapsible();
+    }
+
     // --- LOGIKA HITUNG ---
-    public static function calculateResult(\Filament\Schemas\Components\Utilities\Set $set, \Filament\Schemas\Components\Utilities\Get $get): void
+    public static function calculateResult(Set $set, Get $get): void
     {
         $k1 = $get('kualitas');
         $k2 = $get('kuantitas');
