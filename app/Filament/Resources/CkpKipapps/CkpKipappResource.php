@@ -53,15 +53,12 @@ class CkpKipappResource extends Resource
                 Section::make('Informasi Laporan CKP')
                     ->icon('heroicon-m-document-check')
                     ->schema([
-                        Grid::make(3)
-                            ->schema([
-                                TextEntry::make('user.name')
-                                    ->label('Nama Pegawai'),
-                                TextEntry::make('bulan')
-                                    ->label('Periode Bulan'),
-                                TextEntry::make('tahun')
-                                    ->label('Tahun'),
-                            ]),
+                        TextEntry::make('user.name')
+                            ->label('Nama Pegawai'),
+                        TextEntry::make('bulan')
+                            ->label('Periode Bulan'),
+                        TextEntry::make('tahun')
+                            ->label('Tahun'),
                     ]),
 
                 Section::make('Pratinjau Dokumen')
@@ -112,7 +109,6 @@ class CkpKipappResource extends Resource
         return [
             'index' => ListCkpKipapps::route('/'),
             'create' => CreateCkpKipapp::route('/create'),
-            'view' => ViewCkpKipapp::route('/{record}'),
             'edit' => EditCkpKipapp::route('/{record}/edit'),
         ];
     }

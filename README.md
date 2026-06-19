@@ -173,6 +173,13 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-06-19
+
+### Fixed
+- **Filter CKP KIPAPP**: Mengubah filter tabel CKP KIPAPP menjadi *dependent dropdown*, di mana pilihan bulan/periode akan menyesuaikan dengan pengaturan tahun yang dipilih.
+- **Konsistensi Data**: Memperbaiki data bulan di database (seperti "Triwulan 1" menjadi "Triwulan I") agar seragam dengan pengaturan sistem, mencegah masalah tidak terbacanya data pada menu laporan.
+- **Detail CKP Modal**: Mengubah tampilan Action View (detail CKP) agar muncul sebagai *modal pop-up* dengan layout vertikal (1 kolom) yang lebih rapi alih-alih navigasi halaman penuh dengan 2/3 kolom.
+
 ## [Unreleased] - 2026-06-18
 
 ### Added

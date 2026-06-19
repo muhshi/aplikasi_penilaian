@@ -61,18 +61,54 @@ class CkpKipappsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('bulan')
-                    ->options(
-                        fn() => \App\Models\CkpKipapp::select('bulan')
-                            ->whereNotNull('bulan')
-                            ->distinct()
-                            ->pluck('bulan', 'bulan')
-                            ->toArray()
-                    )
-                    ->label('Filter Bulan / Periode'),
-                SelectFilter::make('tahun')
-                    ->options(fn() => \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
-                    ->label('Filter Tahun'),
+                \Filament\Tables\Filters\Filter::make('periode')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('tahun')
+                            ->options(fn() => \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
+                            ->label('Filter Tahun')
+                            ->live()
+                            ->afterStateUpdated(fn (\Filament\Forms\Set $set) => $set('bulan', null)),
+                        \Filament\Forms\Components\Select::make('bulan')
+                            ->options(function (\Filament\Forms\Get $get) {
+                                $tahun = $get('tahun');
+                                if (! $tahun) return [];
+                                
+                                $pengaturan = \App\Models\PeriodeTahun::where('tahun', $tahun)->first();
+                                $periodeAktif = $pengaturan ? $pengaturan->periode_aktif : [];
+                                
+                                if (!is_array($periodeAktif)) $periodeAktif = [];
+                                
+                                $options = [];
+                                foreach ($periodeAktif as $periode) {
+                                    $options[$periode] = $periode;
+                                }
+                                
+                                return $options;
+                            })
+                            ->label('Filter Bulan / Periode')
+                            ->live(),
+                    ])
+                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                        return $query
+                            ->when(
+                                $data['tahun'] ?? null,
+                                fn (\Illuminate\Database\Eloquent\Builder $query, $tahun): \Illuminate\Database\Eloquent\Builder => $query->where('tahun', $tahun),
+                            )
+                            ->when(
+                                $data['bulan'] ?? null,
+                                fn (\Illuminate\Database\Eloquent\Builder $query, $bulan): \Illuminate\Database\Eloquent\Builder => $query->where('bulan', $bulan),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['tahun'] ?? null) {
+                            $indicators['tahun'] = 'Tahun: ' . $data['tahun'];
+                        }
+                        if ($data['bulan'] ?? null) {
+                            $indicators['bulan'] = 'Bulan: ' . $data['bulan'];
+                        }
+                        return $indicators;
+                    }),
             ])
             ->actions([
                 ViewAction::make(),
