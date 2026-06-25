@@ -67,9 +67,9 @@ class CkpKipappsTable
                             ->options(fn() => \App\Models\PeriodeTahun::pluck('tahun', 'tahun')->toArray())
                             ->label('Filter Tahun')
                             ->live()
-                            ->afterStateUpdated(fn (\Filament\Forms\Set $set) => $set('bulan', null)),
+                            ->afterStateUpdated(fn ($set) => $set('bulan', null)),
                         \Filament\Forms\Components\Select::make('bulan')
-                            ->options(function (\Filament\Forms\Get $get) {
+                            ->options(function ($get) {
                                 $tahun = $get('tahun');
                                 if (! $tahun) return [];
                                 
