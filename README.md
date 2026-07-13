@@ -173,6 +173,11 @@ Proyek ini dikembangkan untuk keperluan internal BPS Kabupaten Demak.
 
 Semua perubahan penting dalam proyek ini akan didokumentasikan di bagian ini.
 
+## [Unreleased] - 2026-07-13
+
+### Fixed
+- **SSO User Creation**: Memperbaiki error "Integrity constraint violation: 1048 Column 'password' cannot be null" dengan memberikan random password secara otomatis pada saat pendaftaran pengguna baru via SSO SIPETRA.
+
 ## [Unreleased] - 2026-06-19
 
 ### Fixed
