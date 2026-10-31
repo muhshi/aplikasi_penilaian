@@ -159,6 +159,7 @@ Aplikasi ini menggunakan **Filament Shield** untuk manajemen role dan permission
 
 ## 📝 Changelog
 
+- **[2026-10-31]** `feat(sso)`: Menambahkan menu "Profil & Password (SIPETRA)" dan "Sinkronkan Profil dari SIPETRA" pada `userMenuItems` Filament Admin Panel serta flash notifikasi sinkronisasi sukses.
 - **[2026-10-31]** `feat(sso)`: Implementasi Federated Single Logout (SLO) via `SsoLogoutResponse` pada Filament dan penambahan loading state serta proteksi anti double-click pada tombol login SIPETRA SSO.
 - **[2026-03-31]** `chore(gitignore)`: Menambahkan `/public/build`, `/public/css/filament`, dan `/public/js/filament` ke `.gitignore` untuk mencegah pelacakan aset statis hasil kompilasi.
 - **[2026-03-31]** `fix(pegawai)`: Memperbaiki error `SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.email' in 'where clause'` saat melakukan input data Pegawai dengan menyesuaikan *rule validator unique* agar secara eksplisit diarahkan ke tabel `users`.

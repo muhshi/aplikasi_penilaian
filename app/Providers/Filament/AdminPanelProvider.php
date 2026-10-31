@@ -8,6 +8,7 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use App\Filament\Pages\Dashboard;
+use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -29,6 +30,17 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Profil & Password (SIPETRA)')
+                    ->url(fn (): string => rtrim(config('services.sipetra.base_url', 'https://bpsdemak.com'), '/') . '/account')
+                    ->icon('heroicon-o-shield-check')
+                    ->openUrlInNewTab(),
+                MenuItem::make()
+                    ->label('Sinkronkan Profil dari SIPETRA')
+                    ->url(fn (): string => route('sipetra.login'))
+                    ->icon('heroicon-o-arrow-path'),
+            ])
             // ->brandName('CKP Penilaian') // Disable text, already in logo view
             ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('3rem')
