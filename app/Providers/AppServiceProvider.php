@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
+use App\Http\Responses\SsoLogoutResponse;
+use App\Models\Pegawai;
 use App\Models\PeriodeTahun;
+use App\Observers\PegawaiObserver;
 use App\Observers\PeriodeTahunObserver;
+use Filament\Auth\Http\Responses\Contracts\LogoutResponse;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Socialite\Contracts\Factory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if (interface_exists(LogoutResponse::class)) {
+            $this->app->singleton(LogoutResponse::class, SsoLogoutResponse::class);
+        }
     }
 
     /**
@@ -23,18 +30,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (config('app.env') !== 'local') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceScheme('https');
         }
-        
-        \App\Models\PeriodeTahun::observe(\App\Observers\PeriodeTahunObserver::class);
-        \App\Models\Pegawai::observe(\App\Observers\PegawaiObserver::class);
 
-        $this->app->resolving(\Laravel\Socialite\Contracts\Factory::class, function ($socialite, $app) {
+        PeriodeTahun::observe(PeriodeTahunObserver::class);
+        Pegawai::observe(PegawaiObserver::class);
+
+        $this->app->resolving(Factory::class, function ($socialite, $app) {
             $socialite->extend('sipetra', function ($app) use ($socialite) {
                 $config = $app['config']['services.sipetra'];
-                return $socialite->buildProvider(\App\Providers\SipetraSocialiteProvider::class, $config);
+
+                return $socialite->buildProvider(SipetraSocialiteProvider::class, $config);
             });
         });
     }
 }
-
