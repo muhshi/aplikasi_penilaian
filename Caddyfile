@@ -1,7 +1,5 @@
 {
-  frankenphp
-  # yang benar:
-  order cgi-php before file_server
+    frankenphp
 }
 
 :80 {
@@ -14,6 +12,14 @@
         rewrite * /index.php?{query}
     }
 
+    # Tangani file statis secara eksplisit agar disajikan langsung oleh web server
+    @static {
+        file
+        path *.css *.js *.svg *.png *.jpg *.jpeg *.ico *.woff *.woff2 *.webp *.gif *.pdf *.map
+    }
+    handle @static {
+        file_server
+    }
+
     php_server
-    file_server
 }

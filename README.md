@@ -159,6 +159,10 @@ Aplikasi ini menggunakan **Filament Shield** untuk manajemen role dan permission
 
 ## 📝 Changelog
 
+- **[2026-11-02]** `fix(assets)`: Memperbaiki issue CSS tidak termuat di server produksi FrankenPHP Caddy dengan menghapus direktif `order cgi-php` dan menambahkan explicit static matcher `@static` pada Caddyfile, serta mengonsolidasikan tema Filament v5 (`theme.css` mengimpor `custom.css`).
+- **[2026-11-02]** `fix(security)`: Menambal kerentanan Path Traversal pada route `/preview/{path}` dengan mewajibkan autentikasi dan memvalidasi `realpath` direktori `storage/app/public`.
+- **[2026-11-02]** `fix(auth)`: Menyatukan model casts di `User.php` (`casts(): array`) untuk memastikan casting boolean pada `must_change_password` & `is_active` aktif, serta mencegah double hashing password pada pembuatan user baru SSO SIPETRA.
+- **[2026-11-02]** `chore(deploy)`: Menyempurnakan alur `deploy.sh` (instalasi Composer, build Vite, set permission `755` pada `public/build`, verifikasi symlink storage) serta membersihkan pelacakan file build dari git tracking.
 - **[2026-10-31]** `feat(sso)`: Menambahkan menu "Profil & Password (SIPETRA)" dan "Sinkronkan Profil dari SIPETRA" pada `userMenuItems` Filament Admin Panel serta flash notifikasi sinkronisasi sukses.
 - **[2026-10-31]** `feat(sso)`: Implementasi Federated Single Logout (SLO) via `SsoLogoutResponse` pada Filament dan penambahan loading state serta proteksi anti double-click pada tombol login SIPETRA SSO.
 - **[2026-03-31]** `chore(gitignore)`: Menambahkan `/public/build`, `/public/css/filament`, dan `/public/js/filament` ke `.gitignore` untuk mencegah pelacakan aset statis hasil kompilasi.

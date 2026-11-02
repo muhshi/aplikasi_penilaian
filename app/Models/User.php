@@ -28,13 +28,6 @@ class User extends Authenticatable implements FilamentUser
         'must_change_password',
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-        'must_change_password' => 'boolean',
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
     protected $hidden = [
         'password',
         'remember_token',
@@ -43,6 +36,8 @@ class User extends Authenticatable implements FilamentUser
     protected function casts(): array
     {
         return [
+            'is_active' => 'boolean',
+            'must_change_password' => 'boolean',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];

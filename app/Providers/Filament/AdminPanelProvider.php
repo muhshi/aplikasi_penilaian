@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Gray,
             ])
             ->font('Inter')
-            ->viteTheme(['resources/css/filament/admin/theme.css', 'resources/css/filament/admin/custom.css'])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->maxContentWidth(\Filament\Support\Enums\Width::Full)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

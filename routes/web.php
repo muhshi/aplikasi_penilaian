@@ -6,25 +6,26 @@ Route::get('/', function () {
     return view('landing');
 });
 
-// Route khusus untuk preview PDF agar tidak terblokir 403 Forbidden oleh server config
+// Route khusus untuk preview PDF agar aman dan tidak terblokir 403 Forbidden oleh server config
 Route::get('/preview/{path}', function (string $path, \Illuminate\Http\Request $request) {
-    // Pastikan path merujuk ke storage/app/public
-    $fullPath = storage_path('app/public/' . $path);
+    // Cegah path traversal: pastikan file valid dan berada di dalam storage/app/public
+    $basePath = realpath(storage_path('app/public'));
+    $targetPath = realpath(storage_path('app/public/' . ltrim($path, '/\\')));
 
-    if (!file_exists($fullPath)) {
+    if (! $basePath || ! $targetPath || ! str_starts_with($targetPath, $basePath) || ! file_exists($targetPath)) {
         abort(404, 'File tidak ditemukan.');
     }
 
     // Jika ada query ?name=..., gunakan sebagai nama tampilan file di browser
     $displayName = $request->query('name');
     if ($displayName) {
-        return response()->file($fullPath, [
-            'Content-Disposition' => 'inline; filename="' . $displayName . '"',
+        return response()->file($targetPath, [
+            'Content-Disposition' => 'inline; filename="' . basename($displayName) . '"',
         ]);
     }
 
-    return response()->file($fullPath);
-})->where('path', '.*')->name('file.preview');
+    return response()->file($targetPath);
+})->where('path', '.*')->middleware('auth')->name('file.preview');
 
 Route::get('/download/template-nilai-pegawai', function () {
     return \Maatwebsite\Excel\Facades\Excel::download(
